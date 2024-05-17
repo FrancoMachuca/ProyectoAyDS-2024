@@ -1,0 +1,34 @@
+body { 
+    background: linear-gradient(to bottom, #4E2394, #DBC9F5); 
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+div {
+    width: 500px;
+    height: 500px;
+    border-color: green;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, yellow, orange);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.text-fw{
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+}
+input{
+    width: 95%;
+    border-radius: 20px;
+    border-color: black;
+    border-style: solid;
+
+}
+input[type="button"]{
+    background-color: rgb(51, 149, 198);
+}

@@ -6,7 +6,11 @@ get '/' do
 end
 
 get '/login' do
-    File.read('index.html')
+    File.read('login.html')
+
+end
+get '/registro' do
+    File.read('registro.html')
 
 end
 
