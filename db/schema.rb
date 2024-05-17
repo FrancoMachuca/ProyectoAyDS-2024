@@ -10,5 +10,54 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 0) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_15_224148) do
+  create_table "exams", primary_key: "id_exam", force: :cascade do |t|
+    t.integer "minScore"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "lessons", primary_key: "id_lesson", force: :cascade do |t|
+    t.string "help"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "levels", primary_key: "id_level", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "multiple_choices", primary_key: "id_question", force: :cascade do |t|
+    t.integer "number_answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "questions", primary_key: "id_question", force: :cascade do |t|
+    t.string "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "to_completes", primary_key: "id_question", force: :cascade do |t|
+    t.string "letters"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "translations", primary_key: "id_question", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "mail"
+    t.string "password"
+    t.integer "totalScore"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
 end

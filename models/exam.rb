@@ -1,3 +1,4 @@
 require 'active_record'
-class Exam < Level
+class Exam < ActiveRecord::Base
+    self.primary_key = 'id_exam'
 end
