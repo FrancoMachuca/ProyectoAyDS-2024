@@ -15,17 +15,22 @@ get '/registro' do
 end
 post '/registro' do
     user = User.new(params[:user][:password])
-    user.save
-    redirect '/login'
+    user2 = User.find_by(email: params[:user][:email])
+    if user==user2
+        redirect '/login'
+    else
+        user.save
+        redirect '/login'
+    end
 end
 post '/login' do
     user = User.find_by(email: params[:user][:email])
     if user && user.password == params[:user][:password]
         session[:user_id] = user.id
         redirect '/home'
-        else
+    else
             redirect '/login'
-            end
+    end
 end 
 
 
