@@ -58,6 +58,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  rack
   rake
   require_all
   sinatra
