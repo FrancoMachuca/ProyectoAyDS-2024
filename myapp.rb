@@ -29,6 +29,7 @@ class MyApp < Sinatra::Application
         user = User.new(params[:user][:password])
         user2 = User.find_by(email: params[:user][:email])
         if user==user2
+            @message = "Usted ya tenia una cuenta previa"
             redirect '/login'
         else
             user.save
