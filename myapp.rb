@@ -19,12 +19,11 @@ class MyApp < Sinatra::Application
     end
     
     get '/login' do
-        File.read('login.html')
+        erb :login
     end
     
     get '/registro' do
-        File.read('registro.html')
-
+        erb :registro
     end
     post '/registro' do
         user = User.new(params[:user][:password])
