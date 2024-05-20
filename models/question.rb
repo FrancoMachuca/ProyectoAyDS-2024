@@ -1,4 +1,7 @@
 require 'active_record'
 class Question < ActiveRecord::Base
-    self.primary_key = 'id_question'
+    has_many :users_questions
+    has_many :users, through: :users_questions
+
+    belongs_to :level
 end

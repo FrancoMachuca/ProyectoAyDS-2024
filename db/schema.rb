@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_15_224148) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_20_220347) do
   create_table "exams", primary_key: "id_exam", force: :cascade do |t|
     t.integer "minScore"
     t.datetime "created_at"
@@ -36,8 +36,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_224148) do
 
   create_table "questions", primary_key: "id_question", force: :cascade do |t|
     t.string "description"
+    t.integer "level_id"
+    t.integer "true_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["level_id"], name: "index_questions_on_level_id"
+    t.index ["true_id"], name: "index_questions_on_true_id"
   end
 
   create_table "to_completes", primary_key: "id_question", force: :cascade do |t|
@@ -60,4 +64,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_224148) do
     t.datetime "updated_at"
   end
 
+  create_table "users_levels", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "level_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["level_id"], name: "index_users_levels_on_level_id"
+    t.index ["user_id"], name: "index_users_levels_on_user_id"
+  end
+
+  create_table "users_questions", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["question_id"], name: "index_users_questions_on_question_id"
+    t.index ["user_id"], name: "index_users_questions_on_user_id"
+  end
+
+  add_foreign_key "users_levels", "levels"
+  add_foreign_key "users_levels", "users"
+  add_foreign_key "users_questions", "questions"
+  add_foreign_key "users_questions", "users"
 end

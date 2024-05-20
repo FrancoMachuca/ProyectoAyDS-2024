@@ -1,3 +1,8 @@
 require 'active_record'
 class User < ActiveRecord::Base
+    has_many :users_levels
+    has_many :levels, through: :users_levels
+
+    has_many :users_questions
+    has_many :questions, through: :users_questions
 end
