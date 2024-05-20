@@ -1,7 +1,8 @@
 class CreateExamsTable < ActiveRecord::Migration[7.1]
   def change
-    create_table :exams, primary_key: 'id_exam' do |u|
+    create_table :exams do |u|
       u.integer :minScore
+      u.references :level, foreign_key: true
 
       u.datetime :created_at
       u.datetime :updated_at

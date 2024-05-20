@@ -11,48 +11,56 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_05_20_220347) do
-  create_table "exams", primary_key: "id_exam", force: :cascade do |t|
+  create_table "exams", force: :cascade do |t|
     t.integer "minScore"
+    t.integer "level_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["level_id"], name: "index_exams_on_level_id"
   end
 
-  create_table "lessons", primary_key: "id_lesson", force: :cascade do |t|
+  create_table "lessons", force: :cascade do |t|
     t.string "help"
+    t.integer "level_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["level_id"], name: "index_lessons_on_level_id"
+  end
+
+  create_table "levels", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "levels", primary_key: "id_level", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "multiple_choices", primary_key: "id_question", force: :cascade do |t|
+  create_table "multiple_choices", force: :cascade do |t|
     t.integer "number_answer"
+    t.integer "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["question_id"], name: "index_multiple_choices_on_question_id"
   end
 
-  create_table "questions", primary_key: "id_question", force: :cascade do |t|
+  create_table "questions", force: :cascade do |t|
     t.string "description"
     t.integer "level_id"
-    t.integer "true_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["level_id"], name: "index_questions_on_level_id"
-    t.index ["true_id"], name: "index_questions_on_true_id"
   end
 
-  create_table "to_completes", primary_key: "id_question", force: :cascade do |t|
+  create_table "to_completes", force: :cascade do |t|
     t.string "letters"
+    t.integer "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["question_id"], name: "index_to_completes_on_question_id"
   end
 
-  create_table "translations", primary_key: "id_question", force: :cascade do |t|
+  create_table "translations", force: :cascade do |t|
+    t.integer "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["question_id"], name: "index_translations_on_question_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -82,6 +90,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_220347) do
     t.index ["user_id"], name: "index_users_questions_on_user_id"
   end
 
+  add_foreign_key "exams", "levels"
+  add_foreign_key "lessons", "levels"
+  add_foreign_key "multiple_choices", "questions"
+  add_foreign_key "questions", "levels"
+  add_foreign_key "to_completes", "questions"
+  add_foreign_key "translations", "questions"
   add_foreign_key "users_levels", "levels"
   add_foreign_key "users_levels", "users"
   add_foreign_key "users_questions", "questions"
