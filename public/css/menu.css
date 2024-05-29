@@ -1,0 +1,46 @@
+body {
+    background: linear-gradient(to bottom, #4E2394, #DBC9F5);
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-container {
+    width: 500px;
+    height: 500px;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, yellow, orange);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column; /* Agregamos flex-direction para alinear verticalmente el contenido */
+    padding: 20px; /* Agregamos un espacio interno para que el contenido no se pegue a los bordes */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-container h1 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    margin-bottom: 20px; /* Espacio inferior para separar el título de los enlaces */
+}
+
+.menu-container a {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007BFF;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    transition: background-color 0.3s; /* Transición suave al pasar el ratón */
+}
+
+.menu-container a:hover {
+    background-color: #0056b3;
+}

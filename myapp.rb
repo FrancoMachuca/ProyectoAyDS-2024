@@ -5,6 +5,7 @@ require './models/level'
 require './models/lesson'
 require './models/exam'
 require './models/question'
+require './models/user_level'
 
 
 
@@ -19,7 +20,7 @@ class MyApp < Sinatra::Application
     get '/' do
         redirect '/login'
     end
-    
+
     get '/login' do
         erb :login
     end
@@ -33,12 +34,12 @@ class MyApp < Sinatra::Application
             @error_message = "Nombre de usuario o contraseña son incorrectas"
             erb :login
         end
-    end 
-    
+    end
+
     get '/registro' do
         erb :registro
     end
-    
+
     post '/registro' do
         user = User.find_by(mail: params[:mail]) || User.find_by(name: params[:name])
         if user
@@ -55,12 +56,40 @@ class MyApp < Sinatra::Application
             end
         end
     end
-    
+
     get '/logout' do
         session.clear
         redirect '/'
     end
 
+    get '/menu' do
+        if session[:user_id]
+            @user = User.find(session[:user_id])
+            erb :menu
+        else
+            redirect '/login'
+        end
+    end
+
+    get '/jugar' do
+        if session[:user_id]
+            @user = User.find(session[:user_id])
+            @levels = Level.order(:id)
+            erb :jugar
+        else
+            redirect '/login'
+        end
+    end
+
+    post '/completar_nivel' do
+        if session[:user_id]
+            user = User.find(session[:user_id])
+            level = Level.find(params[:level_id])
+            user.levels << level unless user.levels.include?(level)
+            redirect '/jugar'
+        else
+            redirect '/login'
+        end
+    end
 
 end
-

@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_20_220347) do
   end
 
   create_table "levels", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -9,28 +9,13 @@ users = [
   {name: 'Laura', mail: 'L@example.com', password: '456', totalScore: 0}
 ]
 
-questions = [
-  {description: 'a'},
-  {description: 'b'},
-  {description: 'c'}
-]
-
 levels = [
-  {},
-  {},
-  {}
+  {name: 'Level 1'},
+  {name: 'Level 2'},
+  {name: 'Level 3'}
 ]
 
-lessons = [
-  {},
-  {}
-]
 
-exams = [
-  {minScore: 70},
-  {minScore: 60},
-  {minScore: 65}
-]
 
 users.each do |u|
     puts u
@@ -41,19 +26,7 @@ users.each do |u|
       puts "no tuki"
     end
   end
-questions.each do |q|
-  Question.create(q)
-end
 
 levels.each do |l|
     Level.create(l)
-end
-
-
-lessons.each do |ls|
-  Lesson.create(ls)
-end
-
-exams.each do |e|
-  Exam.create(e)
 end
