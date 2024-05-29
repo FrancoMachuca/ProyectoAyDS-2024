@@ -11,12 +11,19 @@
 </head>
 <body>
     <div class="contenedor">
-        <form action="formulario" method="post">
+    <% if @error_message %>
+    <p style="color: red;"><%= @error_message %></p>
+    <% end %>
+        <form action="/login" method="post">
             <h1 class="text-fw">Bienvenido a MorseMania!</h1>
-            <p>Ingrese su nombre:</p>
-            <input type="text" placeholder="Nombre o Email">
-            <p>Ingrese su contraseña:</p>
-            <input type="text">
+            <br>
+            <label for="name">Ingrese su nombre:</label>
+            <br>
+            <input type="text" id="name" name="name" placeholder="Nombre" required>
+            <br>
+            <label for="password">Ingrese su contraseña:</label>
+            <br>
+            <input type="password" id="password" name="password" required>
             <br>
             <br>
             <a href="www.hla.com"> Olvido su contraseña?</a>
@@ -24,7 +31,7 @@
             <a href="/registro">No tienes cuenta todavia? Registrate!</a>
             <br>
             <br>
-            <input type="button" value="Iniciar Sesion">
+            <input type="submit" value="Iniciar Sesion">
         </form>
     </div>
 </body>

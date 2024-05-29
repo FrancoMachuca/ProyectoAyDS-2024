@@ -11,16 +11,25 @@
 </head>
 <body>
     <div class="contenedor">
-        <form action="formulario" method="post">
+    <% if @error_message %>
+    <p style="color: red;"><%= @error_message %></p>
+    <% end %>
+        <form action="/registro" method="post">
             <h1 class="text-fw">Bienvenido nuevo usuario!</h1>
-            <p>Ingrese su nombre o Email:</p>
-            <input type="text" placeholder="Nombre o Email">
-            <p>Ingrese su contraseña:</p>
-            <input type="text">
             <br>
+            <label for="mail">Ingrese su email:</label>
             <br>
-            <input type="button" value="Registrate">
-            <p><%= @message %></p>
+            <input type="email" id="mail" name="mail" placeholder="Mail" required>
+            <br>
+            <label for="name">Ingrese su nombre:</label>
+            <br>
+            <input type="text" id="name" name="name" placeholder="Nombre" required>
+            <br>
+            <label for="password">Ingrese su contraseña:</label>
+            <br>
+            <input type="password" id="password" name="password" placeholder="Contraseña" required>
+            <br>
+            <input type="submit" value="Registrate">
         </form>
     </div>
 </body>
