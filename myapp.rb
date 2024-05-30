@@ -21,6 +21,11 @@ class MyApp < Sinatra::Application
         redirect '/login'
     end
 
+    get '/usuarios' do
+        @users = User.all
+        erb :prueba
+    end
+      
     get '/login' do
         erb :login
     end

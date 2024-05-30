@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MorseMania</title>
-    <link rel="stylesheet" type="text/css" href="/css/registro.css">
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
@@ -15,12 +15,8 @@
     <p style="color: red;"><%= @error_message %></p>
     <% end %>
     <br>
-        <form action="/registro" method="post">
-            <h1 class="text-fw">Bienvenido nuevo usuario!</h1>
-            <br>
-            <label for="mail">Ingrese su email:</label>
-            <br>
-            <input type="email" id="mail" name="mail" placeholder="Mail" required>
+        <form action="/login" method="post">
+            <h1 class="text-fw">Bienvenido a MorseMania!</h1>
             <br>
             <label for="name">Ingrese su nombre:</label>
             <br>
@@ -28,9 +24,15 @@
             <br>
             <label for="password">Ingrese su contraseña:</label>
             <br>
-            <input type="password" id="password" name="password" placeholder="Contraseña" required>
+            <input type="password" id="password" name="password" required>
             <br>
-            <input type="submit" value="Registrate">
+            <br>
+            <a href="www.hla.com"> Olvido su contraseña?</a>
+            <br>
+            <a href="/registro">No tienes cuenta todavia? Registrate!</a>
+            <br>
+            <br>
+            <input type="submit" value="Iniciar Sesion">
         </form>
     </div>
 </body>

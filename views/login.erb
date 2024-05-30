@@ -14,25 +14,26 @@
     <% if @error_message %>
     <p style="color: red;"><%= @error_message %></p>
     <% end %>
-        <form action="/login" method="post">
-            <h1 class="text-fw">Bienvenido a MorseMania!</h1>
-            <br>
-            <label for="name">Ingrese su nombre:</label>
-            <br>
-            <input type="text" id="name" name="name" placeholder="Nombre" required>
-            <br>
-            <label for="password">Ingrese su contraseña:</label>
-            <br>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <br>
-            <a href="www.hla.com"> Olvido su contraseña?</a>
-            <br>
-            <a href="/registro">No tienes cuenta todavia? Registrate!</a>
-            <br>
-            <br>
-            <input type="submit" value="Iniciar Sesion">
-        </form>
+    <br>
+    <form action="/login" method="post">
+        <h1 class="text-fw">Bienvenido a MorseMania!</h1>
+        <br>
+        <label for="name">Ingrese su nombre:</label>
+        <br>
+        <input type="text" id="name" name="name" placeholder="Nombre" required>
+        <br>
+        <label for="password">Ingrese su contraseña:</label>
+        <br>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <br>
+        <a href="www.hla.com"> Olvido su contraseña?</a>
+        <br>
+        <a href="/registro">No tienes cuenta todavia? Registrate!</a>
+        <br>
+        <br>
+        <input type="submit" value="Iniciar Sesion">
+    </form>
     </div>
 </body>
 </html>
