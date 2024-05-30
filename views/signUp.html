@@ -1,0 +1,50 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MorseMania</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script><!--TODO: remover plugin e insertar tailwind de otra manera-->
+</head>
+<section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
+  <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5">
+      <h1 class="self-center mt-8 text-3xl font-extrabold">Crear una cuenta</h1>
+      <form class="flex flex-col">
+        <label for="email" class="block mt-3">Ingrese su email:</label>
+        <input
+            id="email"
+            name="email"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
+            placeholder="Email" aria-label="Email"
+        />
+          <label for="nombre" class="block mt-3">Ingrese su nombre:</label>
+          <input
+              id="nombre"
+              name="nombre"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
+              placeholder="Nombre" aria-label="Nombre"
+          />
+          <label for="contrasena" class="block mt-3">Ingrese su contraseña:</label>
+          <input
+              id="contrasena"
+              name="contrasena"
+              type="password"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
+              placeholder="Contraseña" aria-label="Contraseña"
+          />
+
+          <button type="button" onclick="handleRegister()" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
+            Registrarse
+          </button>
+      </form>
+  </div>
+</section>
+
+<script>
+  function handleRegister() {
+
+  }
+</script>
