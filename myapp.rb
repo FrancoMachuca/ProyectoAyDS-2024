@@ -25,7 +25,7 @@ class MyApp < Sinatra::Application
         @users = User.all
         erb :prueba
     end
-      
+
     get '/login' do
         erb :login
     end
@@ -34,7 +34,7 @@ class MyApp < Sinatra::Application
         user = User.find_by(name: params[:name], password: params[:password])
         if user
             session[:user_id] = user.id
-            redirect '/menu'
+            redirect '/jugar'
         else
             @error_message = "Nombre de usuario o contraseña son incorrectas"
             erb :login
@@ -77,13 +77,9 @@ class MyApp < Sinatra::Application
     end
 
     get '/jugar' do
-        if session[:user_id]
-            @user = User.find(session[:user_id])
-            @levels = Level.order(:id)
-            erb :jugar
-        else
-            redirect '/login'
-        end
+        @user = User.find(session[:user_id])
+        @levels = Level.all.order(:id)
+        erb :jugar
     end
 
     post '/completar_nivel' do
@@ -94,6 +90,15 @@ class MyApp < Sinatra::Application
             redirect '/jugar'
         else
             redirect '/login'
+        end
+    end
+
+    get '/ranking' do
+        if session[:user_id]
+          @users = User.order(totalScore: :desc).limit(10)
+          erb :ranking
+        else
+          redirect '/login'
         end
     end
 

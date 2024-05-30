@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking</title>
+    <link rel="stylesheet" href="/css/ranking.css">
+</head>
+<body>
+    <div class="ranking-container">
+        <h1>Ranking</h1>
+        <% @users.each_with_index do |user, index| %>
+            <div class="ranking-item">
+                <span><%= index + 1 %>. <%= user.name %></span>
+                <span><%= user.totalScore %></span>
+            </div>
+        <% end %>
+    </div>
+    <div class="footer">
+        <div onclick="location.href='/menu'">Inicio</div>
+        <div onclick="location.href='/jugar'">Jugar</div>
+        <div onclick="location.href='/perfil'">Perfil</div>
+        <div onclick="location.href='/ranking'">Ranking</div>
+    </div>
+</body>
+</html>

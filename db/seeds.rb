@@ -12,7 +12,9 @@ users = [
 levels = [
   {name: 'Level 1'},
   {name: 'Level 2'},
-  {name: 'Level 3'}
+  {name: 'Level 3'},
+  {name: 'Level 4'},
+  {name: 'Level 5'}
 ]
 
 
@@ -27,6 +29,11 @@ users.each do |u|
     end
   end
 
-levels.each do |l|
-    Level.create(l)
-end
+  levels.each do |l|
+    level = Level.create(l)
+    if level.save
+      puts "Nivel #{level.name} creado correctamente."
+    else
+      puts "Error al crear el nivel #{l[:name]}."
+    end
+  end

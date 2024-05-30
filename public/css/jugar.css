@@ -3,67 +3,82 @@ body {
     margin: 0;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 .container {
-    text-align: center; /* Centrar el contenido */
+    text-align: center;
+    background: rgba(237, 234, 253, 0.5); /* Fondo 50% transparente */
+    border-radius: 10px;
+    padding: 20px;
+    width: 1156px; /* Ancho del rectángulo */
+    height: 464px; /* Altura del rectángulo */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .title {
     font-size: 24px;
-    margin-bottom: 20px; /* Espacio inferior para separar el título de los niveles */
-    color: #000; /* Color del texto negro */
+    margin-bottom: 20px;
+    color: #000;
 }
 
 .levels-container {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
 }
 
 .level {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background-color: #007BFF;
-    color: #000; /* Color del texto negro */
-    font-size: 18px;
+    background-color: #ccc;
+    color: #000;
+    font-size: 16px;
     cursor: pointer;
-    position: relative;
-    transition: background-color 0.3s; /* Transición suave al pasar el ratón */
+    transition: background-color 0.3s;
 }
 
-.level:hover:before {
-    content: attr(data-level);
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    white-space: nowrap;
+.level:first-child {
+    background-color: #FF3D00;
 }
 
 .level.locked {
-    background-color: #ccc;
+    background-color: #CCCCCC;
     cursor: not-allowed;
 }
-.level.locked:hover {
-    background-color: #ccc; /* Mantener el color gris al pasar el ratón */
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #F8F8F8;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.level.completed {
-    background-color: #28a745;
+.footer-button {
+    cursor: pointer;
+    font-size: 16px;
+    color: #4E2394;
+    transition: color 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.level.completed:hover {
-    background-color: #218838; /* Color más oscuro al pasar el ratón */
+
+.footer-button img {
+    width: 72px; 
+    height: 72px;
+}
+
+.footer-button:hover {
+    color: #FF6F61;
 }
