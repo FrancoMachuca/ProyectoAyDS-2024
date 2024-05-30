@@ -1,54 +1,81 @@
-body { 
-    background: linear-gradient(180deg, #4E2394 0%, #87849a 100%); 
+body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(to bottom, #6B21A8, #CBD5E1);
     margin: 0;
     height: 100vh;
     display: flex;
-    justify-content: center; 
-    align-items: center;
-}
-
-div {
-    width: 500px;
-    height: 500px;
-    border-color: green;
-    border-radius: 20px;
-    background: linear-gradient(to bottom, yellow, orange);
-    align-items: center;
     justify-content: center;
+    align-items: center;
+}
+
+.container {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    height: 100%;
 }
 
-.text-fw{
-    font-family: 'Nunito', sans-serif;
-    font-weight: 900;
-    font-size: 28px;
-}
-label{
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-}
-
-a{
-    
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-}
-input[type="text"]{
-    height: 20px;
-    width: 95%;
+.form-wrapper {
+    max-width: 600px;
+    width: 100%;
+    background-color: white;
     border-radius: 20px;
-    border-color: black;
-    border-style: solid;
-
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-input[type="submit"]{
-    width: 95%;
-    border-radius: 20px;
-    background-color: rgb(51, 149, 198);
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
+.title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #6B21A8;
+}
+
+.link {
+    text-align: center;
+    margin: 8px 0;
+}
+
+.link a {
+    color: #3B82F6;
+    text-decoration: none;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6B21A8;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #4C1D95;
 }

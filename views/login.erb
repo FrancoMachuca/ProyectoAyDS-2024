@@ -10,31 +10,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="contenedor">
-    <% if @error_message %>
-    <p style="color: red;"><%= @error_message %></p>
-    <% end %>
-    <br>
-    <form action="/login" method="post">
-        <h1 class="text-fw">Bienvenido a MorseMania!</h1>
-        <br>
-        <label for="name">Ingrese su nombre:</label>
-        <br>
-        <input type="text" id="name" name="name" placeholder="Nombre" required>
-        <br>
-        <br>
-        <label for="password">Ingrese su contraseña:</label>
-        <br>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <br>
-        <a href="www.hla.com"> Olvido su contraseña?</a>
-        <br>
-        <a href="/registro">No tienes cuenta todavia? Registrate!</a>
-        <br>
-        <br>
-        <input type="submit" value="Iniciar Sesion">
-    </form>
+    <div class="container">
+        <div class="form-wrapper">
+            <% if @error_message %>
+                <p style="color: red;"><%= @error_message %></p>
+            <% end %>
+            <h1 class="title">Bienvenido a MorseMania!</h1>
+            <form class="form" action="/login" method="post">
+                <label for="name">Ingrese su nombre:</label>
+                <input type="text" id="name" name="name" class="input-field" placeholder="Nombre" required>
+                
+                <label for="password">Ingrese su contraseña:</label>
+                <input type="password" id="password" name="password" class="input-field" placeholder="Contraseña" required>
+                
+                <br>
+                
+                <a href="#" class="link">Olvidaste tu contraseña?</a>
+                <a href="#" class="link">No tenés cuenta todavía? Registrate!</a>
+                
+                <button type="submit" class="submit-button">Iniciar Sesión</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
