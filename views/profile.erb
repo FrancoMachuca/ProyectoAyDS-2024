@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script><!--TODO: remover plugin e insertar tailwind de otra manera-->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 <section class="flex flex-col self-center w-full bg-gradient-to-b from-purple-800 to-gray-300">
@@ -28,8 +28,7 @@
                             <p class="flex-1 max-md:max-w-full"><%= @user.total_score %></p>
                         </div>
                         <div class="flex gap-3 px-4 py-3.5 mt-1.5 max-md:flex-wrap">
-                            <strong>Niveles Completados: 2 TODO</strong>
-                            
+                            <strong>Niveles Completados: TODO</strong>
                         </div>
                     </section>
                 </article>
@@ -39,16 +38,21 @@
             </aside>
         </div>
     </section>
-    <footer class="flex flex-col justify-center w-full bg-white shadow-sm backdrop-blur-[10px] max-md:max-w-full">
-        <div class="flex justify-center items-center px-16 w-full max-md:px-5 max-md:max-w-full">
-            <div class="flex gap-5">
-                <a href="/menu"><img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c52bdb970c19ac4eba61212d14620ab996a7e7213b33fd558cb694ab558bd084?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Home" class="shrink-0 aspect-[1.56] w-[76px]" /></a>
-                <a href="/jugar"><img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/16164984ecd76939b09e3f94f4338985d4db2833b5e4eff64a701238199a6a20?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Jugar" class="shrink-0 aspect-[1.56] w-[76px]" /></a>
-                <a href="/perfil"><img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c733c1268f61d0fcda1d9d8599a1601b4031af96710d54f44f0b8010f464dc62?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Perfil" class="shrink-0 aspect-[1.56] w-[76px]" /></a>
-                <a href="/ranking"><img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/2d5f7d58b9244ec11f41df787c13d7b68df8a2a59e5a4f709b2ef45c58cfbf66?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Ranking" class="shrink-0 aspect-[1.56] w-[76px]" /></a>
-            </div>
-        </div>
-    </footer>
+    <section class="flex flex-col justify-center self-stretch bg-white shadow-sm">
+    <div class="flex justify-center items-center px-16 w-full max-md:px-5 max-md:max-w-full">
+      <div class="flex gap-5">
+        <button class="shrink-0 aspect-[1.56] w-[76px]" onclick="location.href='/jugar'">
+          <img class="shrink-0 aspect-[1.56] w-full" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c52bdb970c19ac4eba61212d14620ab996a7e7213b33fd558cb694ab558bd084?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt=""/>
+        </button>
+        <button class="shrink-0 aspect-[1.56] w-[76px]" onclick="location.href='/perfil'">
+          <img class="shrink-0 aspect-[1.56] w-full" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/16164984ecd76939b09e3f94f4338985d4db2833b5e4eff64a701238199a6a20?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt=""/>
+        </button>
+        <button class="shrink-0 aspect-[1.56] w-[76px]" onclick="location.href='/ranking'">
+          <img class="shrink-0 aspect-[1.56] w-full" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c733c1268f61d0fcda1d9d8599a1601b4031af96710d54f44f0b8010f464dc62?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt=""/>
+        </button>
+      </div>
+    </div>
+  </section>
 </section>
 </body>
 </html>

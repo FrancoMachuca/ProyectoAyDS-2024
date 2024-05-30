@@ -105,7 +105,7 @@ class MyApp < Sinatra::Application
 
     get '/ranking' do
         if session[:user_id]
-          @users = User.order(totalScore: :desc).limit(10)
+          @users = User.order(totalScore: :desc)
           erb :ranking
         else
           redirect '/login'
