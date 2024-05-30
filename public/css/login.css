@@ -1,4 +1,11 @@
-
+body { 
+    background: linear-gradient(180deg, #4E2394 0%, #87849a 100%); 
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
 
 div {
     width: 500px;
@@ -16,7 +23,7 @@ div {
     font-weight: 900;
     font-size: 28px;
 }
-p{
+label{
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 16px;
@@ -37,7 +44,7 @@ input[type="text"]{
 
 }
 
-input[type="button"]{
+input[type="submit"]{
     width: 95%;
     border-radius: 20px;
     background-color: rgb(51, 149, 198);
