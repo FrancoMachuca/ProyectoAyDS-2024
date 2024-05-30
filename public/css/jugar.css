@@ -6,6 +6,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: 'Nunito', sans-serif;
 }
 
 .container {
@@ -19,6 +20,7 @@ body {
 }
 
 .title {
+    font-family: 'Nunito', sans-serif;
     font-size: 24px;
     margin-bottom: 20px;
     color: #000;
@@ -75,8 +77,8 @@ body {
 }
 
 .footer-button img {
-    width: 72px; 
-    height: 72px;
+    width: 75%; 
+    height: auto;
 }
 
 .footer-button:hover {

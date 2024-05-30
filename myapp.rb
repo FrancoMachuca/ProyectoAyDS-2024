@@ -27,7 +27,7 @@ class MyApp < Sinatra::Application
     end
 
     get '/login' do
-        erb :login
+        erb :loginT
     end
 
     post '/login' do
@@ -45,6 +45,7 @@ class MyApp < Sinatra::Application
         erb :registro
     end
 
+    
     post '/registro' do
         user = User.find_by(mail: params[:mail]) || User.find_by(name: params[:name])
         if user
@@ -65,6 +66,15 @@ class MyApp < Sinatra::Application
     get '/logout' do
         session.clear
         redirect '/'
+    end
+
+    get '/perfil' do
+        if session[:user_id]
+            @user = User.find(session[:user_id])
+            erb :profile
+        else
+            redirect '/login'
+        end
     end
 
     get '/menu' do

@@ -8,37 +8,34 @@
   <script src="https://cdn.tailwindcss.com"></script><!--TODO: remover plugin e insertar tailwind de otra manera-->
 </head>
 <section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
+            <% if @error_message %>
+                <p style="color: red;"><%= @error_message %></p>
+            <% end %>
   <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 h-full">
       <h1 class="self-center mt-8 text-3xl font-extrabold">Bienvenido a MorseMania!</h1>
-      <form class="flex flex-col">
-          <label for="nombre" class="block mt-3">Ingrese su nombre:</label>
+      <form action="/login" method="post" class="flex flex-col">
+          <label for="name" class="block mt-3">Ingrese su nombre:</label>
           <input
-              id="nombre"
-              name="nombre"
+              id="name"
+              name="name"
               type="text"
               class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
-              placeholder="Nombre" aria-label="Nombre"
+              placeholder="Nombre" aria-label="Nombre" required
           />
           <label for="contrasena" class="block mt-3">Ingrese su contraseña:</label>
           <input
-              id="contrasena"
-              name="contrasena"
+              id="password"
+              name="password"
               type="password"
               class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
-              placeholder="Contraseña" aria-label="Contraseña"
+              placeholder="Contraseña" aria-label="Contraseña" required
           />
           <br>  
           <a href="#" class="self-center mt-3 text-blue-500">Olvidaste tu contraseña?</a>
-          <a href="#" class="self-center mt-3 text-blue-500">No tenés cuenta todavía? Registrate!</a>
-          <button type="button" onclick="handleLogin()" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
+          <a href="/registro" class="self-center mt-3 text-blue-500">No tenés cuenta todavía? Registrate!</a>
+          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
               Iniciar Sesión
           </button>
       </form>
   </div>
 </section>
-
-<script>
-  function handleLogin() {
-
-  }
-</script>
