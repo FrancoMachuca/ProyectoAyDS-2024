@@ -3,6 +3,9 @@ require_relative '../models/level'
 require_relative '../models/lesson'
 require_relative '../models/exam'
 require_relative '../models/question'
+require_relative '../models/multiple_choice'
+require_relative '../models/multiple_choice_answer'
+
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita', totalScore: 300},
   {name: 'Valentino Natali', mail: 'R@example.com', password: '123', totalScore: 100},
@@ -17,19 +20,67 @@ levels = [
   {name: 'Level 5'}
 ]
 
-
-
 users.each do |u|
-    puts u
-    user = (User.create(u))
-    user.save
-  end
+  user = User.create(u)
+  user.save
+end
 
-  levels.each do |l|
-    level = Level.create(l)
-    if level.save
-      puts "Nivel #{level.name} creado correctamente."
-    else
-      puts "Error al crear el nivel #{l[:name]}."
-    end
+levels.each do |l|
+  level = Level.create(l)
+  if level.save
+    puts "Nivel #{level.name} creado correctamente."
+  else
+    puts "Error al crear el nivel #{l[:name]}."
   end
+end
+
+# Creación de preguntas
+questions = [
+  {description: '¿Cuál es la capital de Francia?', level_id: Level.find_by(name: 'Level 1').id},
+  {description: '¿Cuál es el resultado de 2 + 2?', level_id: Level.find_by(name: 'Level 1').id}
+]
+
+questions.each do |q|
+  question = Question.create(q)
+  if question.save
+    puts "Pregunta '#{question.description}' creada correctamente."
+  else
+    puts "Error al crear la pregunta '#{q[:description]}'."
+  end
+end
+
+# Creación de preguntas de opción múltiple y sus respuestas
+multiple_choices = [
+  {number_answer: 4, question_id: Question.find_by(description: '¿Cuál es la capital de Francia?').id},
+  {number_answer: 4,question_id: Question.find_by(description: '¿Cuál es el resultado de 2 + 2?').id}
+]
+
+multiple_choices.each do |mc|
+  multiple_choice = MultipleChoice.create(mc)
+  if multiple_choice.save
+    puts "Pregunta de opción múltiple creada correctamente."
+  else
+    puts "Error al crear la pregunta de opción múltiple."
+  end
+end
+
+# Asumiendo que las preguntas creadas arriba son las primeras preguntas de la base de datos
+multiple_choice_answers = [
+  {answer: 'París', correct: true, multiple_choice_id: MultipleChoice.first.id},
+  {answer: 'Londres', correct: false, multiple_choice_id: MultipleChoice.first.id},
+  {answer: 'Madrid', correct: false, multiple_choice_id: MultipleChoice.first.id},
+  {answer: 'Berlín', correct: false, multiple_choice_id: MultipleChoice.first.id},
+  {answer: '3', correct: false, multiple_choice_id: MultipleChoice.second.id},
+  {answer: '4', correct: true, multiple_choice_id: MultipleChoice.second.id},
+  {answer: '5', correct: false, multiple_choice_id: MultipleChoice.second.id},
+  {answer: '6', correct: false, multiple_choice_id: MultipleChoice.second.id}
+]
+
+multiple_choice_answers.each do |mca|
+  answer = MultipleChoiceAnswer.create(mca)
+  if answer.save
+    puts "Respuesta '#{answer.answer}' creada correctamente."
+  else
+    puts "Error al crear la respuesta '#{mca[:answer]}'."
+  end
+end
