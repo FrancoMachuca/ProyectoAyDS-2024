@@ -86,6 +86,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_054012) do
     t.string "mail"
     t.string "password"
     t.integer "totalScore"
+    t.integer "maxLevelReached", default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end

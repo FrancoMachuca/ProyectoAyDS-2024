@@ -5,6 +5,7 @@ class CreateUsersTable < ActiveRecord::Migration[7.1]
         u.string :mail
         u.string :password
         u.integer :totalScore
+        u.integer :maxLevelReached, default: '1'
 
         u.datetime :created_at
         u.datetime :updated_at
