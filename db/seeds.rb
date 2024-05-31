@@ -5,6 +5,7 @@ require_relative '../models/exam'
 require_relative '../models/question'
 require_relative '../models/multiple_choice'
 require_relative '../models/multiple_choice_answer'
+require_relative '../models/answer'
 
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita', totalScore: 300},
@@ -36,51 +37,65 @@ end
 
 # Creación de preguntas
 questions = [
-  {description: '¿Cuál es la capital de Francia?', level_id: Level.find_by(name: 'Level 1').id},
-  {description: '¿Cuál es el resultado de 2 + 2?', level_id: Level.find_by(name: 'Level 1').id}
+{description: '¿Cómo se representa la palabra "SOL" en código morse?', level_id: Level.find_by(name: 'Level 1').id},
+{description: '¿Cómo se representa la palabra "CASA" en código morse?', level_id: Level.find_by(name: 'Level 1').id}
 ]
+
+questionsAux = [{description: '¿Cómo se representa la palabra "FUEGO" en código morse?', level_id: Level.find_by(name: 'Level 1').id},
+{description: '¿Cómo se representa la palabra "ÁRBOL" en código morse?', level_id: Level.find_by(name: 'Level 1').id},
+{description: '¿Cómo se representa la palabra "PERRO" en código morse?', level_id: Level.find_by(name: 'Level 2').id},
+{description: '¿Cómo se representa la palabra "SOS" en código morse?', level_id: Level.find_by(name: 'Level 2').id},
+{description: '¿Cómo se representa la palabra "GATO" en código morse?', level_id: Level.find_by(name: 'Level 2').id},
+{description: '¿Cómo se representa la palabra "HOLA" en código morse?', level_id: Level.find_by(name: 'Level 2').id}]
+
+#answers = [
+#  {answer: '... --- .-..', correct: true, multiple_choice_id: Question.first.id},
+#  {answer: ' ... --- .-.', correct: false, multiple_choice_id: Question.first.id},
+#  {answer: '... --- ..', correct: false, multiple_choice_id: Question.first.id},
+#  {answer: '... --- ..', correct: false, multiple_choice_id: Question.first.id},
+#  {answer: ' -.-. .- ... ..-', correct: false, multiple_choice_id: Question.second.id},
+#  {answer: ' -.-. .- ... .-', correct: true, multiple_choice_id: Question.second.id},
+#  {answer: '-.-. .- ... .', correct: false, multiple_choice_id: Question.second.id},
+#  {answer: ' -.-. .- ..- .-', correct: false, multiple_choice_id: Question.second.id}
+#]
 
 questions.each do |q|
   question = Question.create(q)
+
   if question.save
     puts "Pregunta '#{question.description}' creada correctamente."
   else
     puts "Error al crear la pregunta '#{q[:description]}'."
   end
+  ans = Answer.create(question_id: question.id, answer: '... --- .-..', correct: true)
+  ans = Answer.create(question_id: question.id, answer: ' ... --- .-.', correct: false)
+  ans = Answer.create(question_id: question.id, answer: '... --- ..', correct: false)
+  ans = Answer.create(question_id: question.id, answer: '... --- ..', correct: false)
 end
 
-# Creación de preguntas de opción múltiple y sus respuestas
-multiple_choices = [
-  {number_answer: 4, question_id: Question.find_by(description: '¿Cuál es la capital de Francia?').id},
-  {number_answer: 4,question_id: Question.find_by(description: '¿Cuál es el resultado de 2 + 2?').id}
-]
 
-multiple_choices.each do |mc|
-  multiple_choice = MultipleChoice.create(mc)
-  if multiple_choice.save
-    puts "Pregunta de opción múltiple creada correctamente."
-  else
-    puts "Error al crear la pregunta de opción múltiple."
-  end
-end
+#multiple_choices = [
+#  {question_id: Question.find_by(description: '¿Cómo se representa la palabra "SOL" en código morse?').id},
+#  {question_id: Question.find_by(description: '¿Cómo se representa la palabra "CASA" en código morse?').id}
+#]
+
+#multiple_choices.each do |mc|
+#  multiple_choice = Multiple_choice.create(mc)
+#  if multiple_choice.save
+#    puts "Pregunta de opción múltiple creada correctamente."
+#  else
+#    puts "Error al crear la pregunta de opción múltiple."
+#  end
+#end
 
 # Asumiendo que las preguntas creadas arriba son las primeras preguntas de la base de datos
-multiple_choice_answers = [
-  {answer: 'París', correct: true, multiple_choice_id: MultipleChoice.first.id},
-  {answer: 'Londres', correct: false, multiple_choice_id: MultipleChoice.first.id},
-  {answer: 'Madrid', correct: false, multiple_choice_id: MultipleChoice.first.id},
-  {answer: 'Berlín', correct: false, multiple_choice_id: MultipleChoice.first.id},
-  {answer: '3', correct: false, multiple_choice_id: MultipleChoice.second.id},
-  {answer: '4', correct: true, multiple_choice_id: MultipleChoice.second.id},
-  {answer: '5', correct: false, multiple_choice_id: MultipleChoice.second.id},
-  {answer: '6', correct: false, multiple_choice_id: MultipleChoice.second.id}
-]
 
-multiple_choice_answers.each do |mca|
-  answer = MultipleChoiceAnswer.create(mca)
-  if answer.save
-    puts "Respuesta '#{answer.answer}' creada correctamente."
-  else
-    puts "Error al crear la respuesta '#{mca[:answer]}'."
-  end
-end
+
+#multiple_choice_answers.each do |mca|
+#  answer = MultipleChoiceAnswer.create(mca)
+#  if answer.save
+#    puts "Respuesta '#{answer.answer}' creada correctamente."
+#  else
+#    puts "Error al crear la respuesta '#{mca[:answer]}'."
+#  end
+#end

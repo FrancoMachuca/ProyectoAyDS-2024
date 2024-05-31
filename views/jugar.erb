@@ -21,7 +21,7 @@
         <div class="levels-container">
             <% @levels.each_with_index do |level, index| %>
                 <% if index == 0 || @user.levels.include?(@levels[index - 1]) %>
-                    <div class="level <%= 'completed' if @user.levels.include?(level) %>" onclick="location.href='/nivel/<%= level.id %>'" data-level="Nivel <%= level.id %>">
+                    <div class="level <%= 'completed' if @user.levels.include?(level) %>" onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
                         Nivel <%= level.id %>
                     </div>
                 <% else %>

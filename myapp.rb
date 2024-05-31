@@ -8,6 +8,7 @@ require './models/question'
 require './models/user_level'
 require './models/multiple_choice'
 require './models/multiple_choice_answer'
+require './models/answer'
 
 class MyApp < Sinatra::Application
     def initialize(myapp = nil)
@@ -107,8 +108,9 @@ class MyApp < Sinatra::Application
     get '/level/:id' do
         if session[:user_id]
             @level = Level.find(params[:id])
-            @questions = @level.questions
-            erb :level
+            @questions = Question.limit(2)
+            @answers = Answer.where(question_id: params[:id])
+            erb :multiple_choice
         else
             redirect '/login'
         end

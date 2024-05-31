@@ -1,10 +1,6 @@
 require 'active_record'
 class Question < ActiveRecord::Base
-    self.abstract_class = true
-
-    has_many :users_questions
-    has_many :users, through: :users_questions
-
+    belongs_to :multiple_choice, :foreign_key => "question_id", :class_name => "Multiple_choice"
     belongs_to :level
-    enum :TAnswer, [:Natural, :Morse]
+    has_one :answer
 end

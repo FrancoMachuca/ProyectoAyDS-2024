@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_30_215033) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_31_054012) do
+  create_table "answers", force: :cascade do |t|
+    t.integer "question_id"
+    t.string "answer"
+    t.boolean "correct"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
   create_table "exams", force: :cascade do |t|
     t.integer "minScore"
     t.integer "level_id"
@@ -43,7 +52,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_215033) do
   end
 
   create_table "multiple_choices", force: :cascade do |t|
-    t.integer "number_answer"
     t.integer "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -100,6 +108,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_215033) do
     t.index ["user_id"], name: "index_users_questions_on_user_id"
   end
 
+  add_foreign_key "answers", "questions"
   add_foreign_key "exams", "levels"
   add_foreign_key "lessons", "levels"
   add_foreign_key "multiple_choice_answers", "multiple_choices"
