@@ -3,6 +3,7 @@ class CreateQuestionsTable < ActiveRecord::Migration[7.1]
     create_table :questions do |u|
       u.string :description
       u.references :level, foreign_key: true
+      u.string :correctAnswer
 
       u.datetime :created_at
       u.datetime :updated_at

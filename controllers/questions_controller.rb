@@ -1,7 +1,7 @@
-class QuestionsController < ApplicationController
-  def show
-    @question = Question.find(params[:id])
-
+class QuestionsController
+    
+    def show(id)
+      @question = Question.find(params[:id])
     case @question
     when MultipleChoice
       render 'multiple_choice'
@@ -9,8 +9,8 @@ class QuestionsController < ApplicationController
       render 'translation'
     else
       render 'unknown_question_type'
+      end
     end
-  end
 
   def check_answer
     @question = Question.find(params[:id])

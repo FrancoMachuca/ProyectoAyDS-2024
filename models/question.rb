@@ -6,4 +6,5 @@ class Question < ActiveRecord::Base
     has_many :users, through: :users_questions
 
     belongs_to :level
+    enum :TAnswer, [:Natural, :Morse]
 end
