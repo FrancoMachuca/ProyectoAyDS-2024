@@ -107,14 +107,50 @@ class MyApp < Sinatra::Application
 
     get '/level/:id' do
         if session[:user_id]
-            @level = Level.find(params[:id])
-            @questions = Question.limit(2)
-            @answers = Answer.where(question_id: params[:id])
-            erb :multiple_choice
+          @level = Level.find(params[:id])
+          @questions = Question.where(level_id: params[:id]).limit(2)
+          @answers = Answer.where(question_id: params[:id])
+          erb :multiple_choice
         else
-            redirect '/login'
+          redirect '/login'
         end
-    end
+      end
+
+      post '/level/:id/check' do
+        if session[:user_id]
+          answer = Answer.find(params[:answer_id])
+          @question = Question.find(params[:question_id])
+          @level = Level.find(params[:id])
+          @questions = Question.where(level_id: @level.id)
+          @next_question = @questions.where("id > ?", @question.id).first
+
+          if answer.correct
+            user = User.find(session[:user_id])
+            user.totalScore += 1
+            user.save
+          end
+
+          if @next_question
+            @answers = Answer.where(question_id: @next_question.id)
+            erb :multiple_choice
+          else
+            "¡Has completado el nivel!"
+          end
+        else
+          redirect '/login'
+        end
+      end
+
+      get '/level/:id/question/:question_id' do
+        if session[:user_id]
+          @level = Level.find(params[:id])
+          @question = Question.find(params[:question_id])
+          @answers = Answer.where(question_id: @question.id)
+          erb :multiple_choice
+        else
+          redirect '/login'
+        end
+      end
 
     get '/question/:id' do
         if session[:user_id]
