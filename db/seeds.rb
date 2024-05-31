@@ -38,7 +38,8 @@ end
 # Creación de preguntas
 questions = [
 {description: '¿Cómo se representa la palabra "SOL" en código morse?', level_id: Level.find_by(name: 'Level 1').id},
-{description: '¿Cómo se representa la palabra "CASA" en código morse?', level_id: Level.find_by(name: 'Level 1').id}
+{description: '¿Cómo se representa la palabra "CASA" en código morse?', level_id: Level.find_by(name: 'Level 1').id},
+{description: '¿Cómo se representa la palabra "A" en código morse?', level_id: Level.find_by(name: 'Level 1').id}
 ]
 
 questionsAux = [{description: '¿Cómo se representa la palabra "FUEGO" en código morse?', level_id: Level.find_by(name: 'Level 1').id},

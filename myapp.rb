@@ -104,42 +104,52 @@ class MyApp < Sinatra::Application
             redirect '/login'
         end
     end
+    get '/level/:level_id' do
+        @questions = Question.where(level_id: params[:level_id])
+        redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
+    end
 
-    get '/level/:id' do
+    get '/level/:level_id/:question_id' do
         if session[:user_id]
-          @level = Level.find(params[:id])
-          @questions = Question.where(level_id: params[:id]).limit(2)
-          @answers = Answer.where(question_id: params[:id])
-          erb :multiple_choice
-            @level = Level.find(params[:id])
-            @questions = Question.where(level_id: params[:id])
-            @answers = Answer.where(question_id: params[:id])
-            @currentScore = 0
+          @level = Level.find(params[:level_id])
+          @questions = Question.where(level_id: params[:level_id])
+          @answers = Answer.where(question_id: params[:question_id])
             erb :multiple_choice
         else
           redirect '/login'
         end
       end
 
-      post '/level/:id/check' do
+      post '/level/:level_id/:question_id/check' do
+        #Conflicto con el boton que redirecciona a acá cuando esta en la ultima pregunta. (questions se vuelve a llenar y no sale nunca)
         if session[:user_id]
           answer = Answer.find(params[:answer_id])
           @question = Question.find(params[:question_id])
-          @level = Level.find(params[:id])
+          @level = Level.find(params[:level_id])
           @questions = Question.where(level_id: @level.id)
-          @next_question = @questions.where("id > ?", @question.id).first
+          puts @questions
+          #@next_question = @questions.where("id > ?", @question.id).first
+            
 
           if answer.correct
             user = User.find(session[:user_id])
             user.totalScore += 1
             user.save
-          end
-
-          if @next_question
-            @answers = Answer.where(question_id: @next_question.id)
-            erb :multiple_choice
+            if !@questions.empty?
+                @questions = @questions.drop(1)
+                @answers = Answer.where(question_id: @questions.first.id)
+                erb :multiple_choice
+            else
+                redirect "/jugar"
+            end
           else
-            "¡Has completado el nivel!"
+            if !@questions.empty?
+                @questions = @questions.drop(1)
+                @answers = Answer.where(question_id: @questions.first.id)
+                erb :multiple_choice
+            else
+                redirect "/jugar"
+            end
           end
         else
           redirect '/login'
@@ -186,8 +196,9 @@ class MyApp < Sinatra::Application
         else
             session[:error] = 'wrong_answer'
             redirect "/question/#{params[:id]}"
-          end
         end
-      end
+    end
+end
+end
     
 end
