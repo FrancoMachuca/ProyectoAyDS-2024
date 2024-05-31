@@ -4,9 +4,9 @@ require_relative '../models/lesson'
 require_relative '../models/exam'
 require_relative '../models/question'
 users = [
-  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita', totalScore: 0},
-  {name: 'Valentino Natali', mail: 'R@example.com', password: '123', totalScore: 0},
-  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456', totalScore: 0}
+  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita', totalScore: 300},
+  {name: 'Valentino Natali', mail: 'R@example.com', password: '123', totalScore: 100},
+  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456', totalScore: 250}
 ]
 
 levels = [

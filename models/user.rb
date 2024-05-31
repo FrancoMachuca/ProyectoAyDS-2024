@@ -6,11 +6,11 @@ class User < ActiveRecord::Base
     has_many :users_questions
     has_many :questions, through: :users_questions
 
-    def total_score
-        self.totalScore
- end
-    
-      def position
-        User.where('totalScore > ?', self.totalScore).count + 1
-      end
+    def levels_completed
+      self.levels.count
+    end
+
+    def position
+      User.where('totalScore > ?', self.totalScore).count + 1
+    end
 end

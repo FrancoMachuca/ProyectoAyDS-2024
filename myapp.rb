@@ -45,7 +45,7 @@ class MyApp < Sinatra::Application
         erb :registro
     end
 
-    
+
     post '/registro' do
         user = User.find_by(mail: params[:mail]) || User.find_by(name: params[:name])
         if user
@@ -90,17 +90,6 @@ class MyApp < Sinatra::Application
         @user = User.find(session[:user_id])
         @levels = Level.all.order(:id)
         erb :jugar
-    end
-
-    post '/completar_nivel' do
-        if session[:user_id]
-            user = User.find(session[:user_id])
-            level = Level.find(params[:level_id])
-            user.levels << level unless user.levels.include?(level)
-            redirect '/jugar'
-        else
-            redirect '/login'
-        end
     end
 
     get '/ranking' do
