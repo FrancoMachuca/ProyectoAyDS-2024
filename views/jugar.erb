@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Last-Modified" content="0">
+<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+<meta http-equiv="Pragma" content="no-cache">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seleccionar Nivel</title>
@@ -10,10 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="justify-between">
-    <div class="container mt-12">
+<body>
+    <div class="container">
         <h1 class="title">Selección de Niveles</h1>
         <div class="levels-container">
             <% @levels.each_with_index do |level, index| %>
@@ -29,20 +32,16 @@
             <% end %>
         </div>
     </div>
-    <section class="flex flex-col justify-center self-stretch bg-white shadow-sm">
-    <div class="flex justify-center items-center px-16 w-full max-md:px-5 max-md:max-w-full">
-      <div class="flex gap-5">
-        <button class="shrink-0 aspect-[1.56] w-[76px]" onclick="location.href='/jugar'">
-          <img class="shrink-0 aspect-[1.56] w-full" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/d089e329b0be2d37ac8f7ec91bfb97dcb996b7de5cc1f1a221726886da0f31f8?apiKey=6f181d88291c4e3c9df0b864cebefcce&" alt=""/>
-        </button>
-        <button class="shrink-0 aspect-[1.56] w-[76px]" onclick="location.href='/perfil'">
-          <img class="shrink-0 aspect-[1.56] w-full" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/16164984ecd76939b09e3f94f4338985d4db2833b5e4eff64a701238199a6a20?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt=""/>
-        </button>
-        <button class="shrink-0 aspect-[1.56] w-[76px]" onclick="location.href='/ranking'">
-          <img class="shrink-0 aspect-[1.56] w-full" loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c733c1268f61d0fcda1d9d8599a1601b4031af96710d54f44f0b8010f464dc62?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt=""/>
-        </button>
-      </div>
+    <div class="footer">
+        <div class="footer-button" onclick="location.href='/jugar'">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d089e329b0be2d37ac8f7ec91bfb97dcb996b7de5cc1f1a221726886da0f31f8?apiKey=6f181d88291c4e3c9df0b864cebefcce&" alt="Jugar">
+        </div>
+        <div class="footer-button" onclick="location.href='/perfil'">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b48a323340e874c19d212641fed8f49cd6c1a299fd6926b11032675cff114305?apiKey=6f181d88291c4e3c9df0b864cebefcce&" alt="Perfil">
+        </div>
+        <div class="footer-button" onclick="location.href='/ranking'">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d5bf6cf29a534f8357cc59907c1c4ba2da6e7e7f2d3a7f5a315273879bcc9026?apiKey=6f181d88291c4e3c9df0b864cebefcce&" alt="Ranking">
+        </div>
     </div>
-  </section>
 </body>
 </html>
