@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="relative">
 <section class="flex h-screen justify-center items-center px-16 whitespace-nowrap leading-[150%] max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
     <article class="flex flex-wrap gap-0 justify-center content-start p-5 rounded-xl shadow-sm bg-white bg-opacity-80"> 
       <div class="flex flex-col flex-1 justify-center pb-16 max-md:max-w-full">
@@ -33,33 +33,61 @@
         <img src="https://ruta-a-tu-imagen.com/imagen.jpg" alt="Tabla" class="w-full h-auto mt-5">
       </div>
     </article>
+  <article class="flex flex-wrap gap-0 justify-center content-start p-5 rounded-xl shadow-sm bg-white bg-opacity-80"> 
+    <div class="flex flex-col flex-1 justify-center pb-16 max-md:max-w-full">
+      <button onclick="toggleModal()">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/72823194a7d8c0df30eef42247c0bbe3e290abf4fb1c9e37ed6e1cb9eda1c452?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Ayuda" class="self-end w-16 aspect-[0.77]" />
+      </button>
+      <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @questions.first.description %></h1>
+      <div class="flex flex-wrap justify-center content-start items-center self-center px-16 mt-64 max-w-full text-base font-medium text-white w-[708px] max-md:px-5 max-md:mt-10">
+        <div class="flex flex-col max-w-full w-[484px]">
+          <div class="flex gap-5 justify-between max-md:flex-wrap">
+            <% @answers.each_with_index do |answer, index| %>
+              <button class="flex gap-2 justify-between p-5 bg-black rounded-xl shadow-sm" tabindex="0" onclick="handleOption(<%= answer.id %>, <%= @questions.first.id %>)">
+                <span><%= ('a'.ord + index).chr %>)</span>
+                <span class="text-ellipsis"><%= answer.answer %></span>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
 </section>
 
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <button onclick="toggleModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">&times;</button>
+    <img src="https://resizer.glanacion.com/resizer/v2/el-codigo-morse-sigue-funcionando-a-175-anos-de-WSJ5SBDDMJGOLEP5JQ3PGGTN6U.jpg?auth=516cc0c481a256f47301e2af3186fd353a7b13a2bbfb187f4af1a4b3569a40b0&width=420&height=630&quality=70&smart=true" alt="Tabla" class="w-full h-auto">
+  </div>
+</div>
+
 <script>
-function showTable() {
-    var imageContainer = document.getElementById('imageContainer');
-    if (imageContainer.classList.contains('hidden')) {
-        imageContainer.classList.remove('hidden');
-    } else {
-        imageContainer.classList.add('hidden');
-    }
+function toggleModal() {
+  var modal = document.getElementById('modal');
+  modal.classList.toggle('hidden');
 }
 
-function handleOption(correct) {
-  console.log(correct);
-  let currentScore = <%=@currentScore%>;
-  if (correct) { 
-    currentScore += 10;
-  } else { 
-    if currentScore < 10 {
-      currentScore = 0;
-    } else {
-      currentScore -= 10;
-    }
-  } 
-  <%=@currentScore%> = currentScore;
-  console.log(correct);
+function handleOption(answerId, questionId) {
+  var form = document.createElement('form');
+  form.method = 'post';
+  form.action = "/level/<%= @level.id %>/check";
+  
+  var inputAnswer = document.createElement('input');
+  inputAnswer.type = 'hidden';
+  inputAnswer.name = 'answer_id';
+  inputAnswer.value = answerId;
+  form.appendChild(inputAnswer);
+  
+  var inputQuestion = document.createElement('input');
+  inputQuestion.type = 'hidden';
+  inputQuestion.name = 'question_id';
+  inputQuestion.value = questionId;
+  form.appendChild(inputQuestion);
 
+  document.body.appendChild(form);
+  form.submit();
 }
 </script>
 </body>
