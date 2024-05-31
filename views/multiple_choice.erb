@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MorseMania</title>
+    <title>Question</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
           <div class="flex flex-col max-w-full w-[484px]">
             <div class="flex gap-5 justify-between max-md:flex-wrap">
               <% @answers.each_with_index do |answer, index| %>
-                <button class="flex gap-2 justify-between p-5 bg-black rounded-xl shadow-sm" tabindex="0" onclick="handleOption(<%= index %>)">
+                <button class="flex gap-2 justify-between p-5 bg-black rounded-xl shadow-sm" onclick="handleOption(true)">
                   <span><%= ('a'.ord + index).chr %>)</span>
                   <span class="text-ellipsis"><%= answer.answer %></span>
                 </button>
@@ -43,6 +43,23 @@ function showTable() {
     } else {
         imageContainer.classList.add('hidden');
     }
+}
+
+function handleOption(correct) {
+  console.log(correct);
+  let currentScore = <%=@currentScore%>;
+  if (correct) { 
+    currentScore += 10;
+  } else { 
+    if currentScore < 10 {
+      currentScore = 0;
+    } else {
+      currentScore -= 10;
+    }
+  } 
+  <%=@currentScore%> = currentScore;
+  console.log(correct);
+
 }
 </script>
 </body>
