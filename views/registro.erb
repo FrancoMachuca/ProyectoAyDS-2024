@@ -1,37 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MorseMania</title>
-    <link rel="stylesheet" type="text/css" href="/css/registro.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MorseMania</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script><!--TODO: remover plugin e insertar tailwind de otra manera-->
 </head>
 <body>
-    <div class="contenedor">
-    <% if @error_message %>
-    <p style="color: red;"><%= @error_message %></p>
-    <% end %>
-    <br>
-        <form action="/registro" method="post">
-            <h1 class="text-fw">Bienvenido nuevo usuario!</h1>
-            <br>
-            <label for="mail">Ingrese su email:</label>
-            <br>
-            <input type="email" id="mail" name="mail" placeholder="Mail" required>
-            <br>
-            <label for="name">Ingrese su nombre:</label>
-            <br>
-            <input type="text" id="name" name="name" placeholder="Nombre" required>
-            <br>
-            <label for="password">Ingrese su contraseña:</label>
-            <br>
-            <input type="password" id="password" name="password" placeholder="Contraseña" required>
-            <br>
-            <input type="submit" value="Registrate">
-        </form>
-    </div>
+<section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
+  <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5">
+      <h1 class="self-center mt-8 text-3xl font-extrabold">Crear una cuenta</h1>
+      <% if @error_message %>
+        <p class="text-red-500"><%= @error_message %></p>
+      <% end %>
+      <form class="flex flex-col" action="/registro" method="POST">
+        <label for="mail" class="block mt-3">Ingrese su email:</label>
+        <input
+            id="mail"
+            name="mail"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
+            placeholder="Email" aria-label="Email"
+        />
+          <label for="name" class="block mt-3">Ingrese su nombre:</label>
+          <input
+              id="name"
+              name="name"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
+              placeholder="Nombre" aria-label="Nombre"
+          />
+          <label for="password" class="block mt-3">Ingrese su contraseña:</label>
+          <input
+              id="password"
+              name="password"
+              type="password"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis text-zinc-500"
+              placeholder="Contraseña" aria-label="Contraseña"
+          />
+
+          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
+            Registrarse
+          </button>
+      </form>
+  </div>
+</section>
 </body>
 </html>

@@ -4,4 +4,8 @@ class UserLevel < ActiveRecord::Base
 
     belongs_to :user
     belongs_to :level
+
+    def increaseScore
+    end
+        
 end

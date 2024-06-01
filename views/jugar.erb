@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seleccionar Nivel</title>
     <!-- Vinculación del archivo CSS -->
     <link rel="stylesheet" type="text/css" href="/css/jugar.css">
     <!-- Resto de las etiquetas meta y de enlace -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -14,7 +18,7 @@
         <div class="levels-container">
             <% @levels.each_with_index do |level, index| %>
                 <% if index == 0 || @user.levels.include?(@levels[index - 1]) %>
-                    <div class="level <%= 'completed' if @user.levels.include?(level) %>" onclick="location.href='/nivel/<%= level.id %>'" data-level="Nivel <%= level.id %>">
+                    <div class="level <%= 'completed' if @user.levels.include?(level) %>" onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
                         Nivel <%= level.id %>
                     </div>
                 <% else %>
