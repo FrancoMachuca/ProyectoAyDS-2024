@@ -1,3 +1,4 @@
 require 'active_record'
-class Lesson < Level
+class Lesson < ActiveRecord::Base
+    include Playable
 end

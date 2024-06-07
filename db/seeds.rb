@@ -4,14 +4,22 @@ require_relative '../models/lesson'
 require_relative '../models/exam'
 require_relative '../models/question'
 require_relative '../models/multiple_choice'
-require_relative '../models/multiple_choice_answer'
 require_relative '../models/answer'
 
 users = [
-  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita', totalScore: 300},
-  {name: 'Valentino Natali', mail: 'R@example.com', password: '123', totalScore: 100},
-  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456', totalScore: 250}
+  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
+  {name: 'Valentino Natali', mail: 'R@example.com', password: '123'},
+  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456'}
 ]
+
+lessons = [
+  {help: 'Level 1'},
+  {name: 'Level 2'},
+  {name: 'Level 3'},
+  {name: 'Level 4'},
+  {name: 'Level 5'}
+]
+
 
 levels = [
   {name: 'Level 1'},
@@ -26,12 +34,13 @@ users.each do |u|
   user.save
 end
 
-levels.each do |l|
-  level = Level.create(l)
-  if level.save
-    puts "Nivel #{level.name} creado correctamente."
-  else
-    puts "Error al crear el nivel #{l[:name]}."
+lessons.each do |l|
+  levels.each do |r|
+    level = Level.create! playable: Lesson.new(l), name: r.name
+    if level.save
+      puts "Nivel #{level.name} creado correctamente."
+    else
+      puts "Error al crear el nivel #{l[:name]}."
   end
 end
 

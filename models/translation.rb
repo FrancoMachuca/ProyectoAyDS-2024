@@ -1,3 +1,4 @@
 require 'active_record'
-class Translation < Question
+class Translation < ActiveRecord::Base
+    include Questionable
 end

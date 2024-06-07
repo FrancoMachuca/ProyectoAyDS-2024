@@ -1,14 +1,13 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
-require_relative './models/user'
+require './models/user'
 require './models/level'
 require './models/lesson'
 require './models/exam'
 require './models/question'
-require './models/user_level'
 require './models/multiple_choice'
-require './models/multiple_choice_answer'
 require './models/answer'
+require './models/ranking'
 
 class MyApp < Sinatra::Application
     def initialize(myapp = nil)

@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_31_054012) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_07_125814) do
   create_table "answers", force: :cascade do |t|
-    t.integer "question_id"
     t.string "answer"
     t.boolean "correct"
+    t.integer "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["question_id"], name: "index_answers_on_question_id"
@@ -22,103 +22,72 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_31_054012) do
 
   create_table "exams", force: :cascade do |t|
     t.integer "minScore"
-    t.integer "level_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["level_id"], name: "index_exams_on_level_id"
   end
 
   create_table "lessons", force: :cascade do |t|
     t.string "help"
-    t.integer "level_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["level_id"], name: "index_lessons_on_level_id"
   end
 
   create_table "levels", force: :cascade do |t|
     t.string "name"
+    t.integer "playable_id"
+    t.string "playable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "multiple_choice_answers", force: :cascade do |t|
-    t.string "answer"
-    t.boolean "correct", default: false
-    t.integer "multiple_choice_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["multiple_choice_id"], name: "index_multiple_choice_answers_on_multiple_choice_id"
   end
 
   create_table "multiple_choices", force: :cascade do |t|
-    t.integer "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["question_id"], name: "index_multiple_choices_on_question_id"
   end
 
   create_table "questions", force: :cascade do |t|
     t.string "description"
     t.integer "level_id"
+    t.integer "questionable_id"
+    t.string "questionable_type"
+    t.integer "playable_id"
+    t.string "playable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["level_id"], name: "index_questions_on_level_id"
   end
 
-  create_table "to_completes", force: :cascade do |t|
-    t.string "letters"
-    t.integer "question_id"
+  create_table "rankings", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "level_id"
+    t.integer "userLevelScore"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["question_id"], name: "index_to_completes_on_question_id"
+    t.index ["level_id"], name: "index_rankings_on_level_id"
+    t.index ["user_id"], name: "index_rankings_on_user_id"
+  end
+
+  create_table "to_completes", force: :cascade do |t|
+    t.string "letters"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "translations", force: :cascade do |t|
-    t.integer "question_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["question_id"], name: "index_translations_on_question_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "mail"
     t.string "password"
-    t.integer "totalScore"
-    t.integer "maxLevelReached", default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "users_levels", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "level_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["level_id"], name: "index_users_levels_on_level_id"
-    t.index ["user_id"], name: "index_users_levels_on_user_id"
-  end
-
-  create_table "users_questions", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "question_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["question_id"], name: "index_users_questions_on_question_id"
-    t.index ["user_id"], name: "index_users_questions_on_user_id"
   end
 
   add_foreign_key "answers", "questions"
-  add_foreign_key "exams", "levels"
-  add_foreign_key "lessons", "levels"
-  add_foreign_key "multiple_choice_answers", "multiple_choices"
-  add_foreign_key "multiple_choices", "questions"
   add_foreign_key "questions", "levels"
-  add_foreign_key "to_completes", "questions"
-  add_foreign_key "translations", "questions"
-  add_foreign_key "users_levels", "levels"
-  add_foreign_key "users_levels", "users"
-  add_foreign_key "users_questions", "questions"
-  add_foreign_key "users_questions", "users"
+  add_foreign_key "rankings", "levels"
+  add_foreign_key "rankings", "users"
 end
