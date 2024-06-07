@@ -21,11 +21,6 @@ class MyApp < Sinatra::Application
         redirect '/login'
     end
 
-    get '/usuarios' do
-        @users = User.all
-        erb :prueba
-    end
-
     get '/login' do
         erb :login
     end
@@ -76,15 +71,6 @@ class MyApp < Sinatra::Application
         end
     end
 
-    get '/menu' do
-        if session[:user_id]
-            @user = User.find(session[:user_id])
-            erb :menu
-        else
-            redirect '/login'
-        end
-    end
-
     get '/jugar' do
         if session[:user_id]
             @user = User.find(session[:user_id])
@@ -97,7 +83,7 @@ class MyApp < Sinatra::Application
 
     get '/ranking' do
         if session[:user_id]
-            @users = User.order(totalScore: :desc)
+            @ranking = Ranking.
             erb :ranking
         else
             redirect '/login'
