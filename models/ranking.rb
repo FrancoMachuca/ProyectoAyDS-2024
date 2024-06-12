@@ -1,7 +1,7 @@
 require 'active_record'
 require '.\models\user.rb'
 class Ranking < ActiveRecord::Base
-    include Singleton
+
     belongs_to :user
     belongs_to :level
 
