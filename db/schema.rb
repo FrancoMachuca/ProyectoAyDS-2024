@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_07_125814) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_14_144013) do
   create_table "answers", force: :cascade do |t|
     t.string "answer"
     t.boolean "correct"
@@ -57,16 +57,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_07_125814) do
     t.index ["level_id"], name: "index_questions_on_level_id"
   end
 
-  create_table "rankings", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "level_id"
-    t.integer "userLevelScore"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["level_id"], name: "index_rankings_on_level_id"
-    t.index ["user_id"], name: "index_rankings_on_user_id"
-  end
-
   create_table "to_completes", force: :cascade do |t|
     t.string "letters"
     t.datetime "created_at"
@@ -76,6 +66,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_07_125814) do
   create_table "translations", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "user_levels", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "level_id"
+    t.integer "userLevelScore"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["level_id"], name: "index_user_levels_on_level_id"
+    t.index ["user_id"], name: "index_user_levels_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -88,6 +88,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_07_125814) do
 
   add_foreign_key "answers", "questions"
   add_foreign_key "questions", "levels"
-  add_foreign_key "rankings", "levels"
-  add_foreign_key "rankings", "users"
+  add_foreign_key "user_levels", "levels"
+  add_foreign_key "user_levels", "users"
 end

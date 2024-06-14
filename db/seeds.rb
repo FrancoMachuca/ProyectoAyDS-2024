@@ -6,6 +6,7 @@ require_relative '../models/question'
 require_relative '../models/multiple_choice'
 require_relative '../models/translation'
 require_relative '../models/answer'
+require_relative '../models/user_level'
 
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
@@ -34,6 +35,13 @@ lessons.each do |l|
   else
     puts "Error al crear '#{level.name}'"
   end
+end
+
+users = User.all
+level = Level.first
+
+users.each do |u|
+  UserLevel.create(user: u, level: level, userLevelScore: 0)
 end
 
 # Creación de preguntas
