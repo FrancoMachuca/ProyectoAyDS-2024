@@ -2,7 +2,7 @@ require 'active_record'
 class Level < ActiveRecord::Base
     delegated_type :playable, types: %w[ Lesson Exam ]
     has_many :questions
-    has_one :ranking
+    has_many :users, through: :userGameData
 end
 
 module Playable

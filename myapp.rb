@@ -8,8 +8,7 @@ require './models/question'
 require './models/multiple_choice'
 require './models/translation'
 require './models/answer'
-require './models/ranking'
-require './models/user_level'
+require './models/userGameData'
 
 class MyApp < Sinatra::Application
     def initialize(myapp = nil)
