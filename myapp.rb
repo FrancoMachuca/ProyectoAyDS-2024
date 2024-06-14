@@ -6,8 +6,10 @@ require './models/lesson'
 require './models/exam'
 require './models/question'
 require './models/multiple_choice'
+require './models/translation'
 require './models/answer'
 require './models/ranking'
+require './models/user_level'
 
 class MyApp < Sinatra::Application
     def initialize(myapp = nil)
@@ -97,93 +99,54 @@ class MyApp < Sinatra::Application
     get '/level/:level_id/:question_id' do
         if session[:user_id]
           @level = Level.find(params[:level_id])
-          @questions = Question.where(level_id: params[:level_id])
-          @answers = Answer.where(question_id: params[:question_id])
+          @question = Question.find(params[:question_id])
+          case @question.questionable_type
+          when 'Multiple_choice'
+            @answers = Answer.where(question_id: @question.id)
             erb :multiple_choice
+          when 'Translation'
+            erb :translation
+          else
+            puts "No se reconoce tipo"
+          end
         else
           redirect '/login'
         end
-      end
+    end
 
       post '/level/:level_id/:question_id/check' do
         #Conflicto con el boton que redirecciona a acá cuando esta en la ultima pregunta. (questions se vuelve a llenar y no sale nunca)
         if session[:user_id]
-          answer = Answer.find(params[:answer_id])
           @question = Question.find(params[:question_id])
           @level = Level.find(params[:level_id])
           @questions = Question.where(level_id: @level.id)
-          puts @questions
-          #@next_question = @questions.where("id > ?", @question.id).first
-            
-
-          if answer.correct
-            user = User.find(session[:user_id])
-            user.totalScore += 1
-            user.save
-            if !@questions.empty?
-                @questions = @questions.drop(1)
-                @answers = Answer.where(question_id: @questions.first.id)
-                erb :multiple_choice
+          @next_question = @questions.where("id > ?", @question.id).first
+          if @next_question != nil
+            case @question.questionable_type
+            when 'Multiple_choice'
+                answer = Answer.find(params[:answer_id])
+                if answer.correct
+                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
+                  else
+                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
+                end
+            when 'Translation'
+                @user_translation = params[:user_translation].strip.downcase
+                @correct_translation = @question.answer.answer.strip.downcase
+                if @user_translation == @correct_translation
+                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
+                else
+                # Redirigir a la siguiente pregunta o la página de fallo sin actualizar el puntaje
+                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
+                end
             else
-                redirect "/jugar"
+                puts "No se reconoce tipo"
             end
           else
-            if !@questions.empty?
-                @questions = @questions.drop(1)
-                @answers = Answer.where(question_id: @questions.first.id)
-                erb :multiple_choice
-            else
-                redirect "/jugar"
-            end
+            redirect "/jugar"
           end
         else
           redirect '/login'
         end
       end
-
-      get '/level/:id/question/:question_id' do
-        if session[:user_id]
-          @level = Level.find(params[:id])
-          @question = Question.find(params[:question_id])
-          @answers = Answer.where(question_id: @question.id)
-          erb :multiple_choice
-        else
-          redirect '/login'
-        end
-      end
-
-    get '/question/:id' do
-        if session[:user_id]
-            @question = Question.find(params[:id])
-            case @question
-            when MultipleChoice
-                @answers = @question.multiple_choice_answers
-                erb :multiple_choice
-            else
-                erb :unknown_question_type
-            end
-
-    post '/question/:id/submit_answer' do
-        @user = User.find_by(username: session[:username]) 
-      
-        answer_id = params[:answer].id
-        answer = Answer.find(answer_id)
-        question_id = answer.question.id
-        @question = Question.find(question_id)
-        session[:success] = nil
-        session[:error] = nil
-        
-        if answer.correct
-          # Respuesta correcta
-          session[:answered_questions] << question_id
-          session[:success] = 'correct_answer'
-          redirect "/level/#{params[:id]}/"
-        else
-            session[:error] = 'wrong_answer'
-            redirect "/question/#{params[:id]}"
-        end
-    end
-end
-end
-    
 end

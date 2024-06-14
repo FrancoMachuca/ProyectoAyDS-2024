@@ -19,18 +19,13 @@
       <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
       <div class="flex flex-wrap justify-center content-start items-center self-center px-16 mt-64 max-w-full text-base font-medium text-white w-[708px] max-md:px-5 max-md:mt-10">
         <div class="flex flex-col max-w-full w-[484px]">
-          <div class="flex gap-5 justify-between max-md:flex-wrap">
-            <% @answers.each_with_index do |answer, index| %>
-              <form action="/level/<%= @level.id %>/<%= @question.id%>/check" method="post" class="w-full">
-                <input type="hidden" name="answer_id" value="<%= answer.id %>">
-                <input type="hidden" name="question_id" value="<%= @question.id %>">
-                <button type="submit" class="flex gap-2 justify-between p-5 bg-black rounded-xl shadow-sm w-full" tabindex="0">
-                  <span><%= ('a'.ord + index).chr %>)</span>
-                  <span class="text-ellipsis"><%= answer.answer %></span>
-                </button>
-              </form>
-            <% end %>
-          </div>
+          <form action="/level/<%= @level.id %>/<%= @question.id %>/check_translation" method="post" class="w-full">
+            <input type="hidden" name="question_id" value="<%= @question.id %>">
+            <div class="flex flex-col gap-5">
+              <textarea name="user_translation" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white" placeholder="Escribe tu traducción aquí..."></textarea>
+              <button type="submit" class="p-5 bg-purple-700 rounded-xl shadow-sm text-white">Submit</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
