@@ -19,7 +19,7 @@
       <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
       <div class="flex flex-wrap justify-center content-start items-center self-center px-16 mt-64 max-w-full text-base font-medium text-white w-[708px] max-md:px-5 max-md:mt-10">
         <div class="flex flex-col max-w-full w-[484px]">
-          <form action="/level/<%= @level.id %>/<%= @question.id %>/check_translation" method="post" class="w-full">
+          <form action="/level/<%= @level.id %>/<%= @question.id %>/check" method="post" class="w-full">
             <input type="hidden" name="question_id" value="<%= @question.id %>">
             <div class="flex flex-col gap-5">
               <textarea name="user_translation" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white" placeholder="Escribe tu traducción aquí..."></textarea>

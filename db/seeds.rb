@@ -14,12 +14,12 @@ users = [
   {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456'}
 ]
 
-lessons = [
-  {help: 'Ayuda para Level 1', name: 'Level 1'},
-  {help: 'Ayuda para Level 2', name: 'Level 2'},
-  {help: 'Ayuda para Level 3', name: 'Level 3'},
-  {help: 'Ayuda para Level 4', name: 'Level 4'},
-  {help: 'Ayuda para Level 5', name: 'Level 5'}
+levels = [
+  {name: 'Level 1', playable: Lesson.create!()},
+  {name: 'Level 2', playable: Lesson.create!()},
+  {name: 'Level 3', playable: Lesson.create!()},
+  {name: 'Level 4', playable: Lesson.create!()},
+  {name: 'Level 5', playable: Lesson.create!()}
 ]
 
 users.each do |u|
@@ -27,10 +27,9 @@ users.each do |u|
   user.save
 end
 
-lessons.each do |l|
-  lesson = Lesson.create!(help: l[:help])
-  level = Level.create!(name: l[:name], playable: lesson)
-  if level.save and lesson.save
+levels.each do |l|
+  level = Level.create!(l)
+  if level.save
     puts "El '#{level.name}' ha sido creado correctamente."
   else
     puts "Error al crear '#{level.name}'"
@@ -45,51 +44,65 @@ users.each do |u|
 end
 
 # Creación de preguntas
-questions = [
-{description: 'Traduce "... --- .-.." al Español', level_id: Level.find_by(name: 'Level 1').id,
-questionable: Translation.create!(), playable_id: Level.find_by(name: 'Level 1').playable_id, playable_type: Level.find_by(name: 'Level 1').playable_type},
-{description: '¿Cómo se representa la palabra "SOL" en código morse?', level_id: Level.find_by(name: 'Level 1').id,
-questionable: Multiple_choice.create!(), playable_id: Level.find_by(name: 'Level 1').playable_id, playable_type: Level.find_by(name: 'Level 1').playable_type},
-{description: '¿Cómo se representa la palabra "CASA" en código morse?', level_id: Level.find_by(name: 'Level 1').id,
-questionable: Multiple_choice.create!(), playable_id: Level.find_by(name: 'Level 1').playable_id, playable_type: Level.find_by(name: 'Level 1').playable_type}
+questions_data = [
+  {
+    description: 'Traduce "... --- .-.." al Español',
+    level_name: 'Level 1',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'Sol', correct: true}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "SOL" en código morse?',
+    level_name: 'Level 1',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: '... --- .-.', correct: false},
+      {answer: '... --- ..', correct: false},
+      {answer: '... --- .-..', correct: true},
+      {answer: '... --- .--', correct: false}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "CASA" en código morse?',
+    level_name: 'Level 1',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: ' -.-. .- ... ..-', correct: false},
+      {answer: ' -.-. .- ... .-', correct: true},
+      {answer: '-.-. .- ... .', correct: false},
+      {answer: ' -.-. .- ..- .-', correct: false}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "SOS" en código morse?',
+    level_name: 'Level 1',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: '.-.-.- ... .-.-.-', correct: false},
+      {answer: '... --- ...', correct: true},
+      {answer: '... --- ..', correct: false},
+      {answer: '... --- .-', correct: false}
+    ]
+  }
 ]
 
-#questionsAux = [{description: '¿Cómo se representa la palabra "FUEGO" en código morse?', level_id: Level.find_by(name: 'Level 1').id},
-#{description: '¿Cómo se representa la palabra "ÁRBOL" en código morse?', level_id: Level.find_by(name: 'Level 1').id},
-#{description: '¿Cómo se representa la palabra "PERRO" en código morse?', level_id: Level.find_by(name: 'Level 2').id},
-#{description: '¿Cómo se representa la palabra "SOS" en código morse?', level_id: Level.find_by(name: 'Level 2').id},
-#{description: '¿Cómo se representa la palabra "GATO" en código morse?', level_id: Level.find_by(name: 'Level 2').id},
-#{description: '¿Cómo se representa la palabra "HOLA" en código morse?', level_id: Level.find_by(name: 'Level 2').id}]
-
-
-questions.each do |q|
-  question = Question.create(q)
+questions_data.each do |q_data|
+  level = Level.find_by(name: q_data[:level_name])
+  question = Question.create(description: q_data[:description], level: level, questionable: q_data[:questionable])
 
   if question.save
+    q_data[:answers].each do |a_data|
+      answer = Answer.create(answer: a_data[:answer], correct: a_data[:correct], question: question)
+      if answer.save
+        puts "Respuesta '#{answer.answer}' creada correctamente para la pregunta '#{question.description}'."
+      else
+        puts "Error al crear la respuesta '#{a_data[:answer]}' para la pregunta '#{question.description}'."
+      end
+    end
     puts "Pregunta '#{question.description}' creada correctamente."
   else
-    puts "Error al crear la pregunta '#{q[:description]}'."
-  end
-end
-
-answers = [
-  {answer: '... --- .-..', correct: true, question_id: Question.second.id},
-  {answer: ' ... --- .-.', correct: false, question_id: Question.second.id},
-  {answer: '... --- ..', correct: false, question_id: Question.second.id},
-  {answer: '... --- ..', correct: false, question_id: Question.second.id},
-  {answer: ' -.-. .- ... ..-', correct: false, question_id: Question.third.id},
-  {answer: ' -.-. .- ... .-', correct: true, question_id: Question.third.id},
-  {answer: '-.-. .- ... .', correct: false, question_id: Question.third.id},
-  {answer: ' -.-. .- ..- .-', correct: false, question_id: Question.third.id},
-  {answer: 'Sol', correct: false, question_id: Question.first.id}
-]
-
-answers.each do |a|
-  answer = Answer.create!(a)
-
-  if answer.save
-    puts "Respuesta '#{answer.answer}' creada correctamente"
-  else
-    puts "Error al crear la respuesta '#{answer.answer}'"
+    puts "Error al crear la pregunta '#{q_data[:description]}'."
   end
 end

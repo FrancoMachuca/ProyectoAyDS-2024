@@ -9,6 +9,6 @@ end
 module Playable
     extend ActiveSupport::Concern
     included do
-        has_one :question, as: :playable, touch: true
+        has_one :level, as: :playable, touch: true
     end
 end
