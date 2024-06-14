@@ -120,11 +120,13 @@ class MyApp < Sinatra::Application
           @level = Level.find(params[:level_id])
           @questions = Question.where(level_id: @level.id)
           @next_question = @questions.where("id > ?", @question.id).first
+          @user_level = UserLevel.find(session[:user_id])
           if @next_question != nil
             case @question.questionable_type
             when 'Multiple_choice'
                 answer = Answer.find(params[:answer_id])
                 if answer.correct
+                    @user_level.update(userLevelScore: 100)
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                   else
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
@@ -133,6 +135,7 @@ class MyApp < Sinatra::Application
                 @user_translation = params[:user_translation].strip.downcase
                 @correct_translation = @question.answer.answer.strip.downcase
                 if @user_translation == @correct_translation
+                    @user_level.update(userLevelScore: 100)
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else
                 # Redirigir a la siguiente pregunta o la página de fallo sin actualizar el puntaje
@@ -142,7 +145,16 @@ class MyApp < Sinatra::Application
                 puts "No se reconoce tipo"
             end
           else
-            redirect "/jugar"
+            @user = @user_level.user
+            cantLevelComplete = @user_level.getLevelsCompleted(user: @user)
+            if cantLevelComplete == @level.id
+                @levels = Level.all
+                @next_level = @levels.where("id > ?", @level.id).first
+                UserLevel.create(user: @user, level: @next_level, userLevelScore: 0)
+                redirect "/jugar"
+            else
+                redirect "/jugar"
+            end
           end
         else
           redirect '/login'
