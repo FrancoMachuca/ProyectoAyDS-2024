@@ -4,6 +4,7 @@ require_relative '../models/lesson'
 require_relative '../models/exam'
 require_relative '../models/question'
 require_relative '../models/multiple_choice'
+require_relative '../models/translation'
 require_relative '../models/answer'
 
 users = [
@@ -37,11 +38,11 @@ end
 
 # Creación de preguntas
 questions = [
+{description: 'Traduce "... --- .-.." al Español', level_id: Level.find_by(name: 'Level 1').id,
+questionable: Translation.create!(), playable_id: Level.find_by(name: 'Level 1').playable_id, playable_type: Level.find_by(name: 'Level 1').playable_type},
 {description: '¿Cómo se representa la palabra "SOL" en código morse?', level_id: Level.find_by(name: 'Level 1').id,
 questionable: Multiple_choice.create!(), playable_id: Level.find_by(name: 'Level 1').playable_id, playable_type: Level.find_by(name: 'Level 1').playable_type},
 {description: '¿Cómo se representa la palabra "CASA" en código morse?', level_id: Level.find_by(name: 'Level 1').id,
-questionable: Multiple_choice.create!(), playable_id: Level.find_by(name: 'Level 1').playable_id, playable_type: Level.find_by(name: 'Level 1').playable_type},
-{description: '¿Cómo se representa la palabra "A" en código morse?', level_id: Level.find_by(name: 'Level 1').id,
 questionable: Multiple_choice.create!(), playable_id: Level.find_by(name: 'Level 1').playable_id, playable_type: Level.find_by(name: 'Level 1').playable_type}
 ]
 
@@ -64,18 +65,20 @@ questions.each do |q|
 end
 
 answers = [
-  {answer: '... --- .-..', correct: true, question_id: Question.first.id},
-  {answer: ' ... --- .-.', correct: false, question_id: Question.first.id},
-  {answer: '... --- ..', correct: false, question_id: Question.first.id},
-  {answer: '... --- ..', correct: false, question_id: Question.first.id},
-  {answer: ' -.-. .- ... ..-', correct: false, question_id: Question.second.id},
-  {answer: ' -.-. .- ... .-', correct: true, question_id: Question.second.id},
-  {answer: '-.-. .- ... .', correct: false, question_id: Question.second.id},
-  {answer: ' -.-. .- ..- .-', correct: false, question_id: Question.second.id}
+  {answer: '... --- .-..', correct: true, question_id: Question.second.id},
+  {answer: ' ... --- .-.', correct: false, question_id: Question.second.id},
+  {answer: '... --- ..', correct: false, question_id: Question.second.id},
+  {answer: '... --- ..', correct: false, question_id: Question.second.id},
+  {answer: ' -.-. .- ... ..-', correct: false, question_id: Question.third.id},
+  {answer: ' -.-. .- ... .-', correct: true, question_id: Question.third.id},
+  {answer: '-.-. .- ... .', correct: false, question_id: Question.third.id},
+  {answer: ' -.-. .- ..- .-', correct: false, question_id: Question.third.id},
+  {answer: 'Sol', correct: false, question_id: Question.first.id}
 ]
 
 answers.each do |a|
   answer = Answer.create!(a)
+
   if answer.save
     puts "Respuesta '#{answer.answer}' creada correctamente"
   else
