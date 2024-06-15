@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <div class="container">
@@ -15,7 +16,7 @@
         <div class="levels-container">
             <% @levels.each do |level| %>
                 <% user_level = UserLevel.find_by(user_id: @user.id, level_id: level.id) %>
-                <% if user_level && user_level.userLevelScore > 0 %>
+                <% if user_level && @gm.completedLevel?(level: level, user: @user) %>
                     <div class="level completed" onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
                         Nivel <%= level.id %>
                     </div>
@@ -31,6 +32,28 @@
             <% end %>
         </div>
     </div>
+
+    <% if @show_success_popup %>
+    <div class="popup-overlay">
+        <div class="popup-content">
+            <section class="flex flex-col justify-center items-center px-16 py-20 bg-white rounded-xl shadow-sm max-w-[521px] max-md:px-5">
+                <header class="mt-2 text-3xl font-semibold tracking-tight leading-10 text-center text-black">
+                  ¡Nivel Completado!
+                </header>
+                <p class="mt-1 text-base leading-6 text-center text-black">Puntuación</p>
+                <p class="mt-1 text-2xl font-extrabold leading-9 text-center text-black"><%= @final_score %></p>
+                <button class="justify-center items-center self-stretch px-4 py-2 mt-6 text-base font-medium leading-6 text-white bg-violet-900 rounded-lg max-md:px-5" onclick="location.href='/jugar'" tabindex="0">
+                  Ir a Selección de Nivel
+                </button>
+                <div class="flex gap-2 justify-center self-stretch mt-6">
+                  <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
+                  <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
+                </div>
+            </section>
+        </div>
+    </div>
+    <% end %>
+
     <div class="footer">
         <div class="footer-button" onclick="location.href='/jugar'">
             <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d089e329b0be2d37ac8f7ec91bfb97dcb996b7de5cc1f1a221726886da0f31f8?apiKey=6f181d88291c4e3c9df0b864cebefcce&" alt="Jugar">

@@ -8,6 +8,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fixed-button {
+      position: absolute;
+      top: 10px;
+    }
+    .help-button {
+      right: 10px;
+    }
+    .quit-button {
+      left: 10px;
+    }
+  </style>
 </head>
 <body class="relative">
 <section class="flex h-screen justify-center items-center px-16 whitespace-nowrap leading-[150%] max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
@@ -32,19 +44,63 @@
   </article>
 </section>
 
-<!-- Modal -->
-<div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<!-- Help Modal -->
+<div id="help-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
   <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
-    <button onclick="toggleModal()" class="relative ">&times;</button>
+    <button onclick="toggleHelpModal()" class="relative ">&times;</button>
     <img src="https://www.electronics-notes.com/images/morse-code-table-alphabet-letters.svg" alt="Tabla" class="w-full h-auto">
   </div>
 </div>
 
+<!-- Quit Modal -->
+<div id="quit-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <button onclick="toggleQuitModal()" class="relative">&times;</button>
+    <%= erb :quit_warning %>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div id="success-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <button onclick="toggleSuccessModal()" class="relative ">&times;</button>
+    <%= erb :success %>
+  </div>
+</div>
+
 <script>
-function toggleModal() {
-  var modal = document.getElementById('modal');
+function toggleHelpModal() {
+  var modal = document.getElementById('help-modal');
   modal.classList.toggle('hidden');
 }
+
+function toggleQuitModal() {
+  var modal = document.getElementById('quit-modal');
+  modal.classList.toggle('hidden');
+}
+
+function toggleSuccessModal() {
+  var modal = document.getElementById('success-modal');
+  modal.classList.toggle('hidden');
+}
+
+function redirectToMenu() {
+  window.location.href = '/jugar';
+}
+
+function continuarHandler() {
+  toggleQuitModal();
+}
+
+function salirHandler() {
+  redirectToMenu();
+}
+
+<% if @show_success_popup %>
+document.addEventListener('DOMContentLoaded', function() {
+  toggleSuccessModal();
+});
+<% end %>
 </script>
 </body>
 </html>

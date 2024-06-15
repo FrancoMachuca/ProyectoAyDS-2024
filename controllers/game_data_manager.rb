@@ -1,9 +1,9 @@
 require '.\models\user'
 require '.\models\level'
 require '.\models\user_level'
-# Esta clase se encarga de realizar todas las operaciones relacionadas con la modificación 
+# Esta clase se encarga de realizar todas las operaciones relacionadas con la modificación
 # y consulta del progreso de los usuarios, tanto en niveles particulares como en general.
-class GameDataManager 
+class GameDataManager
     def getTotalScoreOf(user: User)
         UserLevel.where(user: user).sum('userLevelScore')
     end
@@ -28,13 +28,13 @@ class GameDataManager
 
     def completedLevel?(level: Level, user: User)
         row = UserLevel.find_by(user: user, level: level)
-        if row 
+        if row
             if row.level.playable_type == "Exam"
                 return row.userLevelScore >= row.level.exam.minScore
-            else 
+            else
                 return row.userLevelScore > 0
             end
-        else 
+        else
             return false
         end
     end
@@ -50,15 +50,24 @@ class GameDataManager
 
     def addUserLevelScore(user: User, level: Level, value: int)
         row = UserLevel.find_by(user: user, level: level)
-        if row 
+        if row
             row.userLevelScore += value
+            row.update(userLevelScore: row.userLevelScore)
         end
     end
 
     def resetUserLevelScore(user: User, level: Level)
         row = UserLevel.find_by(user: user, level: level)
-        if row 
+        if row
             row.userLevelScore = 0
         end
     end
+
+    def getLevelScore(user: User, level: Level)
+        row = UserLevel.find_by(user: user, level: level)
+        if row
+            return row.userLevelScore
+        end
+    end
+
 end

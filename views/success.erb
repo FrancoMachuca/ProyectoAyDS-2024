@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<section class="flex flex-col justify-center items-center px-16 py-20 bg-white rounded-xl shadow-sm max-w-[521px] mx-auto">
+  <header class="mt-2 text-3xl font-semibold tracking-tight leading-10 text-center text-black">
+    ¡Nivel Completado!
+  </header>
+  <p class="mt-1 text-base leading-6 text-center text-black">Puntuación</p>
+  <p class="mt-1 text-2xl font-extrabold leading-9 text-center text-black"><%= @final_score %></p>
+  <button onclick="redirectToMenu()" class="justify-center items-center self-stretch px-4 py-2 mt-6 text-base font-medium leading-6 text-white bg-violet-900 rounded-lg max-md:px-5" tabindex="0">
+    Ir a Selección de Nivel
+  </button>
+  <div class="flex gap-2 justify-center self-stretch mt-6">
+    <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
+    <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
+  </div>
+</section>

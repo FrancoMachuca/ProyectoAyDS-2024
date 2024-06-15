@@ -13,9 +13,9 @@ require './controllers/game_data_manager'
 require './controllers/questions_manager'
 
 class MyApp < Sinatra::Application
-
     def initialize(myapp = nil)
         super()
+        @gm = GameDataManager.new
     end
 
     set :database_file, './config/database.yml'
@@ -79,6 +79,7 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @user = User.find(session[:user_id])
             @levels = Level.all.order(:id)
+            @gm = GameDataManager.new
             erb :jugar
         else
             redirect '/login'
@@ -93,6 +94,7 @@ class MyApp < Sinatra::Application
             redirect '/login'
         end
     end
+
     get '/level/:level_id' do
         if session[:user_id]
             @gm = GameDataManager.new
@@ -139,7 +141,23 @@ class MyApp < Sinatra::Application
                 # Popup nivel terminado.
             end
           else
-            redirect '/jugar'
+            if @gm.completedLevel?(user: @user, level: @level)
+                @gm.unlockNextLevelFor(user: @user)
+                @final_score = @gm.getLevelScore(user: @user, level: @level)
+                @show_success_popup = true
+                @answers = Answer.where(question_id: @question.id)
+                @gm = GameDataManager.new
+                case @question.questionable_type
+                when 'Multiple_choice'
+                    erb :multiple_choice
+                when 'Translation'
+                    erb :translation
+                else
+                    puts 'No se reconoce el tipo de pregunta'
+                end
+            else
+                redirect "/jugar"
+            end
           end
         else
           redirect '/login'
