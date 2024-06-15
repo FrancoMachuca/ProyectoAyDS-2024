@@ -1,4 +1,3 @@
-
 require '.\models\user.rb'
 require '.\models\level.rb'
 require '.\models\user_level.rb'
@@ -41,10 +40,12 @@ class GameDataManager
     def unlockNextLevelFor(user: User)
         lastLevelUnlocked = UserLevel.where(user_id: user.id).last
         if completedLevel?(user, lastLevelUnlocked)
-            nextLevel = Level.where(id: lastLevelUnlocked.id)
+            nextLevel = Level.where("id > " + lastLevelUnlocked.id.to_s).first
             if nextLevel
                 user.levels.push(nextLevel)
             end
         end
     end
+
+    
 end
