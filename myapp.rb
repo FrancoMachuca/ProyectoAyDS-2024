@@ -10,9 +10,10 @@ require './models/translation'
 require './models/answer'
 require './models/user_level'
 require './controllers/game_data_manager'
+require './controllers/questions_manager'
 
 class MyApp < Sinatra::Application
-    @gm = GameDataManager.new
+
     def initialize(myapp = nil)
         super()
     end
@@ -93,75 +94,52 @@ class MyApp < Sinatra::Application
         end
     end
     get '/level/:level_id' do
-        @user = User.find(session[:user_id])
-        @level = Level.find(params[:level_id])
-        if @gm.completedLevel?(user: @user, level: @level)
-            @gm.resetUserLevelScore(user: @user, level: @level)
+        if session[:user_id]
+            @gm = GameDataManager.new
+            @user = User.find(session[:user_id])
+            @level = Level.find(params[:level_id])
+            if @gm.completedLevel?(user: @user, level: @level)
+                @gm.resetUserLevelScore(user: @user, level: @level)
+            end
+            @questions = Question.where(level_id: params[:level_id])
+            redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
+        else
+            redirect '/login'
         end
-        @questions = Question.where(level_id: params[:level_id])
-        redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
     end
 
     get '/level/:level_id/:question_id' do
         if session[:user_id]
-          @level = Level.find(params[:level_id])
-          @question = Question.find(params[:question_id])
-          case @question.questionable_type
-          when 'Multiple_choice'
+            @qm = QuestionsManager.new
+            @level = Level.find(params[:level_id])
+            @question = Question.find(params[:question_id])
             @answers = Answer.where(question_id: @question.id)
-            erb :multiple_choice
-          when 'Translation'
-            erb :translation
-          else
-            puts "No se reconoce tipo"
-          end
+            if @level && @question && @answers 
+               erb @qm.show(question: @question)
+            else
+                redirect '/jugar'
+            end
         else
-          redirect '/login'
+            redirect '/login'
         end
     end
 
       post '/level/:level_id/:question_id/check' do
-        #Conflicto con el boton que redirecciona a acá cuando esta en la ultima pregunta. (questions se vuelve a llenar y no sale nunca)
         if session[:user_id]
           @question = Question.find(params[:question_id])
           @level = Level.find(params[:level_id])
-          @questions = Question.where(level_id: @level.id)
-          @next_question = @questions.where("id > ?", @question.id).first
-          @user_level = UserLevel.find(session[:user_id])
-          if @next_question != nil
-            case @question.questionable_type
-            when 'Multiple_choice'
-                answer = Answer.find(params[:answer_id])
-                if answer.correct
-                    @user_level.update(userLevelScore: 100)
-                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
-                  else
-                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
-                end
-            when 'Translation'
-                @user_translation = params[:user_translation].strip.downcase
-                @correct_translation = @question.answer.answer.strip.downcase
-                if @user_translation == @correct_translation
-                    @user_level.update(userLevelScore: 100)
-                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
-                else
-                # Redirigir a la siguiente pregunta o la página de fallo sin actualizar el puntaje
-                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
-                end
-            else
-                puts "No se reconoce tipo"
+          if @question && @level 
+            if @qm.correctAnswer?(answer: )
+                # Aumentar/guardar puntaje de nivel parcial en una variable auxiliar.
+            end
+            @next_question = @qm.nextQuestion(question: @question)
+            if @next_question
+                redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
+            else 
+                # Popup nivel terminado.
             end
           else
-            @user = @user_level.user
-            cantLevelComplete = @user_level.getLevelsCompleted(user: @user)
-            if cantLevelComplete == @level.id
-                @levels = Level.all
-                @next_level = @levels.where("id > ?", @level.id).first
-                UserLevel.create(user: @user, level: @next_level, userLevelScore: 0)
-                redirect "/jugar"
-            else
-                redirect "/jugar"
-            end
+            redirect '/jugar'
           end
         else
           redirect '/login'
