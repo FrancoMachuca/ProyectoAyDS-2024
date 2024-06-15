@@ -16,6 +16,7 @@ class MyApp < Sinatra::Application
     def initialize(myapp = nil)
         super()
         @gm = GameDataManager.new
+        @qm = QuestionsManager.new
     end
 
     set :database_file, './config/database.yml'
@@ -79,7 +80,6 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @user = User.find(session[:user_id])
             @levels = Level.all.order(:id)
-            @gm = GameDataManager.new
             erb :jugar
         else
             redirect '/login'
@@ -97,7 +97,7 @@ class MyApp < Sinatra::Application
 
     get '/level/:level_id' do
         if session[:user_id]
-            @gm = GameDataManager.new
+            session[:userLevelScore] = 0
             @user = User.find(session[:user_id])
             @level = Level.find(params[:level_id])
             if @gm.completedLevel?(user: @user, level: @level)
@@ -112,7 +112,6 @@ class MyApp < Sinatra::Application
 
     get '/level/:level_id/:question_id' do
         if session[:user_id]
-            @qm = QuestionsManager.new
             @level = Level.find(params[:level_id])
             @question = Question.find(params[:question_id])
             @answers = Answer.where(question_id: @question.id)
@@ -126,41 +125,30 @@ class MyApp < Sinatra::Application
         end
     end
 
-      post '/level/:level_id/:question_id/check' do
+    post '/level/:level_id/:question_id/check' do
         if session[:user_id]
-          @question = Question.find(params[:question_id])
-          @level = Level.find(params[:level_id])
-          if @question && @level 
-            if @qm.correctAnswer?(answer: )
-                # Aumentar/guardar puntaje de nivel parcial en una variable auxiliar.
-            end
-            @next_question = @qm.nextQuestion(question: @question)
-            if @next_question
-                redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
-            else 
-                # Popup nivel terminado.
-            end
-          else
-            if @gm.completedLevel?(user: @user, level: @level)
-                @gm.unlockNextLevelFor(user: @user)
-                @final_score = @gm.getLevelScore(user: @user, level: @level)
-                @show_success_popup = true
-                @answers = Answer.where(question_id: @question.id)
-                @gm = GameDataManager.new
-                case @question.questionable_type
-                when 'Multiple_choice'
-                    erb :multiple_choice
-                when 'Translation'
-                    erb :translation
-                else
-                    puts 'No se reconoce el tipo de pregunta'
+            @question = Question.find(params[:question_id])
+            @level = Level.find(params[:level_id])
+            if @question && @level 
+                if @qm.correctAnswer?(answer: @answer) # Construir @answer de alguna forma
+                    session[:userLevelScore] += 100
+                end
+                @next_question = @qm.nextQuestion(question: @question)
+                if @next_question
+                    redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
+                else 
+                    if @gm.completedLevel?(user: @user, level: @level)
+                        @gm.unlockNextLevelFor(user: @user)
+                        @gm.addUserLevelScore(user: @user, level: @level, value: session[:userLevelScore])
+                        session[:userLevelScore] = 0
+                    end
+                    # Se debería mostrar el popup
+                    @show_success_popup = true
+                    redirect "/jugar"
                 end
             else
                 redirect "/jugar"
             end
-          end
-        else
-          redirect '/login'
         end
-      end
+    end
 end
