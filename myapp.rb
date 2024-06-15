@@ -9,8 +9,10 @@ require './models/multiple_choice'
 require './models/translation'
 require './models/answer'
 require './models/user_level'
+require './controllers/game_data_manager'
 
 class MyApp < Sinatra::Application
+    @gm = GameDataManager.new
     def initialize(myapp = nil)
         super()
     end
@@ -91,17 +93,13 @@ class MyApp < Sinatra::Application
         end
     end
     get '/level/:level_id' do
-        @user_level = UserLevel.find(session[:user_id])
-        @user = @user_level.user
+        @user = User.find(session[:user_id])
         @level = Level.find(params[:level_id])
-        if @user_level.getLevelsCompleted(user: @user) < @level.id
-            @questions = Question.where(level_id: params[:level_id])
-            redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
-        else
-            @user_level.update(userLevelScore: 0)
-            @questions = Question.where(level_id: params[:level_id])
-            redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
+        if @gm.completedLevel?(user: @user, level: @level)
+            @gm.resetUserLevelScore(user: @user, level: @level)
         end
+        @questions = Question.where(level_id: params[:level_id])
+        redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
     end
 
     get '/level/:level_id/:question_id' do

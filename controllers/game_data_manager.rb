@@ -1,13 +1,15 @@
-require '.\models\user.rb'
-require '.\models\level.rb'
-require '.\models\user_level.rb'
+require '.\models\user'
+require '.\models\level'
+require '.\models\user_level'
+# Esta clase se encarga de realizar todas las operaciones relacionadas con la modificación 
+# y consulta del progreso de los usuarios, tanto en niveles particulares como en general.
 class GameDataManager 
     def getTotalScoreOf(user: User)
-        UserLevel.where(user_id: user.id).sum('userLevelScore')
+        UserLevel.where(user: user).sum('userLevelScore')
     end
 
     def getLevelsCompleted(user: User)
-        u = UserLevel.where(user_id: user.id)
+        u = UserLevel.where(user: user)
         sum = 0
         u.each do |row|
             if row.level.playable_type == "Exam"
@@ -25,7 +27,7 @@ class GameDataManager
     end
 
     def completedLevel?(level: Level, user: User)
-        row = UserLevel.where(user_id: user.id, level_id: level.id)
+        row = UserLevel.find_by(user: user, level: level)
         if row 
             if row.level.playable_type == "Exam"
                 return row.userLevelScore >= row.level.exam.minScore
@@ -38,7 +40,7 @@ class GameDataManager
     end
 
     def unlockNextLevelFor(user: User)
-        lastLevelUnlocked = UserLevel.where(user_id: user.id).last
+        lastLevelUnlocked = UserLevel.where(user: user).last
         if completedLevel?(user, lastLevelUnlocked)
             nextLevel = Level.where("id > " + lastLevelUnlocked.id.to_s).first
             if nextLevel
@@ -47,5 +49,17 @@ class GameDataManager
         end
     end
 
-    
+    def addUserLevelScore(user: User, level: Level, value: int)
+        row = UserLevel.find_by(user: user, level: level)
+        if row 
+            row.userLevelScore += value
+        end
+    end
+
+    def resetUserLevelScore(user: User, level: Level)
+        row = UserLevel.find_by(user: user, level: level)
+        if row 
+            row.userLevelScore = 0
+        end
+    end
 end
