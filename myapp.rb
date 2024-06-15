@@ -12,9 +12,9 @@ require './models/user_level'
 require './controllers/game_data_manager'
 
 class MyApp < Sinatra::Application
-    @gm = GameDataManager.new
     def initialize(myapp = nil)
         super()
+        @gm = GameDataManager.new
     end
 
     set :database_file, './config/database.yml'
@@ -78,6 +78,7 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @user = User.find(session[:user_id])
             @levels = Level.all.order(:id)
+            @gm = GameDataManager.new
             erb :jugar
         else
             redirect '/login'
@@ -127,13 +128,13 @@ class MyApp < Sinatra::Application
           @level = Level.find(params[:level_id])
           @questions = Question.where(level_id: @level.id)
           @next_question = @questions.where("id > ?", @question.id).first
-          @user_level = UserLevel.find(session[:user_id])
+          @user = User.find(session[:user_id])
           if @next_question != nil
             case @question.questionable_type
             when 'Multiple_choice'
                 answer = Answer.find(params[:answer_id])
                 if answer.correct
-                    @user_level.update(userLevelScore: 100)
+                    @gm.addUserLevelScore(user: @user, level: @level, value: 100)
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                   else
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
@@ -142,7 +143,7 @@ class MyApp < Sinatra::Application
                 @user_translation = params[:user_translation].strip.downcase
                 @correct_translation = @question.answer.answer.strip.downcase
                 if @user_translation == @correct_translation
-                    @user_level.update(userLevelScore: 100)
+                    @gm.addUserLevelScore(user: @user, level: @level, value: 100)
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else
                 # Redirigir a la siguiente pregunta o la página de fallo sin actualizar el puntaje
@@ -152,12 +153,10 @@ class MyApp < Sinatra::Application
                 puts "No se reconoce tipo"
             end
           else
-            @user = @user_level.user
-            cantLevelComplete = @user_level.getLevelsCompleted(user: @user)
-            if cantLevelComplete == @level.id
-                @levels = Level.all
-                @next_level = @levels.where("id > ?", @level.id).first
-                UserLevel.create(user: @user, level: @next_level, userLevelScore: 0)
+            if @gm.completedLevel?(user: @user, level: @level)
+                @gm.unlockNextLevelFor(user: @user)
+                @final_score = @gm.getLevelScore(user: @user, level: @level)
+                @show_success_popup = true
                 redirect "/jugar"
             else
                 redirect "/jugar"
