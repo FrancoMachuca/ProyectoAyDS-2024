@@ -50,7 +50,7 @@ questions_data = [
     level_name: 'Level 1',
     questionable: Translation.create!(),
     answers: [
-      {answer: 'Sol', correct: true}
+      {answer: 'sol', correct: true}
     ]
   },
   {

@@ -93,6 +93,7 @@ class MyApp < Sinatra::Application
             redirect '/login'
         end
     end
+
     get '/level/:level_id' do
         @user = User.find(session[:user_id])
         @level = Level.find(params[:level_id])
@@ -101,6 +102,12 @@ class MyApp < Sinatra::Application
         end
         @questions = Question.where(level_id: params[:level_id])
         redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
+    end
+
+    get '/reset_level' do
+        @user = User.find(session[:user_id])
+        @gm.resetUserLevelScore(user: @user, level: Level.find(params[:level_id]))
+        redirect '/jugar'
     end
 
     get '/level/:level_id/:question_id' do
@@ -157,7 +164,16 @@ class MyApp < Sinatra::Application
                 @gm.unlockNextLevelFor(user: @user)
                 @final_score = @gm.getLevelScore(user: @user, level: @level)
                 @show_success_popup = true
-                redirect "/jugar"
+                @answers = Answer.where(question_id: @question.id)
+                @gm = GameDataManager.new
+                case @question.questionable_type
+                when 'Multiple_choice'
+                    erb :multiple_choice
+                when 'Translation'
+                    erb :translation
+                else
+                    puts 'No se reconoce el tipo de pregunta'
+                end
             else
                 redirect "/jugar"
             end

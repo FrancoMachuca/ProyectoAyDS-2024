@@ -88,6 +88,30 @@ body {
     color: #FF6F61;
 }
 
+.button-top-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #4E2394;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4E2394;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -99,6 +123,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    display: none; /* Hidden by default */
 }
 
 .popup-content {
@@ -107,3 +132,5 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
+
+
