@@ -27,7 +27,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_144013) do
   end
 
   create_table "lessons", force: :cascade do |t|
-    t.string "help"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -50,8 +49,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_144013) do
     t.integer "level_id"
     t.integer "questionable_id"
     t.string "questionable_type"
-    t.integer "playable_id"
-    t.string "playable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["level_id"], name: "index_questions_on_level_id"
