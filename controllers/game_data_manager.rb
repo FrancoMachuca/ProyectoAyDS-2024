@@ -39,12 +39,11 @@ class GameDataManager
         end
     end
 
-    def unlockNextLevelFor(user: User)
-        lastLevelUnlocked = UserLevel.where(user: user).last
-        if completedLevel?(user, lastLevelUnlocked)
-            nextLevel = Level.where("id > " + lastLevelUnlocked.id.to_s).first
+    def unlockNextLevelFor(user: User, possiblyCompleted: Level)
+        if completedLevel?(level: possiblyCompleted, user: user)
+            nextLevel = Level.where("id > ?", possiblyCompleted.id).first
             if nextLevel
-                user.levels.push(nextLevel)
+                UserLevel.create(user: user, level: nextLevel, userLevelScore: 0)
             end
         end
     end
