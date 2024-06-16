@@ -4,12 +4,17 @@ require '.\models\user_level'
 # Esta clase se encarga de realizar todas las operaciones relacionadas con la modificación
 # y consulta del progreso de los usuarios, tanto en niveles particulares como en general.
 class GameDataManager
-    def getTotalScoreOf(user: User)
-        UserLevel.where(user: user).sum('userLevelScore')
+
+    def createGameDataFor(user: User)
+        UserLevel.create(user: user, level: Level.first, userLevelScore: 0)
     end
 
     def getGameDataOf(user: User)
         return UserLevel.where(user: user)
+    end
+    
+    def getTotalScoreOf(user: User)
+        return getGameDataOf(user: user).sum('userLevelScore')
     end
 
     def getAmountOfLevelsCompleted(user: User)

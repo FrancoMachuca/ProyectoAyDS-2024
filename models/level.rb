@@ -1,8 +1,8 @@
 require 'active_record'
 class Level < ActiveRecord::Base
     delegated_type :playable, types: %w[ Lesson Exam ]
-    has_many :questions
-    has_many :user_levels
+    has_many :questions, dependent: :destroy
+    has_many :user_levels, dependent: :destroy
     has_many :users, through: :user_levels
 end
 

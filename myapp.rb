@@ -53,6 +53,7 @@ class MyApp < Sinatra::Application
         else
             user = User.new(name: params[:name], mail: params[:mail], password: params[:password])
             if user.save
+                @gm.createGameDataFor(user: user)
                 session[:user_id] = user.id
                 redirect '/login'
             else
