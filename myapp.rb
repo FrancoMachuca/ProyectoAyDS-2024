@@ -146,7 +146,7 @@ class MyApp < Sinatra::Application
                     if session[:user_level_score] >= 0
                         @user = User.find_by(id: session[:user_id])
                         @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
-                        @gm.unlockNextLevelFor(user: @user)
+                        @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
                     end                        
                     # Se debería mostrar el popup
                     @show_success_popup = true
