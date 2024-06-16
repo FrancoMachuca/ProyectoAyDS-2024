@@ -1,8 +1,8 @@
 require './models/question'
 require './models/answer'
 require './models/level'
-# Esta clase se encarga de administrar las preguntas del juego y sus respuestas, a través de 
-# métodos que le permiten devolver una vista de un tipo de pregunta determinado, 
+# Esta clase se encarga de administrar las preguntas del juego y sus respuestas, a través de
+# métodos que le permiten devolver una vista de un tipo de pregunta determinado,
 # determinar si una respuesta a una pregunta es correcta, devolver la pregunta siguiente a otra, entre otros.
 class QuestionsManager
 
@@ -22,10 +22,9 @@ class QuestionsManager
       when 'Multiple_choice'
         return answer.correct
       when 'Translation'
-        user_translation = answer.answer
+        user_translation = answer.answer.strip.downcase
         correct_translation = question.answer.answer.strip.downcase
-        result = user_translation == correct_translation
-        return result
+        return user_translation == correct_translation
       else
         puts "No se reconoce tipo"
     end
