@@ -19,23 +19,26 @@
     .quit-button {
       left: 10px;
     }
+    
   </style>
 </head>
 <body class="relative">
 <section class="flex h-screen justify-center items-center px-16 whitespace-nowrap leading-[150%] max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
-  <article class="flex flex-wrap gap-0 justify-center content-start p-5 rounded-xl shadow-sm bg-white bg-opacity-80"> 
-    <div class="flex flex-col flex-1 justify-center pb-16 max-md:max-w-full">
-      <button onclick="toggleModal()">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/72823194a7d8c0df30eef42247c0bbe3e290abf4fb1c9e37ed6e1cb9eda1c452?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Ayuda" class="self-end w-16 aspect-[0.77]" />
+  <article class="flex flex-wrap justify-center content-start mt-5 mb-5 rounded-xl shadow-sm bg-white bg-opacity-80"> 
+    <div class="flex flex-col  justify-center mt-5 mb-5">
+      <button onclick="toggleHelpModal()" class="fixed-button help-button">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/72823194a7d8c0df30eef42247c0bbe3e290abf4fb1c9e37ed6e1cb9eda1c452?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Ayuda" class="w-16 aspect-[0.77]" />
       </button>
+      <button onclick="toggleQuitModal()" class="fixed-button quit-button bg-red-500 text-white p-2 rounded">Salir</button>
       <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
       <div class="flex flex-wrap justify-center content-start items-center self-center px-16 mt-64 max-w-full text-base font-medium text-white w-[708px] max-md:px-5 max-md:mt-10">
         <div class="flex flex-col max-w-full w-[484px]">
           <form action="/level/<%= @level.id %>/<%= @question.id %>/check" method="post" class="w-full">
             <input type="hidden" name="question_id" value="<%= @question.id %>">
-            <div class="flex flex-col gap-5">
+            <div class="mb-2">
               <textarea name="user_translation" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white" placeholder="Escribe tu traducción aquí..."></textarea>
-              <button type="submit" class="p-5 bg-purple-700 rounded-xl shadow-sm text-white">Guardar Respuesta</button>
+              <br>
+              <button type="submit" class="mt-5 p-5 bg-purple-700 rounded-xl shadow-sm text-white " style="width: 100%;">Guardar Respuesta</button>
             </div>
           </form>
         </div>
