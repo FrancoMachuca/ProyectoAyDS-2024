@@ -51,7 +51,7 @@ class MyApp < Sinatra::Application
             @error_message = "Usted ya tenía una cuenta previa"
             erb :login
         else
-            user = User.new(name: params[:name], mail: params[:mail], password: params[:password], totalScore: 0)
+            user = User.new(name: params[:name], mail: params[:mail], password: params[:password])
             if user.save
                 session[:user_id] = user.id
                 redirect '/login'
