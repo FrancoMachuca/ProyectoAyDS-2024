@@ -71,7 +71,7 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @user = User.find(session[:user_id])
             @total_score = @gm.getTotalScoreOf(user: @user)
-            @levels_completed = @gm.getLevelsCompleted(user: @user)
+            @levels_completed = @gm.getAmountOfLevelsCompleted(user: @user)
             @rank = @gm.getUserRank(user: @user)
             erb :profile
         else
@@ -139,8 +139,6 @@ class MyApp < Sinatra::Application
                 else
                     @user_answer = Answer.find_by(id: params[:answer_id])
                 end
-            if @question && @level
-                @user_answer = @qm.buildUserAnswer(answer: params[:user_translation], question: @question)
                 if @qm.correctAnswer?(answer: @user_answer, question: @question)
                     session[:user_level_score] += 100
                 end
@@ -156,6 +154,8 @@ class MyApp < Sinatra::Application
                     session[:userLevelScore] = 0
                     # Se debería mostrar el popup
                     @show_success_popup = true
+                    @answers = Answer.where(question_id: @question.id)
+                    @final_score = @gm.getLevelScore(user: @user, level: @level)
                     erb @qm.show(question: @question)
                 end
             else
@@ -163,5 +163,4 @@ class MyApp < Sinatra::Application
             end
         end
     end
-end
 end
