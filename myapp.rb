@@ -70,6 +70,9 @@ class MyApp < Sinatra::Application
     get '/perfil' do
         if session[:user_id]
             @user = User.find(session[:user_id])
+            @total_score = @gm.getTotalScoreOf(user: @user)
+            @levels_completed = @gm.getLevelsCompleted(user: @user)
+            @rank = @gm.getUserRank(user: @user)
             erb :profile
         else
             redirect '/login'
@@ -88,7 +91,7 @@ class MyApp < Sinatra::Application
 
     get '/ranking' do
         if session[:user_id]
-            @ranking = Ranking.
+            @users = User.all
             erb :ranking
         else
             redirect '/login'
@@ -115,7 +118,7 @@ class MyApp < Sinatra::Application
             @level = Level.find(params[:level_id])
             @question = Question.find(params[:question_id])
             @answers = Answer.where(question_id: @question.id)
-            if @level && @question && @answers 
+            if @level && @question && @answers
                erb @qm.show(question: @question)
             else
                 redirect '/jugar'
@@ -129,7 +132,7 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
-            if @question && @level 
+            if @question && @level
                 @user_answer = @qm.buildUserAnswer(answer: params[:user_translation], question: @question)
                 if @qm.correctAnswer?(answer: @user_answer, question: @question)
                     session[:userLevelScore] += 100
@@ -137,15 +140,15 @@ class MyApp < Sinatra::Application
                 @next_question = @qm.nextQuestion(question: @question)
                 if @next_question
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
-                else 
+                else
                     if session[:userLevelScore] > 0
                         @gm.addUserLevelScore(user: @user, level: @level, value: session[:userLevelScore]) # Revisar, no actualiza el puntaje
                         @gm.unlockNextLevelFor(user: @user)
-                    end                        
+                    end
                     session[:userLevelScore] = 0
                     # Se debería mostrar el popup
                     @show_success_popup = true
-                    redirect "/jugar"
+                    erb @qm.show(question: @question)
                 end
             else
                 redirect "/jugar"

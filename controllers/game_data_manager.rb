@@ -70,4 +70,15 @@ class GameDataManager
         end
     end
 
+    def getUserRank(user: User)
+        all_users = User.all
+        user_scores = all_users.map { |u| [u, getTotalScoreOf(user: u)] }
+        sorted_user_scores = user_scores.sort_by { |_, score| -score }
+
+        sorted_user_scores.each_with_index do |(u, _), index|
+            return index + 1 if u.id == user.id
+        end
+        nil # En caso de que el usuario no se encuentre
+    end
+
 end
