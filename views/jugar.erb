@@ -15,12 +15,11 @@
         <h1 class="title">Selección de Niveles</h1>
         <div class="levels-container">
             <% @levels.each do |level| %>
-                <% user_level = UserLevel.find_by(user_id: @user.id, level_id: level.id) %>
-                <% if user_level && @gm.completedLevel?(level: level, user: @user) %>
+                <% if @levels_unlocked.include?(level) && @gm.completedLevel?(level: level, user: @user) %>
                     <div class="level completed" onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
                         Nivel <%= level.id %>
                     </div>
-                <% elsif user_level %>
+                <% elsif @levels_unlocked.include?(level) %>
                     <div class="level unlocked" onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
                         Nivel <%= level.id %>
                     </div>

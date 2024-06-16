@@ -8,7 +8,11 @@ class GameDataManager
         UserLevel.where(user: user).sum('userLevelScore')
     end
 
-    def getLevelsCompleted(user: User)
+    def getGameDataOf(user: User)
+        return UserLevel.where(user: user)
+    end
+
+    def getAmountOfLevelsCompleted(user: User)
         u = UserLevel.where(user: user)
         sum = 0
         u.each do |row|
@@ -51,16 +55,12 @@ class GameDataManager
     def addUserLevelScore(user: User, level: Level, value: int)
         row = UserLevel.find_by(user: user, level: level)
         if row
-            row.userLevelScore += value
-            row.update(userLevelScore: row.userLevelScore)
+            row.update(userLevelScore: value)
         end
     end
 
     def resetUserLevelScore(user: User, level: Level)
-        row = UserLevel.find_by(user: user, level: level)
-        if row
-            row.userLevelScore = 0
-        end
+        addUserLevelScore(user: user, level: level, value: 0)
     end
 
     def getLevelScore(user: User, level: Level)

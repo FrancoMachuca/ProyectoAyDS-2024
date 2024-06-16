@@ -25,7 +25,6 @@ class QuestionsManager
         user_translation = answer.answer
         correct_translation = question.answer.answer.strip.downcase
         result = user_translation == correct_translation
-        Answer.delete(answer: answer)
         return result
       else
         puts "No se reconoce tipo"
@@ -41,7 +40,7 @@ class QuestionsManager
   end
 
   def buildUserAnswer(answer: String, question: Question)
-    return Answer.create(answer: answer, correct: false, question: question)
+    return Answer.new(answer: answer, correct: false, question: question)
   end
 
 

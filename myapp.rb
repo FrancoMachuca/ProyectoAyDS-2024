@@ -80,6 +80,7 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @user = User.find(session[:user_id])
             @levels = Level.all.order(:id)
+            @levels_unlocked = @user.levels
             erb :jugar
         else
             redirect '/login'
@@ -97,7 +98,7 @@ class MyApp < Sinatra::Application
 
     get '/level/:level_id' do
         if session[:user_id]
-            session[:userLevelScore] = 0
+            session[:user_level_score] = 0
             @user = User.find(session[:user_id])
             @level = Level.find(params[:level_id])
             if @gm.completedLevel?(user: @user, level: @level)
@@ -129,20 +130,24 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
-            if @question && @level 
-                @user_answer = @qm.buildUserAnswer(answer: params[:user_translation], question: @question)
+            if @question && @level
+                if @question.questionable_type == "Translation"
+                    @user_answer = @qm.buildUserAnswer(answer: params[:user_translation], question: @question)
+                else
+                    @user_answer = Answer.find_by(id: params[:answer_id]) 
+                end 
                 if @qm.correctAnswer?(answer: @user_answer, question: @question)
-                    session[:userLevelScore] += 100
+                    session[:user_level_score] += 100
                 end
                 @next_question = @qm.nextQuestion(question: @question)
                 if @next_question
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else 
-                    if session[:userLevelScore] > 0
-                        @gm.addUserLevelScore(user: @user, level: @level, value: session[:userLevelScore]) # Revisar, no actualiza el puntaje
+                    if session[:user_level_score] >= 0
+                        @user = User.find_by(id: session[:user_id])
+                        @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
                         @gm.unlockNextLevelFor(user: @user)
                     end                        
-                    session[:userLevelScore] = 0
                     # Se debería mostrar el popup
                     @show_success_popup = true
                     redirect "/jugar"
