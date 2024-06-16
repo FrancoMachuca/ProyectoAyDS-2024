@@ -1,7 +1,7 @@
 require 'active_record'
 class Question < ActiveRecord::Base
     belongs_to :level
-    has_many :answers, dependent: :destroy
+    has_one :answer, dependent: :destroy
     delegated_type :questionable, types: %w[ Multiple_choice To_complete Translation ], dependent: :destroy
     accepts_nested_attributes_for :questionable
 end
