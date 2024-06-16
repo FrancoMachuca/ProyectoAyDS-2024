@@ -5,6 +5,8 @@ require './models/level'
 # métodos que le permiten devolver una vista de un tipo de pregunta determinado, 
 # determinar si una respuesta a una pregunta es correcta, devolver la pregunta siguiente a otra, entre otros.
 class QuestionsManager
+
+  # Devuelve la vista correspondiente a una pregunta según su tipo.
   def show(question: Question)
     case question.questionable_type
     when "Multiple_choice"
@@ -14,6 +16,7 @@ class QuestionsManager
     end
   end
 
+  # Método que analiza una respuesta a una pregunta y devuelve un booleano indicando si es correcta o no.
   def correctAnswer?(answer: Answer, question: Question)
     case question.questionable_type
       when 'Multiple_choice'
@@ -32,9 +35,14 @@ class QuestionsManager
   # Dada una pregunta (question), devuelve la siguiente a ella (que pertenece al mismo nivel). Devuelve nil si question es la última de su nivel.
   def nextQuestion(question: Question)
     question_family = question.level.questions
-    actual_question_index = question_family.find_index(question: question)
-    next_question = question_family.find_by(id: (actual_question_index + 1))
+    actual_question_index = question_family.find_index(question)
+    next_question = question_family[actual_question_index + 1]
     return next_question
   end
+
+  def buildUserAnswer(answer: String, question: Question)
+    return Answer.create(answer: answer, correct: false, question: question)
+  end
+
 
 end

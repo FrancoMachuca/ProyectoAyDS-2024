@@ -127,21 +127,22 @@ class MyApp < Sinatra::Application
 
     post '/level/:level_id/:question_id/check' do
         if session[:user_id]
-            @question = Question.find(params[:question_id])
-            @level = Level.find(params[:level_id])
+            @question = Question.find_by(id: params[:question_id])
+            @level = Level.find_by(id: params[:level_id])
             if @question && @level 
-                if @qm.correctAnswer?(answer: @answer) # Construir @answer de alguna forma
+                @user_answer = @qm.buildUserAnswer(answer: params[:user_translation], question: @question)
+                if @qm.correctAnswer?(answer: @user_answer, question: @question)
                     session[:userLevelScore] += 100
                 end
                 @next_question = @qm.nextQuestion(question: @question)
                 if @next_question
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else 
-                    if @gm.completedLevel?(user: @user, level: @level)
+                    if session[:userLevelScore] > 0
+                        @gm.addUserLevelScore(user: @user, level: @level, value: session[:userLevelScore]) # Revisar, no actualiza el puntaje
                         @gm.unlockNextLevelFor(user: @user)
-                        @gm.addUserLevelScore(user: @user, level: @level, value: session[:userLevelScore])
-                        session[:userLevelScore] = 0
-                    end
+                    end                        
+                    session[:userLevelScore] = 0
                     # Se debería mostrar el popup
                     @show_success_popup = true
                     redirect "/jugar"
