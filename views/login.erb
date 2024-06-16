@@ -8,12 +8,12 @@
   <script src="https://cdn.tailwindcss.com"></script><!--TODO: remover plugin e insertar tailwind de otra manera-->
 </head>
 <section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
-            <% if @error_message %>
-                <p style="color: red;"><%= @error_message %></p>
-            <% end %>
   <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 h-full">
       <h1 class="self-center mt-8 text-3xl font-extrabold">Bienvenido</h1>
       <form action="/login" method="post" class="flex flex-col">
+        <% if @error_message %>
+        <p style="color: red;"><%= @error_message %></p>
+        <% end %>
           <label for="name" class="block mt-3">Ingrese su nombre:</label>
           <input
               id="name"
