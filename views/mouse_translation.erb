@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MorseMania - Mouse Translation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fixed-button {
+      position: absolute;
+      top: 10px;
+    }
+    .help-button {
+      right: 10px;
+    }
+    .quit-button {
+      left: 10px;
+    }
+    .click-area {
+      width: 200px;
+      height: 100px; /* Cambio de cuadrado a rectángulo */
+      background-color: #000;
+      cursor: pointer;
+      margin: 0 auto;
+    }
+    .progress-bar {
+      width: 200px;
+      height: 20px;
+      background-color: #ccc;
+      margin-top: 10px;
+      position: relative;
+    }
+    .progress {
+      height: 100%;
+      background-color: #4caf50;
+      width: 0%;
+    }
+  </style>
+</head>
+<body class="relative">
+<section class="flex h-screen justify-center items-center px-16 whitespace-nowrap leading-[150%] max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
+  <article class="flex flex-wrap gap-0 justify-center content-start p-5 rounded-xl shadow-sm bg-white bg-opacity-80"> 
+    <div class="flex flex-col flex-1 justify-center pb-16 max-md:max-w-full">
+      <button onclick="toggleHelpModal()" class="fixed-button help-button">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/72823194a7d8c0df30eef42247c0bbe3e290abf4fb1c9e37ed6e1cb9eda1c452?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Ayuda" class="w-16 aspect-[0.77]" />
+      </button>
+      <button onclick="toggleQuitModal()" class="fixed-button quit-button bg-red-500 text-white p-2 rounded">Salir</button>
+      <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
+      <div class="flex flex-col justify-center items-center mt-10">
+        <div class="click-area" onclick="handleClick()"></div>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+        <textarea id="binary-output" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white mt-5" placeholder="Traducción en binario" readonly></textarea>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- Help Modal -->
+<div id="help-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <button onclick="toggleHelpModal()" class="relative ">&times;</button>
+    <img src="https://www.electronics-notes.com/images/morse-code-table-alphabet-letters.svg" alt="Tabla" class="w-full h-auto">
+  </div>
+</div>
+
+<!-- Quit Modal -->
+<div id="quit-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <%= erb :quit_warning %>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div id="success-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <%= erb :success %>
+  </div>
+</div>
+
+<script>
+function toggleHelpModal() {
+  var modal = document.getElementById('help-modal');
+  modal.classList.toggle('hidden');
+}
+
+function toggleQuitModal() {
+  var modal = document.getElementById('quit-modal');
+  modal.classList.toggle('hidden');
+}
+
+function toggleSuccessModal() {
+  var modal = document.getElementById('success-modal');
+  modal.classList.toggle('hidden');
+}
+
+let binaryString = '';
+let progressInterval;
+
+function handleClick() {
+  binaryString += '.';
+  document.getElementById('binary-output').value = binaryString;
+  clearInterval(progressInterval);
+  resetProgressBar();
+  fillProgressBar();
+}
+
+function fillProgressBar() {
+  const progressBar = document.getElementById('progress');
+  let width = 0;
+  progressInterval = setInterval(() => {
+    if (width >= 100) {
+      clearInterval(progressInterval);
+      binaryString += '-';
+      document.getElementById('binary-output').value = binaryString;
+      resetProgressBar();
+      checkCompletion();
+    } else {
+      width += 10; // Incremento del 10% cada 100ms para un total de 1s
+      progressBar.style.width = width + '%';
+    }
+  }, 100);
+}
+
+function resetProgressBar() {
+  const progressBar = document.getElementById('progress');
+  progressBar.style.width = '0%';
+}
+
+function checkCompletion() {
+  // Replace this with the actual condition to check if the level is completed
+  if (binaryString.length >= 8) { // Example condition
+    toggleSuccessModal();
+  }
+}
+
+// Assuming the last question is determined here and success modal should be shown
+<% if @last_question && @level_completed %>
+document.addEventListener('DOMContentLoaded', function() {
+  toggleSuccessModal();
+});
+<% end %>
+</script>
+</body>
+</html>
