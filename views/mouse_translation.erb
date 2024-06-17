@@ -25,6 +25,14 @@
       background-color: #000;
       cursor: pointer;
       margin: 0 auto;
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 6px #999;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .click-area:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px #666;
     }
     .progress-bar {
       width: 200px;
@@ -32,11 +40,39 @@
       background-color: #ccc;
       margin-top: 10px;
       position: relative;
+      border-radius: 10px;
+      overflow: hidden;
     }
     .progress {
       height: 100%;
       background-color: #4caf50;
       width: 0%;
+    }
+    .indicator {
+      position: absolute;
+      top: -10px; /* Aumentado para hacer los indicadores más grandes */
+      height: 40px; /* Aumentado para hacer los indicadores más grandes */
+      width: 8px;
+      background-color: red;
+    }
+    .middle-indicator {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .end-indicator {
+      left: 90%;
+      transform: translateX(-50%);
+    }
+    .morse-output {
+      font-size: 2rem; /* Mismo tamaño que el título */
+      font-weight: 700; /* Mismo peso que el título */
+      text-align: center;
+      margin-top: 1rem;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .morse-output.show {
+      opacity: 1;
     }
   </style>
 </head>
@@ -48,13 +84,22 @@
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/72823194a7d8c0df30eef42247c0bbe3e290abf4fb1c9e37ed6e1cb9eda1c452?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Ayuda" class="w-16 aspect-[0.77]" />
       </button>
       <button onclick="toggleQuitModal()" class="fixed-button quit-button bg-red-500 text-white p-2 rounded">Salir</button>
+      <h2 class="mt-1.5 text-xl font-extrabold text-center text-purple-950 max-md:max-w-full">Puntuacion Actual: <%= session[:user_level_score] %></h2>
       <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
       <div class="flex flex-col justify-center items-center mt-10">
         <div class="click-area" onclick="handleClick()"></div>
         <div class="progress-bar">
           <div class="progress" id="progress"></div>
+          <div class="indicator middle-indicator"></div>
+          <div class="indicator end-indicator"></div>
         </div>
-        <textarea id="binary-output" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white mt-5" placeholder="Traducción en binario" readonly></textarea>
+        <div id="morse-output" class="morse-output"></div>
+        <!-- Añadir el formulario aquí -->
+        <form action="/level/<%= @level.id %>/<%= @question.id %>/check" method="post" class="w-full mt-5">
+          <input type="hidden" name="question_id" value="<%= @question.id %>">
+          <input type="hidden" id="morse-string" name="user_guess">
+          <button type="submit" class="p-5 bg-purple-700 rounded-xl shadow-sm text-white w-full hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-purple-900">Guardar Respuesta</button>
+        </form>
       </div>
     </div>
   </article>
@@ -98,15 +143,31 @@ function toggleSuccessModal() {
   modal.classList.toggle('hidden');
 }
 
-let binaryString = '';
+function redirectToMenu() {
+  window.location.href = '/jugar';
+}
+
+function continuarHandler() {
+  toggleQuitModal();
+}
+
+function salirHandler() {
+  redirectToMenu();
+}
+
+let morseString = '';
 let progressInterval;
+let clickCount = 0;
 
 function handleClick() {
-  binaryString += '.';
-  document.getElementById('binary-output').value = binaryString;
-  clearInterval(progressInterval);
-  resetProgressBar();
-  fillProgressBar();
+  clickCount++;
+  if (clickCount === 1) {
+    clearInterval(progressInterval);
+    resetProgressBar();
+    fillProgressBar();
+  } else if (clickCount === 2) {
+    checkTiming();
+  }
 }
 
 function fillProgressBar() {
@@ -115,15 +176,44 @@ function fillProgressBar() {
   progressInterval = setInterval(() => {
     if (width >= 100) {
       clearInterval(progressInterval);
-      binaryString += '-';
-      document.getElementById('binary-output').value = binaryString;
+      morseString += '-';
+      displayMorseOutput('-');
       resetProgressBar();
       checkCompletion();
+      clickCount = 0;
     } else {
-      width += 10; // Incremento del 10% cada 100ms para un total de 1s
+      width += 2; // Incremento del 2% cada 20ms para un total de 1s
       progressBar.style.width = width + '%';
     }
-  }, 100);
+  }, 20);
+}
+
+function checkTiming() {
+  const progressBar = document.getElementById('progress');
+  const width = parseFloat(progressBar.style.width);
+  if (width >= 45 && width <= 55) {
+    morseString += '.';
+    displayMorseOutput('.');
+  } else if (width >= 85 && width <= 95) {
+    morseString += '-';
+    displayMorseOutput('-');
+  } else {
+    morseString = '';
+    document.getElementById('morse-output').innerHTML = '';
+  }
+  clearInterval(progressInterval);
+  resetProgressBar();
+  checkCompletion();
+  clickCount = 0;
+}
+
+function displayMorseOutput(symbol) {
+  const outputElement = document.getElementById('morse-output');
+  outputElement.innerHTML += symbol;
+  outputElement.classList.add('show');
+  setTimeout(() => {
+    outputElement.classList.remove('show');
+  }, 500);
 }
 
 function resetProgressBar() {
@@ -132,14 +222,12 @@ function resetProgressBar() {
 }
 
 function checkCompletion() {
-  // Replace this with the actual condition to check if the level is completed
-  if (binaryString.length >= 8) { // Example condition
-    toggleSuccessModal();
-  }
+  console.log('Cadena actual de Morse:', morseString);
+  document.getElementById('morse-string').value = morseString;
+  morseString = '';
 }
 
-// Assuming the last question is determined here and success modal should be shown
-<% if @last_question && @level_completed %>
+<% if @show_success_popup %>
 document.addEventListener('DOMContentLoaded', function() {
   toggleSuccessModal();
 });
