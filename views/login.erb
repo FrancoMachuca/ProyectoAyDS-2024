@@ -8,7 +8,7 @@
   <link href="/css/output.css" rel="stylesheet">
 </head>
 <section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
-  <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 h-full">
+  <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 h-full pointer-events-auto">
       <h1 class="self-center mt-8 text-3xl font-extrabold">Bienvenido</h1>
       <form action="/login" method="post" class="flex flex-col">
         <% if @error_message %>
@@ -31,9 +31,8 @@
               placeholder="Contraseña" aria-label="Contraseña" required
           />
           <br>  
-          <a href="#" class="self-center mt-3 text-blue-500">Olvidaste tu contraseña?</a>
-          <a href="/registro" class="self-center mt-3 text-blue-500">No tenés cuenta todavía? Registrate!</a>
-          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
+          <a href="/registro" class="self-center mt-3 text-blue-500 hover:text-blue-900">No tenés cuenta todavía? Registrate!</a>
+          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white rounded-lg bg-black transition duration-200 hover:bg-purple-700 hover:transition-all">
               Iniciar Sesión
           </button>
       </form>
