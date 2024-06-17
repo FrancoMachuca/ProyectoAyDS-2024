@@ -8,3 +8,8 @@ gem 'rake'
 gem "require_all"
 gem 'rack'
 gem "tailwindcss-rails", "~> 2.6"
+
+group :test, :development do
+    gem 'rspec'
+    gem 'rack-test'
+  end

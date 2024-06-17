@@ -39,6 +39,7 @@ GEM
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
+    diff-lcs (1.5.1)
     drb (2.1.1)
       ruby2_keywords
     erubi (1.13.0)
@@ -92,6 +93,19 @@ GEM
     reline (0.5.9)
       io-console (~> 0.5)
     require_all (3.0.0)
+    rspec (3.13.0)
+      rspec-core (~> 3.13.0)
+      rspec-expectations (~> 3.13.0)
+      rspec-mocks (~> 3.13.0)
+    rspec-core (3.13.0)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-support (3.13.1)
     ruby2_keywords (0.0.5)
     sinatra (4.0.0)
       mustermann (~> 3.0)
@@ -120,8 +134,10 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   rack
+  rack-test
   rake
   require_all
+  rspec
   sinatra
   sinatra-activerecord
   sqlite3 (~> 1.4)
