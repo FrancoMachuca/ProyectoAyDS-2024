@@ -9,6 +9,7 @@ require './models/multiple_choice'
 require './models/translation'
 require './models/answer'
 require './models/user_level'
+require './models/to_complete'
 require './controllers/game_data_manager'
 require './controllers/questions_manager'
 
@@ -135,8 +136,8 @@ class MyApp < Sinatra::Application
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
             if @question && @level
-                if @question.questionable_type == "Translation"
-                    @user_answer = @qm.buildUserAnswer(answer: params[:user_translation], question: @question)
+                if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete"
+                    @user_answer = @qm.buildUserAnswer(answer: params[:user_guess], question: @question)
                 else
                     @user_answer = Answer.find_by(id: params[:answer_id])
                 end

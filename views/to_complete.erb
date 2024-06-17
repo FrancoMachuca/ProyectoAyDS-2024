@@ -31,12 +31,14 @@
       </button>
       <button onclick="toggleQuitModal()" class="fixed-button quit-button bg-red-500 text-white p-2 rounded">Salir</button>
       <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
+      <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.to_complete.keyword %></h1>
+      <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.to_complete.toCompleteMorse %></h1>
       <div class="flex flex-wrap justify-center content-start items-center self-center px-16 mt-64 max-w-full text-base font-medium text-white w-[708px] max-md:px-5 max-md:mt-10">
         <div class="flex flex-col max-w-full w-[484px]">
           <form action="/level/<%= @level.id %>/<%= @question.id %>/check" method="post" class="w-full">
             <input type="hidden" name="question_id" value="<%= @question.id %>">
             <div class="mb-2">
-              <textarea name="user_guess" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white" placeholder="Escribe tu traducción aquí..."></textarea>
+              <textarea name="user_guess" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white" placeholder="Escribe la palabra completa en morse aquí..."></textarea>
               <br>
               <button type="submit" class="mt-5 p-5 bg-purple-700 rounded-xl shadow-sm text-white " style="width: 100%;">Guardar Respuesta</button>
             </div>

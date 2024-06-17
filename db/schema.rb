@@ -55,7 +55,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_144013) do
   end
 
   create_table "to_completes", force: :cascade do |t|
-    t.string "letters"
+    t.string "keyword"
+    t.string "toCompleteMorse"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

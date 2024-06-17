@@ -7,6 +7,7 @@ require_relative '../models/multiple_choice'
 require_relative '../models/translation'
 require_relative '../models/answer'
 require_relative '../models/user_level'
+require_relative '../models/to_complete'
 
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
@@ -84,6 +85,14 @@ questions_data = [
       {answer: '... --- ...', correct: true},
       {answer: '... --- ..', correct: false},
       {answer: '... --- .-', correct: false}
+    ]
+  },
+  {
+    description: 'Completa la siguiente palabra:',
+    level_name: 'Level 2',
+    questionable: To_complete.create!(keyword: "Sol", toCompleteMorse: "... ____ .-.."),
+    answers: [
+      {answer: "... --- .-..", correct: true}
     ]
   }
 ]

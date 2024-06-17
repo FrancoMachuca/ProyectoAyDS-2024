@@ -13,20 +13,21 @@ class QuestionsManager
       return :multiple_choice
     when "Translation"
       return :translation
+    when 'To_complete'
+      return :to_complete
     end
   end
 
   # Método que analiza una respuesta a una pregunta y devuelve un booleano indicando si es correcta o no.
   def correctAnswer?(answer: Answer, question: Question)
-    case question.questionable_type
-      when 'Multiple_choice'
-        return answer.correct
-      when 'Translation'
-        user_translation = answer.answer.strip.downcase
-        correct_translation = question.answer.answer.strip.downcase
-        return user_translation == correct_translation
-      else
-        puts "No se reconoce tipo"
+    if question.questionable_type == 'Multiple_choice'
+      return answer.correct
+    elsif question.questionable_type == 'Translation' || question.questionable_type == 'To_complete'
+      user_guess = answer.answer.gsub(/\s+/, "").downcase
+      correct_phrase = question.answer.answer.gsub(/\s+/, "").downcase
+      return user_guess == correct_phrase
+    else
+      puts "No se reconoce el tipo"
     end
   end
 
