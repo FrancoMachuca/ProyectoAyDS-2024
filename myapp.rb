@@ -137,7 +137,7 @@ class MyApp < Sinatra::Application
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
             if @question && @level
-                if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete"
+                if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" || @question.questionable_type == "MouseTranslation"
                     @user_answer = @qm.buildUserAnswer(answer: params[:user_guess], question: @question)
                 else
                     @user_answer = Answer.find_by(id: params[:answer_id])
@@ -168,9 +168,4 @@ class MyApp < Sinatra::Application
             redirect "/login"
         end
     end
-
-    get '/test' do
-        erb :mouse_translation
-    end
-
 end
