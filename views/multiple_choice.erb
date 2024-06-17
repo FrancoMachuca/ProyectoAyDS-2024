@@ -18,6 +18,7 @@
       </button>
       <button onclick="toggleQuitModal()" class="absolute top-2 left-2 bg-red-500 text-white p-2 rounded hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-red-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
   </button>
+      <h2 class="mt-1.5 text-xl font-extrabold text-center text-purple-950 max-md:max-w-full">Puntuacion Actual: <%= session[:user_level_score] %></h2>
       <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
       <div class="flex flex-wrap justify-center content-start items-center self-center px-16 mt-64 max-w-full text-base font-medium text-white w-[708px] max-md:px-5 max-md:mt-10">
         <div class="flex flex-col max-w-full w-[484px]">
