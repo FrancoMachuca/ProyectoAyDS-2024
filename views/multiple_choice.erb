@@ -61,7 +61,6 @@
 <!-- Quit Modal -->
 <div id="quit-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
   <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
-    <button onclick="toggleQuitModal()" class="relative">&times;</button>
     <%= erb :quit_warning %>
   </div>
 </div>
@@ -69,7 +68,6 @@
 <!-- Success Modal -->
 <div id="success-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
   <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
-    <button onclick="toggleSuccessModal()" class="relative ">&times;</button>
     <%= erb :success %>
   </div>
 </div>
