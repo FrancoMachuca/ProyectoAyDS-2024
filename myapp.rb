@@ -20,6 +20,7 @@ class MyApp < Sinatra::Application
         @qm = QuestionsManager.new
     end
 
+    set :public_folder, 'public'
     set :database_file, './config/database.yml'
     enable :sessions
 
