@@ -18,7 +18,8 @@
             <span class="text-ellipsis max-md:max-w-full w-[80%]">Nombre</span>
             <span class="text-ellipsis">Puntuación</span>
         </header>
-        <% @users.each do |user| %>
+        <% sorted_users = @users.sort_by { |user| -@gm.getTotalScoreOf(user: user) } %>
+        <% sorted_users.each do |user| %>
             <div class="flex gap-5 text-left justify-between py-4 px-5 border-t border-solid border-neutral-200 max-md:flex-wrap max-md:pr-5">
                 <span class="text-zinc-500"><%= @gm.getUserRank(user: user) %></span>
                 <span class="text-ellipsis max-md:max-w-full w-[80%]"><%= user.name %></span>
