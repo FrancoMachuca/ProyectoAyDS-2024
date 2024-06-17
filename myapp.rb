@@ -67,7 +67,7 @@ class MyApp < Sinatra::Application
 
     get '/logout' do
         session.clear
-        redirect '/'
+        redirect '/login'
     end
 
     get '/perfil' do
@@ -164,6 +164,13 @@ class MyApp < Sinatra::Application
             else
                 redirect "/jugar"
             end
+        else
+            redirect "/login"
         end
     end
+
+    get '/test' do
+        erb :mouse_translation
+    end
+
 end
