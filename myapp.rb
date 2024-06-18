@@ -137,6 +137,7 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
+            @user = User.find_by(id: session[:user_id])
             if @question && @level
 
                 if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" ||

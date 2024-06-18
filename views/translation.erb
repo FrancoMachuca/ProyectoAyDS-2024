@@ -64,6 +64,13 @@
   </div>
 </div>
 
+<!-- Failure Lesson Modal -->
+<div id="failure_lesson-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <%= erb :lesson_failed %>
+  </div>
+</div>
+
 <script>
 function toggleHelpModal() {
   var modal = document.getElementById('help-modal');
@@ -85,6 +92,11 @@ function toggleFailureModal() {
   modal.classList.toggle('hidden');
 }
 
+function toggleFailureLessonModal() {
+  var modal = document.getElementById('failure_lesson-modal');
+  modal.classList.toggle('hidden');
+}
+
 function redirectToMenu() {
   window.location.href = '/jugar';
 }
@@ -100,6 +112,12 @@ function salirHandler() {
 <% if @show_success_popup %>
 document.addEventListener('DOMContentLoaded', function() {
     toggleSuccessModal();
+});
+<% end %>
+
+<% if @show_failure_popup && @level.playable_type == "Lesson" %>
+document.addEventListener('DOMContentLoaded', function() {
+    toggleFailureLessonModal();
 });
 <% end %>
 
