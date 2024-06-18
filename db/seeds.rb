@@ -299,9 +299,9 @@ questions_data = [
   {
     description: 'Completa la siguiente palabra en código morse:',
     level_name: 'Examen I',
-    questionable: To_complete.create!(keyword: "BUSCAR", toCompleteMorse: "-__. ._- ... ____ .- .-. .-.-."),
+    questionable: To_complete.create!(keyword: "BUSCAR", toCompleteMorse: "-__. ._- ... ____ .- .-."),
     answers: [
-      {answer: "-... ..- ... -.-. .- .-. .-.-.", correct: true}
+      {answer: "-... ..- ... -.-. .- .-.", correct: true}
     ]
   },
   {
@@ -315,9 +315,9 @@ questions_data = [
   {
     description: 'Completa la siguiente palabra en código morse:',
     level_name: 'Examen I',
-    questionable: To_complete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
+    questionable: To_complete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .-"),
     answers: [
-      {answer: "... .. .-.. .-.. .- .-.-.", correct: true}
+      {answer: "... .. .-.. .-.. .-", correct: true}
     ]
   }
 ]

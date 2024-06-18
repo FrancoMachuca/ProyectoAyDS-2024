@@ -158,11 +158,12 @@ class MyApp < Sinatra::Application
                     @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
                     @final_score = session[:user_level_score]
                     session[:user_level_score] = 0
-                    if @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
+                    if @gm.completedLevel?(level: @level, user: @user)
                         @show_success_popup = true
                     else 
                         @show_failure_popup = true
                     end
+                    @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
                     erb @qm.show(question: @question)
                 end
             else
