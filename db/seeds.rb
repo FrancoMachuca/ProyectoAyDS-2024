@@ -278,11 +278,11 @@ questions_data = [
     ]
   },
   {
-    description: 'Traduce "-. --- .-. - . ..." al Español',
+    description: 'Traduce "-. --- .-. - ." al Español',
     level_name: 'Examen I',
     questionable: Translation.create!(),
     answers: [
-      {answer: 'nortes', correct: true}
+      {answer: 'norte', correct: true}
     ]
   },
   {
@@ -315,7 +315,7 @@ questions_data = [
   {
     description: 'Completa la siguiente palabra en código morse:',
     level_name: 'Examen I',
-    questionable: ToComplete.create!(keyword: "BUSCAR", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
+    questionable: ToComplete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
     answers: [
       {answer: "... .. .-.. .-.. .- .-.-.", correct: true}
     ]
