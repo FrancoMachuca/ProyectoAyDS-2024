@@ -93,7 +93,7 @@ questions_data = [
     level_name: 'Level 1',
     questionable: MouseTranslation.create!(),
     answers: [
-      {answer: '.', correct: false},
+      {answer: '...---...', correct: true},
     ]
   },
   {
