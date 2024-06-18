@@ -22,7 +22,7 @@ levels = [
   {name: 'Palabras I', playable: Lesson.create!()},
   {name: 'Palabras II', playable: Lesson.create!()},
   {name: 'Palabras III', playable: Lesson.create!()},
-  {name: 'Examen I', playable: Exam.create!(minScore: 5)}
+  {name: 'Examen I', playable: Exam.create!(minScore: 500)}
 ]
 
 users.each do |u|
@@ -229,6 +229,95 @@ questions_data = [
     questionable: MouseTranslation.create!(),
     answers: [
       {answer: '-.-. --- -.. .. --. ---', correct: true}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la letra "M" en código morse?',
+    level_name: 'Examen I',
+    questionable: MultipleChoice.create!(),
+    answers: [
+      {answer: '--', correct: true},
+      {answer: '-.', correct: false},
+      {answer: '.-', correct: false},
+      {answer: '..', correct: false}
+    ]
+  },
+  {
+    description: 'Traduce ".--" al Español',
+    level_name: 'Examen I',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'w', correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "..-." al Español',
+    level_name: 'Examen I',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'f', correct: true}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "AMIGO" en código morse?',
+    level_name: 'Examen I',
+    questionable: MultipleChoice.create!(),
+    answers: [
+      {answer: '.- -- .. --. ---', correct: true},
+      {answer: '.- -- .. - ---', correct: false},
+      {answer: '.- -- .. -- .', correct: false},
+      {answer: '.- -- .. -- ..', correct: false}
+    ]
+  },
+  {
+    description: 'Traduce "paz" a código morse',
+    level_name: 'Examen I',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '.--. .- --..', correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "-. --- .-. - . ..." al Español',
+    level_name: 'Examen I',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'nortes', correct: true}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "AGUA" en código morse?',
+    level_name: 'Examen I',
+    questionable: MultipleChoice.create!(),
+    answers: [
+      {answer: '.- --. ..- .-', correct: true},
+      {answer: '.- --. ..- .', correct: false},
+      {answer: '.- --. ..- --', correct: false},
+      {answer: '.- --. ..- ..', correct: false}
+    ]
+  },
+  {
+    description: 'Completa la siguiente palabra en código morse:',
+    level_name: 'Examen I',
+    questionable: ToComplete.create!(keyword: "BUSCAR", toCompleteMorse: "-__. ._- ... ____ .- .-. .-.-."),
+    answers: [
+      {answer: "-... ..- ... -.-. .- .-. .-.-.", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "amigo" a código morse',
+    level_name: 'Examen I',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '.- -- .. --. ---', correct: true}
+    ]
+  },
+  {
+    description: 'Completa la siguiente palabra en código morse:',
+    level_name: 'Examen I',
+    questionable: ToComplete.create!(keyword: "BUSCAR", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
+    answers: [
+      {answer: "... .. .-.. .-.. .- .-.-.", correct: true}
     ]
   }
 ]
