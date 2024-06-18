@@ -234,7 +234,7 @@ questions_data = [
   {
     description: '¿Cómo se representa la letra "M" en código morse?',
     level_name: 'Examen I',
-    questionable: MultipleChoice.create!(),
+    questionable: Multiple_choice.create!(),
     answers: [
       {answer: '--', correct: true},
       {answer: '-.', correct: false},
@@ -261,7 +261,7 @@ questions_data = [
   {
     description: '¿Cómo se representa la palabra "AMIGO" en código morse?',
     level_name: 'Examen I',
-    questionable: MultipleChoice.create!(),
+    questionable: Multiple_choice.create!(),
     answers: [
       {answer: '.- -- .. --. ---', correct: true},
       {answer: '.- -- .. - ---', correct: false},
@@ -288,7 +288,7 @@ questions_data = [
   {
     description: '¿Cómo se representa la palabra "AGUA" en código morse?',
     level_name: 'Examen I',
-    questionable: MultipleChoice.create!(),
+    questionable: Multiple_choice.create!(),
     answers: [
       {answer: '.- --. ..- .-', correct: true},
       {answer: '.- --. ..- .', correct: false},
@@ -299,7 +299,7 @@ questions_data = [
   {
     description: 'Completa la siguiente palabra en código morse:',
     level_name: 'Examen I',
-    questionable: ToComplete.create!(keyword: "BUSCAR", toCompleteMorse: "-__. ._- ... ____ .- .-. .-.-."),
+    questionable: To_complete.create!(keyword: "BUSCAR", toCompleteMorse: "-__. ._- ... ____ .- .-. .-.-."),
     answers: [
       {answer: "-... ..- ... -.-. .- .-. .-.-.", correct: true}
     ]
@@ -315,7 +315,7 @@ questions_data = [
   {
     description: 'Completa la siguiente palabra en código morse:',
     level_name: 'Examen I',
-    questionable: ToComplete.create!(keyword: "BUSCAR", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
+    questionable: To_complete.create!(keyword: "BUSCAR", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
     answers: [
       {answer: "... .. .-.. .-.. .- .-.-.", correct: true}
     ]
