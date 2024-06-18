@@ -17,41 +17,20 @@
             <% @levels.each do |level| %>
                 <% if @levels_unlocked.include?(level) && @gm.completedLevel?(level: level, user: @user) %>
                     <div class="level completed shadow-sm bg-opacity-60 hover:font-semibold hover:scale-105 hover:ease-in hover:bg-orange-500 hover:border-y-2 hover:border-x-2 hover:transition-all transition duration-200" " onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
-                        Nivel <%= level.id %>
+                        <%= level.name %>
                     </div>
                 <% elsif @levels_unlocked.include?(level) %>
                     <div class="level unlocked bg-opacity-60 shadow-sm hover:font-semibold hover:scale-105 hover:ease-in hover:bg-orange-500 hover:border-y-2 hover:border-x-2 hover:transition-all transition duration-200 " onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
-                        Nivel <%= level.id %>
+                        <%= level.name %>
                     </div>
                 <% else %>
                     <div class="level locked" data-level="Nivel <%= level.id %>">
-                        Nivel <%= level.id %>
+                        <%= level.name %>
                     </div>
                 <% end %>
             <% end %>
         </div>
     </div>
-
-    <% if @show_success_popup %>
-    <div class="popup-overlay">
-        <div class="popup-content">
-            <section class="flex flex-col justify-center items-center px-16 py-20 bg-white rounded-xl shadow-sm max-w-[521px] max-md:px-5">
-                <header class="mt-2 text-3xl font-semibold tracking-tight leading-10 text-center text-black">
-                  ¡Nivel Completado!
-                </header>
-                <p class="mt-1 text-base leading-6 text-center text-black">Puntuación</p>
-                <p class="mt-1 text-2xl font-extrabold leading-9 text-center text-black"><%= @final_score %></p>
-                <button class="justify-center items-center self-stretch px-4 py-2 mt-6 text-base font-medium leading-6 text-white bg-violet-900 rounded-lg max-md:px-5" onclick="location.href='/jugar'" tabindex="0">
-                  Ir a Selección de Nivel
-                </button>
-                <div class="flex gap-2 justify-center self-stretch mt-6">
-                  <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
-                  <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
-                </div>
-            </section>
-        </div>
-    </div>
-    <% end %>
 
     <div class="footer">
         <div class="footer-button hover:transition-all hover:scale-110 transition duration-200" onclick="location.href='/jugar'">

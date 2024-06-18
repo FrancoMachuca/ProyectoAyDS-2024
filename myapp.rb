@@ -139,7 +139,8 @@ class MyApp < Sinatra::Application
             @level = Level.find_by(id: params[:level_id])
             if @question && @level
 
-                if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" || @question.questionable_type == "MouseTranslation"
+                if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" ||
+                   @question.questionable_type == "MouseTranslation"
                     @user_answer = @qm.buildUserAnswer(answer: params[:user_guess], question: @question)
                 else
                     @user_answer = Answer.find_by(id: params[:answer_id])

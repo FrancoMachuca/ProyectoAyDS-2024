@@ -17,11 +17,12 @@ users = [
 ]
 
 levels = [
-  {name: 'Level 1', playable: Lesson.create!()},
-  {name: 'Level 2', playable: Lesson.create!()},
-  {name: 'Level 3', playable: Lesson.create!()},
-  {name: 'Level 4', playable: Lesson.create!()},
-  {name: 'Level 5', playable: Lesson.create!()}
+  {name: 'Letras I', playable: Lesson.create!()},
+  {name: 'Letras II', playable: Lesson.create!()},
+  {name: 'Palabras I', playable: Lesson.create!()},
+  {name: 'Palabras II', playable: Lesson.create!()},
+  {name: 'Palabras III', playable: Lesson.create!()},
+  {name: 'Examen I', playable: Exam.create!(minScore: 5)}
 ]
 
 users.each do |u|
@@ -47,61 +48,187 @@ end
 
 # Creación de preguntas
 questions_data = [
+  # Nivel 1: Aprender letras (Fácil)
   {
-    description: 'Traduce "... --- .-.." al Español',
-    level_name: 'Level 1',
+    description: 'Traduce ".-" al Español',
+    level_name: 'Letras I',
     questionable: Translation.create!(),
     answers: [
-      {answer: 'sol', correct: true}
+      {answer: 'a', correct: true}
     ]
   },
   {
-    description: '¿Cómo se representa la palabra "SOL" en código morse?',
-    level_name: 'Level 1',
+    description: '¿Cómo se representa la letra "B" en código morse?',
+    level_name: 'Letras I',
     questionable: Multiple_choice.create!(),
     answers: [
-      {answer: '... --- .-.', correct: false},
-      {answer: '... --- ..', correct: false},
-      {answer: '... --- .-..', correct: true},
-      {answer: '... --- .--', correct: false}
+      {answer: '-...', correct: true},
+      {answer: '...-', correct: false},
+      {answer: '-.-.', correct: false},
+      {answer: '.--.', correct: false}
     ]
   },
   {
-    description: '¿Cómo se representa la palabra "CASA" en código morse?',
-    level_name: 'Level 1',
-    questionable: Multiple_choice.create!(),
+    description: 'Traduce "-.-." al Español',
+    level_name: 'Letras I',
+    questionable: Translation.create!(),
     answers: [
-      {answer: ' -.-. .- ... ..-', correct: false},
-      {answer: ' -.-. .- ... .-', correct: true},
-      {answer: '-.-. .- ... .', correct: false},
-      {answer: ' -.-. .- ..- .-', correct: false}
+      {answer: 'c', correct: true}
     ]
   },
   {
-    description: '¿Cómo se representa la palabra "SOS" en código morse?',
-    level_name: 'Level 1',
-    questionable: Multiple_choice.create!(),
-    answers: [
-      {answer: '.-.-.- ... .-.-.-', correct: false},
-      {answer: '... --- ...', correct: true},
-      {answer: '... --- ..', correct: false},
-      {answer: '... --- .-', correct: false}
-    ]
-  },
-  {
-    description: '¿Cómo se representa la palabra "SOS" en código morse?',
-    level_name: 'Level 1',
+    description: 'Traduce "d" a código morse',
+    level_name: 'Letras I',
     questionable: MouseTranslation.create!(),
     answers: [
-      {answer: '...---...', correct: true},
+      {answer: '-..', correct: true}
+    ]
+  },
+  # Nivel 2: Aprender letras (Medio)
+  {
+    description: 'Completa la siguiente letra en código morse:',
+    level_name: 'Letras II',
+    questionable: To_complete.create!(keyword: "A", toCompleteMorse: "._"),
+    answers: [
+      {answer: ".-", correct: true}
     ]
   },
   {
-    description: 'Completa la siguiente palabra:',
-    level_name: 'Level 2',
-    questionable: To_complete.create!(keyword: "Sol", toCompleteMorse: "... ____ .-.."),
+    description: 'Completa la siguiente letra en código morse:',
+    level_name: 'Letras II',
+    questionable: To_complete.create!(keyword: "P", toCompleteMorse: ".__."),
+    answers: [
+      {answer: ".--.", correct: true}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la letra "F" en código morse?',
+    level_name: 'Letras II',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: '..-.', correct: true},
+      {answer: '...-', correct: false},
+      {answer: '.-..', correct: false},
+      {answer: '-..-', correct: false}
+    ]
+  },
+  {
+    description: 'Traduce "h" a código morse',
+    level_name: 'Letras II',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '....', correct: true}
+    ]
+  },
+  # Nivel 3: Aprender palabras (Fácil)
+  {
+    description: '¿Cómo se representa la palabra "GATO" en código morse?',
+    level_name: 'Palabras I',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: '--. .- - ---', correct: true},
+      {answer: '--. .- .. ---', correct: false},
+      {answer: '--. .- - ..', correct: false},
+      {answer: '--. .- .- -', correct: false}
+    ]
+  },
+  {
+    description: 'Traduce "--. .- - ---" al Español',
+    level_name: 'Palabras I',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'gato', correct: true}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "PERRO" en código morse?',
+    level_name: 'Palabras I',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: '.--. . .-. .-. ---', correct: true},
+      {answer: '.--. . .-. .-. .-', correct: false},
+      {answer: '.--. . .-. .- .-', correct: false},
+      {answer: '.--. . .-. .- ---', correct: false}
+    ]
+  },
+  {
+    description: 'Traduce "sol" a código morse',
+    level_name: 'Palabras I',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '... --- .-..', correct: true}
+    ]
+  },
+  # Nivel 4: Aprender palabras (Medio)
+  {
+    description: 'Completa la siguiente palabra en código morse:',
+    level_name: 'Palabras II',
+    questionable: To_complete.create!(keyword: "CASA", toCompleteMorse: "-.-. .- ___ .-"),
+    answers: [
+      {answer: "-.-. .- ... .-", correct: true}
+    ]
+  },
+  {
+    description: 'Completa la siguiente palabra en código morse:',
+    level_name: 'Palabras II',
+    questionable: To_complete.create!(keyword: "SOL", toCompleteMorse: "... ___ .-.."),
     answers: [
       {answer: "... --- .-..", correct: true}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "LUNA" en código morse?',
+    level_name: 'Palabras II',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: '.-.. ..- -. .-', correct: true},
+      {answer: '.-.. ..- -. .', correct: false},
+      {answer: '.-.. ..- .. .-', correct: false},
+      {answer: '.-.. ..- -. ..', correct: false}
+    ]
+  },
+  {
+    description: 'Traduce "casa" a código morse',
+    level_name: 'Palabras II',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '-.-. .- ... .-', correct: true}
+    ]
+  },
+  # Nivel 5: Aprender palabras (Difícil)
+  {
+    description: '¿Cómo se representa la palabra "PROGRAMAR" en código morse?',
+    level_name: 'Palabras III',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: '.--. .-. --- --. .-. .- -- .- .-.', correct: true},
+      {answer: '.--. .-. --- --. .-. .- -- .-', correct: false},
+      {answer: '.--. .-. --- --. .-. .- -- .-..', correct: false},
+      {answer: '.--. .-. --- --. .-. .- -- .-.-', correct: false}
+    ]
+  },
+  {
+    description: 'Traduce ".--. .-. --- --. .-. .- -- .- .-." al Español',
+    level_name: 'Palabras III',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'programar', correct: true}
+    ]
+  },
+  {
+    description: 'Completa la siguiente palabra en código morse:',
+    level_name: 'Palabras III',
+    questionable: To_complete.create!(keyword: "CODIGO", toCompleteMorse: "____ --- -.. __ --. ---"),
+    answers: [
+      {answer: "-.-. --- -.. .. --. ---", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "código" a código morse',
+    level_name: 'Palabras III',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '-.-. --- -.. .. --. ---', correct: true}
     ]
   }
 ]

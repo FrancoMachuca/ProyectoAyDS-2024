@@ -18,10 +18,11 @@
 
     .indicator {
       position: absolute;
-      top: -10px; /* Aumentado para hacer los indicadores más grandes */
-      height: 40px; /* Aumentado para hacer los indicadores más grandes */
+      top: -10px;
+      height: 40px;
       width: 8px;
       background-color: red;
+      transition: background-color 0.3s;
     }
     .middle-indicator {
       left: 50%;
@@ -32,8 +33,8 @@
       transform: translateX(-50%);
     }
     .morse-output {
-      font-size: 2rem; /* Mismo tamaño que el título */
-      font-weight: 700; /* Mismo peso que el título */
+      font-size: 2rem;
+      font-weight: 700;
       text-align: center;
       margin-top: 1rem;
       opacity: 0;
@@ -41,6 +42,17 @@
     }
     .morse-output.show {
       opacity: 1;
+    }
+    .tooltip {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      transform: translateX(-50%);
+      top: -40px;
     }
   </style>
 </head>
@@ -60,10 +72,15 @@
         <div class="click-area relative w-52 h-24 bg-black cursor-pointer m-auto rounded-xl shadow-lg " onclick="handleClick()"></div>
         <div class="progress-bar relative w-52 h-5 bg-gray-400 mt-3 rounded-xl overflow-hidden">
           <div class="h-full bg-green-500 w-0" id="progress"></div>
-          <div class="indicator absolute  middle-indicator"></div>
-          <div class="indicator end-indicator"></div>
+          <div class="indicator middle-indicator" id="middle-indicator">
+            <div class="tooltip">Punto (.)</div>
+          </div>
+          <div class="indicator end-indicator" id="end-indicator">
+            <div class="tooltip">Raya (-)</div>
+          </div>
         </div>
         <div id="morse-output" class="morse-output"></div>
+        <p class="text-center mt-2 text-gray-600">Esperar a que la barra se llene equivale a un espacio</p>
         <form action="/level/<%= @level.id %>/<%= @question.id %>/check" method="post" class="w-full mt-5">
           <input type="hidden" name="question_id" value="<%= @question.id %>">
           <input type="hidden" id="morse-string" name="user_guess">
@@ -141,6 +158,8 @@ function handleClick() {
 
 function fillProgressBar() {
   const progressBar = document.getElementById('progress');
+  const middleIndicator = document.getElementById('middle-indicator');
+  const endIndicator = document.getElementById('end-indicator');
   let width = 0;
   progressInterval = setInterval(() => {
     if (width >= 100) {
@@ -153,6 +172,18 @@ function fillProgressBar() {
     } else {
       width += 2; // Incremento del 2% cada 20ms para un total de 1s
       progressBar.style.width = width + '%';
+
+      if (width >= 35 && width <= 65) {
+        middleIndicator.style.backgroundColor = 'green';
+      } else {
+        middleIndicator.style.backgroundColor = 'red';
+      }
+
+      if (width >= 85 && width <= 95) {
+        endIndicator.style.backgroundColor = 'green';
+      } else {
+        endIndicator.style.backgroundColor = 'red';
+      }
     }
   }, 20);
 }
@@ -188,6 +219,11 @@ function displayMorseOutput(symbol) {
 function resetProgressBar() {
   const progressBar = document.getElementById('progress');
   progressBar.style.width = '0%';
+
+  const middleIndicator = document.getElementById('middle-indicator');
+  const endIndicator = document.getElementById('end-indicator');
+  middleIndicator.style.backgroundColor = 'red';
+  endIndicator.style.backgroundColor = 'red';
 }
 
 function checkCompletion() {
