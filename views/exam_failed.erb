@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<% if @level.playable_type == "Exam" %>
+<section class="flex flex-col justify-center items-center px-16 py-20 bg-white rounded-xl shadow-sm max-w-[521px] mx-auto">
+  <header class="mt-2 text-3xl font-semibold tracking-tight leading-10 text-center text-black">
+    ¡Examen Fallado!
+  </header>
+  <p class="mt-1 text-base leading-6 text-center text-black">Puntuación</p>
+  <p class="mt-1 text-2xl font-extrabold leading-9 text-center text-black"><%= @final_score %></p>
+  <p class="mt-1 text-2xl font-extrabold leading-9 text-center text-black">Puntuación mínima requerida para aprobar: <%= @level.exam.minScore %></p>
+  <button onclick="redirectToMenu()" class="justify-center items-center self-stretch px-4 py-2 mt-6 text-base font-medium leading-6 text-white bg-black rounded-lg max-md:px-5 hover:bg-red-700 hover:transition-all transition duration-200 hover:ease-in hover:scale-105" tabindex="0">
+    Ir a Selección de Nivel
+  </button>
+  <div class="flex gap-2 justify-center self-stretch mt-6">
+    <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
+    <hr class="flex-1 shrink-0 h-px bg-neutral-200" />
+  </div>
+</section>
+<% end %>

@@ -64,6 +64,13 @@
   </div>
 </div>
 
+<!-- Failure Modal -->
+<div id="failure-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <%= erb :exam_failed %>
+  </div>
+</div>
+
 <script>
 function toggleHelpModal() {
   var modal = document.getElementById('help-modal');
@@ -77,6 +84,11 @@ function toggleQuitModal() {
 
 function toggleSuccessModal() {
   var modal = document.getElementById('success-modal');
+  modal.classList.toggle('hidden');
+}
+
+function toggleFailureModal() {
+  var modal = document.getElementById('failure-modal');
   modal.classList.toggle('hidden');
 }
 
@@ -94,7 +106,13 @@ function salirHandler() {
 
 <% if @show_success_popup %>
 document.addEventListener('DOMContentLoaded', function() {
-  toggleSuccessModal();
+    toggleSuccessModal();
+});
+<% end %>
+
+<% if @show_failure_popup %>
+document.addEventListener('DOMContentLoaded', function() {
+    toggleFailureModal();
 });
 <% end %>
 </script>
