@@ -26,7 +26,7 @@ class QuestionsManager
       return answer.correct
     elsif question.questionable_type == 'Translation' || question.questionable_type == 'To_complete' || question.questionable_type == 'MouseTranslation'
       user_guess = answer.answer.gsub(/\s+/, "").downcase
-      correct_phrase = question.answer.answer.gsub(/\s+/, "").downcase
+      correct_phrase = question.answers.find_by(correct: true).answer.gsub(/\s+/, "").downcase
       return user_guess == correct_phrase
     else
       puts "No se reconoce el tipo"

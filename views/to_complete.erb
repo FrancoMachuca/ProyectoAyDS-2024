@@ -26,7 +26,7 @@
           <form action="/level/<%= @level.id %>/<%= @question.id %>/check" method="post" class="w-full">
             <input type="hidden" name="question_id" value="<%= @question.id %>">
             <div class="mb-2">
-              <input type="text" name="user_guess" rows="4" class="p-5 bg-black rounded-xl shadow-sm w-full text-white" placeholder="Escribe la palabra completa en morse aquí...">
+              <input type="text" name="user_guess" class="p-5 bg-black rounded-xl shadow-sm w-full text-white" placeholder="Escribe la palabra completa en morse aquí...">
               <br>
               <button type="submit" class="mt-5 p-5 bg-purple-700 rounded-xl shadow-sm text-white w-full hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-purple-900">Guardar Respuesta</button>
             </div>

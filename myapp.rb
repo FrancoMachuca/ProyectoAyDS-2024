@@ -137,6 +137,7 @@ class MyApp < Sinatra::Application
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
             if @question && @level
+
                 if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" || @question.questionable_type == "MouseTranslation"
                     @user_answer = @qm.buildUserAnswer(answer: params[:user_guess], question: @question)
                 else
@@ -145,6 +146,7 @@ class MyApp < Sinatra::Application
                 if @qm.correctAnswer?(answer: @user_answer, question: @question)
                     session[:user_level_score] += 100
                 end
+
                 @next_question = @qm.nextQuestion(question: @question)
                 if @next_question
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
@@ -154,6 +156,7 @@ class MyApp < Sinatra::Application
                         @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
                         @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
                     end
+
                     session[:userLevelScore] = 0
                     # Se debería mostrar el popup
                     @show_success_popup = true
