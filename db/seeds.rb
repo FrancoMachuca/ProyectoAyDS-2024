@@ -315,7 +315,7 @@ questions_data = [
   {
     description: 'Completa la siguiente palabra en código morse:',
     level_name: 'Examen I',
-    questionable: ToComplete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
+    questionable: To_complete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .- .-__."),
     answers: [
       {answer: "... .. .-.. .-.. .- .-.-.", correct: true}
     ]

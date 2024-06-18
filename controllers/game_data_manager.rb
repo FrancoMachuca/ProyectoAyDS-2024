@@ -53,8 +53,10 @@ class GameDataManager
             nextLevel = Level.where("id > ?", possiblyCompleted.id).first
             if nextLevel
                 UserLevel.create(user: user, level: nextLevel, userLevelScore: 0)
+                return true
             end
         end
+        return false
     end
 
     def addUserLevelScore(user: User, level: Level, value: int)
