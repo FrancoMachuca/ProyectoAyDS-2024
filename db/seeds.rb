@@ -8,6 +8,7 @@ require_relative '../models/translation'
 require_relative '../models/answer'
 require_relative '../models/user_level'
 require_relative '../models/to_complete'
+require_relative '../models/mouse_translation'
 
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
@@ -85,6 +86,14 @@ questions_data = [
       {answer: '... --- ...', correct: true},
       {answer: '... --- ..', correct: false},
       {answer: '... --- .-', correct: false}
+    ]
+  },
+  {
+    description: '¿Cómo se representa la palabra "SOS" en código morse?',
+    level_name: 'Level 1',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '.', correct: false},
     ]
   },
   {
