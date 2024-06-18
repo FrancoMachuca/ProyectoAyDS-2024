@@ -137,6 +137,7 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
+            @user = User.find_by(id: session[:user_id])
             if @question && @level
 
                 if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" ||
@@ -154,33 +155,29 @@ class MyApp < Sinatra::Application
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else
                     if @level.playable_type == "Lesson"
-                        if session[:user_level_score] >= 0
-                            @user = User.find_by(id: session[:user_id])
-                            @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
-                            @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
-                        end
-
-                        session[:userLevelScore] = 0
-                        # Se debería mostrar el popup
-                        @show_success_popup = true
+                        @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
                         @final_score = @gm.getLevelScore(user: @user, level: @level)
-                        erb @qm.show(question: @question)
+                        if session[:user_level_score] > 0
+                            @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
+                            @show_success_popup = true
+                            session[:userLevelScore] = 0
+                            erb @qm.show(question: @question)
+                        else
+                            @show_failure_popup = true
+                            session[:userLevelScore] = 0
+                            erb @qm.show(question: @question)
+                        end
                     else
+                        @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
+                        @final_score = @gm.getLevelScore(user: @user, level: @level)
                         if session[:user_level_score] >= @level.exam.minScore
-                            @user = User.find_by(id: session[:user_id])
-                            @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
                             @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
                             session[:userLevelScore] = 0
-                            # Se debería mostrar el popup
                             @show_success_popup = true
-                            @final_score = @gm.getLevelScore(user: @user, level: @level)
                             erb @qm.show(question: @question)
-                        else 
-                            @user = User.find_by(id: session[:user_id])
-                            @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
+                        else
                             session[:userLevelScore] = 0
                             @show_failure_popup = true
-                            @final_score = @gm.getLevelScore(user: @user, level: @level)
                             erb @qm.show(question: @question)
                         end
                     end
