@@ -191,7 +191,7 @@ function fillProgressBar() {
 function checkTiming() {
   const progressBar = document.getElementById('progress');
   const width = parseFloat(progressBar.style.width);
-  if (width >= 45 && width <= 55) {
+  if (width >= 35 && width <= 65) {
     morseString += '.';
     displayMorseOutput('.');
   } else if (width >= 85 && width <= 95) {
@@ -223,7 +223,11 @@ function resetProgressBar() {
 
 function checkCompletion() {
   console.log('Cadena actual de Morse:', morseString);
-  document.getElementById('morse-string').value = morseString;
+  if (morseString == '') {
+    document.getElementById('morse-string').value = morseString;
+  } else {
+    document.getElementById('morse-string').value += morseString;
+  }
   morseString = '';
 }
 
