@@ -20,6 +20,13 @@ RSpec.describe 'The Server' do
       follow_redirect!
     end
 
+    it "redirects to the login page correctly when no other route is specified" do
+      get '/'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+    end
+
     it "loads the login page correctly" do
       get '/login'
       expect(last_response).to be_ok
