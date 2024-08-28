@@ -9,7 +9,7 @@ RSpec.describe 'The Server' do
   include Rack::Test::Methods
 
   def app
-    # Sinatra::Appplication
+    # Sinatra::Application
     MyApp.new
   end
 
@@ -130,11 +130,111 @@ RSpec.describe 'The Server' do
       follow_redirect!
       expect(last_request.path).to eq('/login')
     end
-    
+
     it "shows an error if the user already exists" do
       User.create(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
       post '/registro', name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com'
       expect(last_response).to_not be_redirect
+    end
+  end
+
+  context "questionsManager" do
+    let(:qm) { QuestionsManager.new }
+    let(:level) { Level.create}
+    let(:question1) { Question.new(questionable_type: "Multiple_choice", level: level) }
+    let(:question2) { Question.create(description: "prueba1", questionable_type: "Translation", level: level) }
+    let(:question3) { Question.create(description: "prueba2", questionable_type: "To_complete", level: level) }
+    let(:question4) { Question.create(description: "prueba3", questionable_type: "MouseTranslation", level: level) }
+
+    before do
+      level.questions.push(question2)
+      level.questions.push(question3)
+      level.questions.push(question4)
+    end
+
+    describe "#show" do
+      it "shows multiple_choice view" do
+        expect(qm.show(question: question1)).to eq(:multiple_choice)
+      end
+
+      it "shows translation view" do
+        expect(qm.show(question: question2)).to eq(:translation)
+      end
+
+      it "shows to_complete view" do
+        expect(qm.show(question: question3)).to eq(:to_complete)
+      end
+
+      it "shows mouse_translation view" do
+        expect(qm.show(question: question4)).to eq(:mouse_translation)
+      end
+    end
+
+    describe "#correctAnswer?" do
+
+      it "multiple_choice return true if answer is true" do
+        correct_answer = Answer.new(answer: "respuesta", correct: true, question: question1)
+        expect(qm.correctAnswer?(answer: correct_answer, question: question1)).to be true
+      end
+
+      it "multiple_choice return false if answer is false" do
+        incorrect_answer = Answer.new(answer: "respuesta", correct: false, question: question1)
+        expect(qm.correctAnswer?(answer: incorrect_answer, question: question1)).to be false
+      end
+
+      it "translation return true if user_answer equals translation expected aswer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question2)
+        expect(qm.correctAnswer?(answer: correct_answer, question: question2)).to be true
+      end
+
+      it "translation return false if user_answer not equals translation expected aswer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question2)
+        incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question2)
+        expect(qm.correctAnswer?(answer: incorrect_answer, question: question2)).to be false
+      end
+
+      it "to_complete return true if user_answer equals to_complete expected aswer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question3)
+        expect(qm.correctAnswer?(answer: correct_answer, question: question3)).to be true
+      end
+
+      it "to_complete return false if user_answer not equals to_complete expected aswer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question3)
+        incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question3)
+        expect(qm.correctAnswer?(answer: incorrect_answer, question: question3)).to be false
+      end
+
+      it "mouse_translation return true if user_answer equals mouse_translation expected aswer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question4)
+        expect(qm.correctAnswer?(answer: correct_answer, question: question4)).to be true
+      end
+
+      it "mouse_translation return false if user_answer not equals mouse_translation expected aswer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question4)
+        incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question4)
+        expect(qm.correctAnswer?(answer: incorrect_answer, question: question4)).to be false
+      end
+
+      it "Other questionable_type" do
+        question = Question.create(questionable_type: "Hola", level: level)
+        correct_answer = Answer.new(answer: "respuesta", correct: true, question: question)
+        expect(qm.correctAnswer?(answer: correct_answer, question: question)).to be nil
+      end
+    end
+
+    describe "#nextQuestion" do
+      it "return next question of a question" do
+        expect(qm.nextQuestion(question: question2)).to be question3
+      end
+    end
+
+    describe '#buildUserAnswer' do
+      it 'crea una nueva respuesta de usuario' do
+        user_answer = qm.buildUserAnswer(answer: "respuesta del usuario", question: question1)
+        expect(user_answer.answer).to eq("respuesta del usuario")
+        expect(user_answer.correct).to be false
+        expect(user_answer.question).to eq(question1)
+      end
     end
   end
 end
