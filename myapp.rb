@@ -59,9 +59,6 @@ class MyApp < Sinatra::Application
                 @gm.createGameDataFor(user: user)
                 session[:user_id] = user.id
                 redirect '/login'
-            else
-                @error_message = "Error al crear cuenta"
-                erb :registro
             end
         end
     end

@@ -80,12 +80,18 @@ RSpec.describe 'The Server' do
       follow_redirect!
       expect(last_request.path).to eq('/login')
     end
+
+    it "shows an error message if log in credentials are incorrect" do
+      post '/login', name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com'
+      expect(last_response.body).to include("Nombre de usuario o contraseña son incorrectas")
+    end
   end
 
   context "when logged in" do
     before(:each) do
       get '/logout'
       post '/login', name: 'Valentino Natali', password: '123'
+      @TUser = User.find(session[:user_id])
     end
 
     it "shows the level selection page" do
@@ -112,6 +118,18 @@ RSpec.describe 'The Server' do
     it "shows the ranking page" do
       get '/ranking'
       expect(last_response).to be_ok
+    end
+
+    it "shows the profile page correctly" do
+      get '/perfil'
+      expect(last_response).to be_ok #Esto se puede hacer de otra forma mas exhaustiva? Por Ej chequear los datos que aparecen?
+    end
+  end
+
+  context "playing" do
+    before(:each) do
+      get '/logout'
+      
     end
   end
 
