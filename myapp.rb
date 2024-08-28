@@ -102,14 +102,18 @@ class MyApp < Sinatra::Application
 
     get '/level/:level_id' do
         if session[:user_id]
-            session[:user_level_score] = 0
             @user = User.find(session[:user_id])
             @level = Level.find(params[:level_id])
-            if @gm.completedLevel?(user: @user, level: @level)
-                @gm.resetUserLevelScore(user: @user, level: @level)
+            if @gm.unlockedLevel?(user: @user, level: @level)
+                session[:user_level_score] = 0
+                if @gm.completedLevel?(user: @user, level: @level)
+                    @gm.resetUserLevelScore(user: @user, level: @level)
+                end
+                @questions = Question.where(level_id: params[:level_id])
+                redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
+            else
+                redirect '/jugar'
             end
-            @questions = Question.where(level_id: params[:level_id])
-            redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
         else
             redirect '/login'
         end

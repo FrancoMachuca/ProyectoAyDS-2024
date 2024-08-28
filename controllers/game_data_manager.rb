@@ -36,8 +36,8 @@ class GameDataManager
     end
 
     def completedLevel?(level: Level, user: User)
-        row = UserLevel.find_by(user: user, level: level)
-        if row
+        if unlockedLevel?(level: level, user: user)
+            row = UserLevel.find_by(user: user, level: level)
             if row.level.playable_type == "Exam"
                 return row.userLevelScore >= row.level.exam.minScore
             else
@@ -46,6 +46,11 @@ class GameDataManager
         else
             return false
         end
+    end
+
+    def unlockedLevel?(level: Level, user: User)
+        row = UserLevel.find_by(user: user, level: level)
+        return !row.nil?
     end
 
     def unlockNextLevelFor(user: User, possiblyCompleted: Level)
@@ -68,13 +73,6 @@ class GameDataManager
 
     def resetUserLevelScore(user: User, level: Level)
         addUserLevelScore(user: user, level: level, value: 0)
-    end
-
-    def getLevelScore(user: User, level: Level)
-        row = UserLevel.find_by(user: user, level: level)
-        if row
-            return row.userLevelScore
-        end
     end
 
     def getUserRank(user: User)
