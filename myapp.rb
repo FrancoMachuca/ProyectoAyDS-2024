@@ -121,11 +121,17 @@ class MyApp < Sinatra::Application
 
     get '/level/:level_id/:question_id' do
         if session[:user_id]
-            @level = Level.find(params[:level_id])
-            @question = Question.find(params[:question_id])
-            @answers = Answer.where(question_id: @question.id)
-            if @level && @question && @answers
-               erb @qm.show(question: @question)
+            if Level.exists?(params[:level_id])
+                @level = Level.find(params[:level_id])
+                if @level.questions.exists?(params[:question_id])
+                    @question = Question.find(params[:question_id])
+                    @answers = Answer.where(question_id: @question.id)
+                    if @level && @question && @answers
+                      erb @qm.show(question: @question)
+                    end
+                else
+                    redirect '/jugar'
+                end
             else
                 redirect '/jugar'
             end

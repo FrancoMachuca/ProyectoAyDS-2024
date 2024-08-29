@@ -132,7 +132,7 @@ RSpec.describe 'The Server' do
     end
   end
 
-  context "playing" do
+  context "when playing" do
     before(:each) do
       get '/logout'
       u = User.new(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
@@ -180,7 +180,7 @@ RSpec.describe 'The Server' do
     it "enters to an exam correctly" do
       get '/level/6'
       follow_redirect!
-      expect(last_response). to be_ok
+      expect(last_response).to be_ok
     end
 
     it "shows the profile page correctly" do
@@ -199,7 +199,73 @@ RSpec.describe 'The Server' do
       follow_redirect!
       expect(last_request.path).to eq("/jugar")
     end
+
+    it "checks an answer correctly (User-input)" do
+      get '/level/1'
+      follow_redirect!
+      post '/level/1/1/check', user_guess: 'a'
+      follow_redirect!
+      expect(last_request.path).to eq('/level/1/2')
+    end
+
+    it "checks an answer correctly (Multiple-choice)" do
+      get '/level/2'
+      follow_redirect!
+      post '/level/1/2/check', answer_id: '2'
+      follow_redirect!
+      expect(last_request.path).to eq('/level/1/3')
+    end
+    it "redirects to the level selection page when trying to access an invalid question" do
+      get '/level/1/21'
+      follow_redirect!
+      expect(last_request.path).to eq('/jugar')
+    end
+
+    it "redirects to the level selection page when trying to access an invalid level" do
+      get '/level/100/1'
+      follow_redirect!
+      expect(last_request.path).to eq('/jugar')
+    end
+
+    it "redirects to the level selection page when trying to answer an invalid question" do
+      post '/level/1/45/check', user_guess: 'a'
+      follow_redirect!
+      expect(last_request.path).to eq('/jugar')
+    end
+
+    it "redirects to the level selection page when trying to answer a question of an invalid level" do
+      post '/level/100/1/check'
+      follow_redirect!
+      expect(last_request.path).to eq('/jugar')
+    end
+
+    it "shows the level success popup correctly" do
+      get '/level/1'
+      follow_redirect!
+      post '/level/1/1/check', user_guess: 'a'
+      follow_redirect!
+      post '/level/1/2/check', answer_id: '1'
+      follow_redirect!
+      post '/level/1/3/check', user_guess: 'b'
+      follow_redirect!
+      post '/level/1/4/check', user_guess: '.-' 
+      expect(last_response).to be_ok
+    end
+
+    it "shows the level failed popup correctly" do
+      get '/level/1'
+      follow_redirect!
+      post '/level/1/1/check', user_guess: 'abc'
+      follow_redirect!
+      post '/level/1/2/check', answer_id: '4'
+      follow_redirect!
+      post '/level/1/3/check', user_guess: 'bca'
+      follow_redirect!
+      post '/level/1/4/check', user_guess: '.' 
+      expect(last_response).to be_ok
+    end
   end
+  
 
   context "registration" do
     before(:each) do
@@ -268,39 +334,39 @@ RSpec.describe 'The Server' do
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question1)).to be false
       end
 
-      it "translation return true if user_answer equals translation expected aswer" do
+      it "translation return true if user_answer equals translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question2)
         expect(qm.correctAnswer?(answer: correct_answer, question: question2)).to be true
         correct_answer.destroy
       end
 
-      it "translation return false if user_answer not equals translation expected aswer" do
+      it "translation return false if user_answer not equals translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question2)
         incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question2)
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question2)).to be false
         correct_answer.destroy
       end
 
-      it "to_complete return true if user_answer equals to_complete expected aswer" do
+      it "to_complete return true if user_answer equals to_complete expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question3)
         expect(qm.correctAnswer?(answer: correct_answer, question: question3)).to be true
         correct_answer.destroy
       end
 
-      it "to_complete return false if user_answer not equals to_complete expected aswer" do
+      it "to_complete return false if user_answer not equals to_complete expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question3)
         incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question3)
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question3)).to be false
         correct_answer.destroy
       end
 
-      it "mouse_translation return true if user_answer equals mouse_translation expected aswer" do
+      it "mouse_translation return true if user_answer equals mouse_translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question4)
         expect(qm.correctAnswer?(answer: correct_answer, question: question4)).to be true
         correct_answer.destroy
       end
 
-      it "mouse_translation return false if user_answer not equals mouse_translation expected aswer" do
+      it "mouse_translation return false if user_answer not equals mouse_translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question4)
         incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question4)
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question4)).to be false
