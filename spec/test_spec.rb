@@ -337,40 +337,48 @@ RSpec.describe 'The Server' do
       it "translation return true if user_answer equals translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question2)
         expect(qm.correctAnswer?(answer: correct_answer, question: question2)).to be true
+        correct_answer.destroy
       end
 
       it "translation return false if user_answer not equals translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question2)
         incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question2)
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question2)).to be false
+        correct_answer.destroy
       end
 
       it "to_complete return true if user_answer equals to_complete expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question3)
         expect(qm.correctAnswer?(answer: correct_answer, question: question3)).to be true
+        correct_answer.destroy
       end
 
       it "to_complete return false if user_answer not equals to_complete expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question3)
         incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question3)
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question3)).to be false
+        correct_answer.destroy
       end
 
       it "mouse_translation return true if user_answer equals mouse_translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question4)
         expect(qm.correctAnswer?(answer: correct_answer, question: question4)).to be true
+        correct_answer.destroy
       end
 
       it "mouse_translation return false if user_answer not equals mouse_translation expected answer" do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question4)
         incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question4)
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question4)).to be false
+        correct_answer.destroy
       end
 
       it "Other questionable_type" do
         question = Question.create(questionable_type: "Hola", level: level)
         correct_answer = Answer.new(answer: "respuesta", correct: true, question: question)
         expect(qm.correctAnswer?(answer: correct_answer, question: question)).to be nil
+        correct_answer.destroy
+        question.destroy
       end
     end
 
@@ -386,6 +394,7 @@ RSpec.describe 'The Server' do
         expect(user_answer.answer).to eq("respuesta del usuario")
         expect(user_answer.correct).to be false
         expect(user_answer.question).to eq(question1)
+        user_answer.destroy
       end
     end
   end
