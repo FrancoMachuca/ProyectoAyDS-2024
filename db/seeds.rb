@@ -9,6 +9,7 @@ require_relative '../models/answer'
 require_relative '../models/user_level'
 require_relative '../models/to_complete'
 require_relative '../models/mouse_translation'
+require_relative '../models/falling_object'
 
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
@@ -22,7 +23,8 @@ levels = [
   {name: 'Palabras I', playable: Lesson.create!()},
   {name: 'Palabras II', playable: Lesson.create!()},
   {name: 'Palabras III', playable: Lesson.create!()},
-  {name: 'Examen I', playable: Exam.create!(minScore: 500)}
+  {name: 'Examen I', playable: Exam.create!(minScore: 500)},
+  {name: 'Test', playable: Lesson.create!()}
 ]
 
 users.each do |u|
@@ -318,6 +320,14 @@ questions_data = [
     questionable: To_complete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .-"),
     answers: [
       {answer: "... .. .-.. .-.. .-", correct: true}
+    ]
+  },
+  {
+    description: '',
+    level_name: 'Test',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "...", correct: true}
     ]
   }
 ]

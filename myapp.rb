@@ -167,7 +167,7 @@ class MyApp < Sinatra::Application
                     session[:user_level_score] = 0
                     if @gm.completedLevel?(level: @level, user: @user)
                         @show_success_popup = true
-                    else 
+                    else
                         @show_failure_popup = true
                     end
                     @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
@@ -179,5 +179,10 @@ class MyApp < Sinatra::Application
         else
             redirect "/login"
         end
+    end
+
+    get '/test' do
+        @question = Question.last
+        erb :falling_object
     end
 end

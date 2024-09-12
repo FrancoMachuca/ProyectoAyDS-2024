@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= @question.description %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="/css/output.css" rel="stylesheet">
+  <link href="icon.ico" rel="icon">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      height: 100vh;
+    }
+
+    section {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #6b46c1, #cbd5e0); /* Gradiente de púrpura a gris */
+    }
+
+    .game-container {
+      position: relative;
+      width: 90vw; /* Mantener el ancho flexible */
+      height: 70vh; /* Ajustar altura */
+      max-width: 800px; /* Limitar a 800px como máximo */
+      background-color: #e2e8f0; /* gris claro */
+      border-radius: 10px;
+      overflow: hidden; /* Para asegurar que nada se salga del contenedor */
+    }
+
+    .player-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0; /* Se inicia a la izquierda */
+      width: 20%; /* Ajustamos el tamaño de la barra del jugador */
+      height: 5%; /* Ajustar la altura de la barra del jugador */
+      background-color: black;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<section>
+  <article class="flex flex-col items-center mt-0 mb-0 rounded-xl shadow-sm bg-white bg-opacity-80 px-4"> 
+    <button onclick="toggleHelpModal()" class="absolute top-2 right-2 hover:scale-105 hover:transition-all transition duration-200">
+      <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/72823194a7d8c0df30eef42247c0bbe3e290abf4fb1c9e37ed6e1cb9eda1c452?apiKey=0336232ee457421bbd9ee3e8fe6e3499&" alt="Ayuda" class="w-16 aspect-[0.77]" />
+    </button>
+
+    <h2 class="mt-1.5 text-xl font-extrabold text-center text-purple-950 max-md:max-w-full">Puntuación Actual: <%= session[:user_level_score] %></h2>
+    <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
+
+    <div class="game-container mt-10">
+      <!-- Barra controlada por el jugador -->
+      <div id="player-bar" class="player-bar"></div>
+    </div>
+  </article>
+</section>
+
+<!-- Help Modal -->
+<div id="help-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <button onclick="toggleHelpModal()" class="relative">&times;</button>
+    <img src="https://www.electronics-notes.com/images/morse-code-table-alphabet-letters.svg" alt="Tabla" class="w-full h-auto">
+  </div>
+</div>
+
+<script>
+function toggleHelpModal() {
+  var modal = document.getElementById('help-modal');
+  modal.classList.toggle('hidden');
+}
+
+// Variables globales
+let intervalId = null;
+const movementSpeed = 7; // Velocidad ajustada
+
+// Mover la barra a la izquierda
+function moveLeft() {
+  const playerBar = document.getElementById('player-bar');
+  const container = playerBar.parentElement;
+  let playerPosition = playerBar.offsetLeft;
+
+  // Limitar movimiento para que no salga del borde izquierdo
+  if (playerPosition > 0) {
+    playerBar.style.left = (playerPosition - movementSpeed) + 'px';
+  }
+}
+
+// Mover la barra a la derecha
+function moveRight() {
+  const playerBar = document.getElementById('player-bar');
+  const container = playerBar.parentElement;
+  let playerPosition = playerBar.offsetLeft;
+  const containerWidth = container.offsetWidth;
+
+  // Limitar movimiento para que no salga del borde derecho
+  if (playerPosition + playerBar.offsetWidth < containerWidth) {
+    playerBar.style.left = (playerPosition + movementSpeed) + 'px';
+  }
+}
+
+// Detectar teclas presionadas
+document.addEventListener('keydown', function(event) {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+
+  if (event.key === 'ArrowLeft' || event.key === 'a') {
+    intervalId = setInterval(moveLeft, 10); // Intervalos cortos para movimiento rápido
+  } else if (event.key === 'ArrowRight' || event.key === 'd') {
+    intervalId = setInterval(moveRight, 10); // Intervalos cortos para movimiento rápido
+  }
+});
+
+// Detener el movimiento al soltar la tecla
+document.addEventListener('keyup', function(event) {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+});
+</script>
+
+</body>
+</html>
