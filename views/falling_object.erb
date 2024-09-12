@@ -25,22 +25,29 @@
 
     .game-container {
       position: relative;
-      width: 90vw; /* Mantener el ancho flexible */
-      height: 70vh; /* Ajustar altura */
-      max-width: 800px; /* Limitar a 800px como máximo */
-      background-color: #e2e8f0; /* gris claro */
+      width: 90vw;
+      height: 70vh;
+      max-width: 800px;
+      background-color: #e2e8f0;
       border-radius: 10px;
-      overflow: hidden; /* Para asegurar que nada se salga del contenedor */
+      overflow: hidden;
     }
 
     .player-bar {
       position: absolute;
       bottom: 0;
-      left: 0; /* Se inicia a la izquierda */
-      width: 20%; /* Ajustamos el tamaño de la barra del jugador */
-      height: 5%; /* Ajustar la altura de la barra del jugador */
+      left: 0;
+      width: 15%; /* Reducir tamaño de la barra */
+      height: 4%;  /* Más plana */
       background-color: black;
       border-radius: 5px;
+    }
+
+    .falling-object {
+      position: absolute;
+      font-size: 2rem;
+      font-family: 'Nunito', sans-serif;
+      color: black;
     }
   </style>
 </head>
@@ -56,7 +63,6 @@
     <h1 class="mt-1.5 text-4xl font-extrabold text-center text-black max-md:max-w-full"><%= @question.description %></h1>
 
     <div class="game-container mt-10">
-      <!-- Barra controlada por el jugador -->
       <div id="player-bar" class="player-bar"></div>
     </div>
   </article>
@@ -78,7 +84,8 @@ function toggleHelpModal() {
 
 // Variables globales
 let intervalId = null;
-const movementSpeed = 7; // Velocidad ajustada
+const movementSpeed = 5; // Ajustado para un movimiento más lento
+const fallingSpeed = 3;  // Velocidad de caída de los objetos
 
 // Mover la barra a la izquierda
 function moveLeft() {
@@ -86,7 +93,6 @@ function moveLeft() {
   const container = playerBar.parentElement;
   let playerPosition = playerBar.offsetLeft;
 
-  // Limitar movimiento para que no salga del borde izquierdo
   if (playerPosition > 0) {
     playerBar.style.left = (playerPosition - movementSpeed) + 'px';
   }
@@ -99,7 +105,6 @@ function moveRight() {
   let playerPosition = playerBar.offsetLeft;
   const containerWidth = container.offsetWidth;
 
-  // Limitar movimiento para que no salga del borde derecho
   if (playerPosition + playerBar.offsetWidth < containerWidth) {
     playerBar.style.left = (playerPosition + movementSpeed) + 'px';
   }
@@ -112,9 +117,9 @@ document.addEventListener('keydown', function(event) {
   }
 
   if (event.key === 'ArrowLeft' || event.key === 'a') {
-    intervalId = setInterval(moveLeft, 10); // Intervalos cortos para movimiento rápido
+    intervalId = setInterval(moveLeft, 10);
   } else if (event.key === 'ArrowRight' || event.key === 'd') {
-    intervalId = setInterval(moveRight, 10); // Intervalos cortos para movimiento rápido
+    intervalId = setInterval(moveRight, 10);
   }
 });
 
@@ -124,6 +129,46 @@ document.addEventListener('keyup', function(event) {
     clearInterval(intervalId);
   }
 });
+
+// Generar objetos aleatorios (caracteres morse) que caen
+function createFallingObject() {
+  const gameContainer = document.querySelector('.game-container');
+  const fallingObject = document.createElement('div');
+  fallingObject.classList.add('falling-object');
+  fallingObject.textContent = Math.random() > 0.5 ? '.' : '-';
+  fallingObject.style.left = Math.random() * (gameContainer.offsetWidth - 30) + 'px'; // Posición aleatoria
+  gameContainer.appendChild(fallingObject);
+
+  let position = 0;
+  const fallInterval = setInterval(() => {
+    if (position < gameContainer.offsetHeight - 40) {
+      position += fallingSpeed;
+      fallingObject.style.top = position + 'px';
+
+      // Detectar colisión con la barra
+      const playerBar = document.getElementById('player-bar');
+      const playerBarRect = playerBar.getBoundingClientRect();
+      const fallingObjectRect = fallingObject.getBoundingClientRect();
+
+      if (
+        fallingObjectRect.bottom >= playerBarRect.top && // Toca la parte superior de la barra
+        fallingObjectRect.bottom <= playerBarRect.bottom && // Se asegura que está tocando la barra y no más arriba
+        fallingObjectRect.left < playerBarRect.right &&
+        fallingObjectRect.right > playerBarRect.left
+      ) {
+        clearInterval(fallInterval);
+        fallingObject.remove(); // Elimina el objeto al colisionar con la barra
+      }
+    } else {
+      clearInterval(fallInterval);
+      fallingObject.remove(); // Elimina el objeto si llega al fondo
+    }
+  }, 20);
+}
+
+// Crear objetos cada cierto tiempo
+setInterval(createFallingObject, 2000); // Genera un objeto cada 2 segundos
+
 </script>
 
 </body>
