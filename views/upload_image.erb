@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashes & Dots - Update Profile Picture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="/css/output.css" rel="stylesheet">
+  <link href="icon.ico" rel="icon">
+</head>
+<section class="flex flex-col justify-center items-center px-16 py-20 bg-white rounded-xl shadow-sm mx-auto">
+  <header class="mt-2 text-3xl font-semibold tracking-tight leading-10 text-center text-black">
+    Actualizar foto de perfil
+  </header>
+<form method='POST' action='/uploadPic' enctype="multipart/form-data" class = "flex flex-col">
+  <input type='file' name='file' class='form-control'>
+  <br>
+  <button type="submit" class="justify-center items-center self-stretch px-4 py-2 mt-6 text-base font-medium leading-6 text-white bg-violet-700 rounded-lg max-md:px-5 hover:bg-violet-900 hover:transition-all transition duration-200 hover:ease-in hover:scale-105" tabindex="0">
+    Subir
+  </button>
+</form>
+</section>

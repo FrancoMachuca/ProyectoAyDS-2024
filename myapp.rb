@@ -1,5 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
 require './models/user'
 require './models/level'
 require './models/lesson'
@@ -11,10 +13,17 @@ require './models/mouse_translation'
 require './models/answer'
 require './models/user_level'
 require './models/to_complete'
+require './models/image'
 require './controllers/game_data_manager'
 require './controllers/questions_manager'
+require './uploader/image_uploader'
 
 class MyApp < Sinatra::Application
+    #Configuración de Carrierwave
+    CarrierWave.configure do |config|
+        config.root = File.dirname(__FILE__) + "/public"
+    end
+
     def initialize(myapp = nil)
         super()
         @gm = GameDataManager.new
@@ -78,6 +87,29 @@ class MyApp < Sinatra::Application
         else
             redirect '/login'
         end
+    end
+
+    get '/uploadPic' do
+        if session[:user_id]
+            erb :upload_image
+        else
+            redirect '/login'
+        end
+    end
+
+    post "/uploadPic" do
+        if session[:user_id]
+            img = Image.new
+            user = User.find(session[:user_id])
+            img.image = params[:file] #carrierwave sube el archivo automáticamente.
+            img.caption = "Profile Pic" #Se puede recibir otro con params.
+            if !img.nil? && !img.image.nil? #Agregar más restricciones
+                img.user = user
+                img.save!
+            end
+        end
+        #Redirect to view
+        redirect '/uploadPic'
     end
 
     get '/jugar' do
