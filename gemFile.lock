@@ -167,6 +167,7 @@ DEPENDENCIES
   rake
   require_all
   rspec
+  ruby-vips (~> 2.2)
   simplecov (~> 0.22.0)
   sinatra
   sinatra-activerecord

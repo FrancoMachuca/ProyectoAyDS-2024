@@ -103,8 +103,11 @@ class MyApp < Sinatra::Application
             user = User.find(session[:user_id])
             img.image = params[:file] #carrierwave sube el archivo automáticamente.
             img.caption = "Profile Pic" #Se puede recibir otro con params.
-            if !img.nil? && !img.image.nil? #Agregar más restricciones
+            if !img.nil? && !img.image.nil? && img.valid? #Se pueden agregar más restricciones
                 img.user = user
+                if !user.image.nil?
+                    user.image.destroy
+                end
                 img.save!
             end
         end

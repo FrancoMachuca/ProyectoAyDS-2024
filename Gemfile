@@ -15,3 +15,4 @@ group :test, :development do
     gem 'rack-test'
   end
 gem "simplecov", "~> 0.22.0"
+gem "ruby-vips", "~> 2.2"
