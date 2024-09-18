@@ -8,22 +8,6 @@
   <link href="/css/output.css" rel="stylesheet">
   <link href="icon.ico" rel="icon">
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      height: 100vh;
-      font-family: 'Nunito', sans-serif;
-    }
-
-    section {
-      display: flex;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(to bottom, #6b46c1, #cbd5e0);
-    }
-
     .game-container {
       position: relative;
       width: 90vw;
@@ -110,29 +94,32 @@
 </div>
 
 <script>
-function toggleHelpModal() {
-  var modal = document.getElementById('help-modal');
+isModalOpen = false;
+
+function toggleModal(modalId) {
+  var modal = document.getElementById(modalId);
   modal.classList.toggle('hidden');
+  isModalOpen = !modal.classList.contains('hidden');
+}
+
+function toggleHelpModal() {
+  toggleModal('help-modal')
 }
 
 function toggleQuitModal() {
-  var modal = document.getElementById('quit-modal');
-  modal.classList.toggle('hidden');
+  toggleModal('quit-modal')
 }
 
 function toggleSuccessModal() {
-  var modal = document.getElementById('success-modal');
-  modal.classList.toggle('hidden');
+  toggleModal('success-modal')
 }
 
 function toggleFailureModal() {
-  var modal = document.getElementById('failure-modal');
-  modal.classList.toggle('hidden');
+  toggleModal('failure-modal')
 }
 
 function toggleFailureLessonModal() {
-  var modal = document.getElementById('failure_lesson-modal');
-  modal.classList.toggle('hidden');
+  toggleModal('failure_lesson-modal')
 }
 
 function redirectToMenu() {
@@ -172,12 +159,14 @@ function moveRight() {
 }
 
 document.addEventListener('keydown', function(event) {
+  if (isModalOpen) return;
   if (intervalId) clearInterval(intervalId);
   if (event.key === 'ArrowLeft' || event.key === 'a') intervalId = setInterval(moveLeft, 10);
   else if (event.key === 'ArrowRight' || event.key === 'd') intervalId = setInterval(moveRight, 10);
 });
 
 document.addEventListener('keyup', function(event) {
+  if (isModalOpen) return;
   if (intervalId) clearInterval(intervalId);
 });
 
@@ -191,18 +180,15 @@ function addCharacterToWord(character) {
 
 function checkWord() {
   if (formedWord.length >= correctWord.length) {
-    // Usar redirectToPost para enviar el formulario con los datos de user_guess
     redirectToPost(levelId, questionId, { user_guess: formedWord });
   }
 }
 
 function redirectToPost(levelId, questionId, data) {
-  // Crear un formulario dinámico
   const form = document.createElement('form');
   form.method = 'POST';
   form.action = `/level/${levelId}/${questionId}/check`;
 
-  // Convertir los datos a campos input hidden
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
       const hiddenField = document.createElement('input');
@@ -213,10 +199,8 @@ function redirectToPost(levelId, questionId, data) {
     }
   }
 
-  // Añadir el formulario al cuerpo del documento
   document.body.appendChild(form);
 
-  // Enviar el formulario
   form.submit();
 }
 
@@ -230,7 +214,7 @@ function dropObject(character) {
   object.style.top = '0px';
   gameContainer.appendChild(object);
 
-  const fallSpeed = 10; // Incrementar velocidad de caída
+  const fallSpeed = 10;
   const fallInterval = setInterval(() => {
     const playerBar = document.getElementById('player-bar');
     object.style.top = (object.offsetTop + fallSpeed) + 'px';
@@ -245,15 +229,17 @@ function dropObject(character) {
       clearInterval(fallInterval);
       object.remove();
     }
-  }, 20); // Intervalo más corto para una caída más rápida
+  }, 20);
 }
 
 function startDropping() {
   const characters = ['.', '-'];
   setInterval(() => {
-    const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
-    dropObject(randomCharacter);
-  }, 700); // Objetos caen más rápido
+    if (!isModalOpen) {
+      const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
+      dropObject(randomCharacter);
+    }
+  }, 700);
 }
 
 startDropping();
