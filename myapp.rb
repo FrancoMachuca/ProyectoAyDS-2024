@@ -146,9 +146,8 @@ class MyApp < Sinatra::Application
             @level = Level.find_by(id: params[:level_id])
             @user = User.find_by(id: session[:user_id])
             if @question && @level
-
                 if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" ||
-                   @question.questionable_type == "MouseTranslation"
+                   @question.questionable_type == "MouseTranslation" || @question.questionable_type == "FallingObject"
                     @user_answer = @qm.buildUserAnswer(answer: params[:user_guess], question: @question)
                 else
                     @user_answer = Answer.find_by(id: params[:answer_id])
@@ -182,7 +181,6 @@ class MyApp < Sinatra::Application
     end
 
     get '/test' do
-        @question = Question.last
-        erb :falling_object
+        "#{@user_answer.answer}"
     end
 end

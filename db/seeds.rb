@@ -18,13 +18,13 @@ users = [
 ]
 
 levels = [
+  {name: 'Test', playable: Lesson.create!()},
   {name: 'Letras I', playable: Lesson.create!()},
   {name: 'Letras II', playable: Lesson.create!()},
   {name: 'Palabras I', playable: Lesson.create!()},
   {name: 'Palabras II', playable: Lesson.create!()},
   {name: 'Palabras III', playable: Lesson.create!()},
-  {name: 'Examen I', playable: Exam.create!(minScore: 500)},
-  {name: 'Test', playable: Lesson.create!()}
+  {name: 'Examen I', playable: Exam.create!(minScore: 500)}
 ]
 
 users.each do |u|
@@ -50,6 +50,22 @@ end
 
 # Creación de preguntas
 questions_data = [
+  {
+    description: 'Hola',
+    level_name: 'Test',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "...", correct: true}
+    ]
+  },
+  {
+    description: 'chau',
+    level_name: 'Test',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: "...", correct: true}
+    ]
+  },
   # Nivel 1: Aprender letras (Fácil)
   {
     description: 'Traduce ".-" al Español',
@@ -320,14 +336,6 @@ questions_data = [
     questionable: To_complete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .-"),
     answers: [
       {answer: "... .. .-.. .-.. .-", correct: true}
-    ]
-  },
-  {
-    description: '',
-    level_name: 'Test',
-    questionable: FallingObject.create!(),
-    answers: [
-      {answer: "...", correct: true}
     ]
   }
 ]

@@ -17,6 +17,8 @@ class QuestionsManager
       return :to_complete
     when 'MouseTranslation'
       return :mouse_translation
+    when 'FallingObject'
+      return :falling_object
     end
   end
 
@@ -24,7 +26,7 @@ class QuestionsManager
   def correctAnswer?(answer: Answer, question: Question)
     if question.questionable_type == 'Multiple_choice'
       return answer.correct
-    elsif question.questionable_type == 'Translation' || question.questionable_type == 'To_complete' || question.questionable_type == 'MouseTranslation'
+    elsif question.questionable_type == 'Translation' || question.questionable_type == 'To_complete' || question.questionable_type == 'MouseTranslation' || question.questionable_type == 'FallingObject'
       user_guess = answer.answer.gsub(/\s+/, "").downcase
       correct_phrase = question.answers.find_by(correct: true).answer.gsub(/\s+/, "").downcase
       return user_guess == correct_phrase
