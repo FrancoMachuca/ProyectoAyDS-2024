@@ -18,13 +18,13 @@ users = [
 ]
 
 levels = [
-  {name: 'Test', playable: Lesson.create!()},
   {name: 'Letras I', playable: Lesson.create!()},
   {name: 'Letras II', playable: Lesson.create!()},
   {name: 'Palabras I', playable: Lesson.create!()},
   {name: 'Palabras II', playable: Lesson.create!()},
   {name: 'Palabras III', playable: Lesson.create!()},
-  {name: 'Examen I', playable: Exam.create!(minScore: 500)}
+  {name: 'Examen I', playable: Exam.create!(minScore: 500)},
+  {name: 'Nuevo juego', playable: Lesson.create!()}
 ]
 
 users.each do |u|
@@ -50,22 +50,6 @@ end
 
 # Creación de preguntas
 questions_data = [
-  {
-    description: 'Hola',
-    level_name: 'Test',
-    questionable: FallingObject.create!(),
-    answers: [
-      {answer: "...", correct: true}
-    ]
-  },
-  {
-    description: 'chau',
-    level_name: 'Test',
-    questionable: MouseTranslation.create!(),
-    answers: [
-      {answer: "...", correct: true}
-    ]
-  },
   # Nivel 1: Aprender letras (Fácil)
   {
     description: 'Traduce ".-" al Español',
@@ -336,6 +320,38 @@ questions_data = [
     questionable: To_complete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .-"),
     answers: [
       {answer: "... .. .-.. .-.. .-", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "A" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: ".-", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "S" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "...", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "B" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "-...", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "P" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: ".--.", correct: true}
     ]
   }
 ]
