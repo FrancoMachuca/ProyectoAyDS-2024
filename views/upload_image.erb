@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashes & Dots - Update Profile Picture</title>
+  <title>Dashes & Dots - Actualizar Foto de Perfil</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
@@ -10,10 +10,11 @@
   <link href="icon.ico" rel="icon">
 </head>
 <section class="flex flex-col justify-center items-center px-16 py-20 bg-white rounded-xl shadow-sm mx-auto">
+  <button onclick="window.location.href='/perfil'" class="absolute top-2 left-2 text-white p-2 rounded hover:transition-all transition duration-200 hover:ease-in hover:scale-105 bg-violet-700 max-md:px-5 hover:bg-violet-900 "><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg></button>
   <header class="mt-2 text-3xl font-semibold tracking-tight leading-10 text-center text-black">
     Actualizar foto de perfil
   </header>
-<form method='POST' action='/uploadPic' enctype="multipart/form-data" class = "flex flex-col">
+<form method='POST' action='/actualizarFoto' enctype="multipart/form-data" class = "flex flex-col">
   <input type='file' name='file' class='form-control'>
   <br>
   <button type="submit" class="justify-center items-center self-stretch px-4 py-2 mt-6 text-base font-medium leading-6 text-white bg-violet-700 rounded-lg max-md:px-5 hover:bg-violet-900 hover:transition-all transition duration-200 hover:ease-in hover:scale-105" tabindex="0">

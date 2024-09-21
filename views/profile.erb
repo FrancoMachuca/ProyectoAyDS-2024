@@ -16,15 +16,21 @@
     <section class="flex flex-col gap-5 justify-center content-start self-stretch p-7 w-auto text-white max-md:px-5">
         <div class="flex gap-5 max-md:flex-col max-md:gap-0">
             <div class="flex flex-col w-[83%] max-md:ml-0 max-md:w-full">
-                <article class="flex flex-col flex-1 justify-center pt-10 pr-14 leading-[140%] max-md:max-w-full">
-                    <header class="flex items-center gap-5 flex-row p-12 mt-6 text-6xl font-bold tracking-tighter text-center rounded-xl shadow-sm bg-black bg-opacity-80 max-md:px-5 max-md:max-w-full">
+                <div class="flex flex-col flex-1 justify-center pr-14  max-md:max-w-full">
+                    <div class="flex items-center gap-5 flex-row p-12 text-6xl font-bold text-center rounded-xl shadow-sm bg-black bg-opacity-80 max-md:px-5 max-md:max-w-full">
+                        <div>      
+                            <button onclick="window.location.href='/actualizarFoto'">
+                                <img class="max-w-full h-auto rounded-full"  src=<%= @user.image.image.url %>>
+                                <p class="flex justify-center items-center text-lg text-white font-semibold">Editar</p>
+                                </button>
+                        </div>
                         <h1 class="text-4xl text-center italic font-light tracking-tighter text-purple-500">#<%= @rank %></h1>
                         <h2 class="text-6xl tracking-tighter text-white leading-[75px]"><%= @user.name %></h2>
-                    </header>
-                    <div class="flex flex-col justify-center self-start mt-11 w-auto max-w-full text-sm font-medium whitespace-nowrap bg-zinc-100 bg-opacity-0 max-md:mt-10">
+                    </div>
+                    <div class="flex flex-col justify-center self-start mt-5 w-auto max-w-full text-sm font-medium bg-zinc-100 bg-opacity-0">
                         <button class="justify-center items-center self-center px-4 py-1.5 ml-7 w-auto text-center rounded-3xl bg-black bg-opacity-80">Resumen</button>
                     </div>
-                    <section class="flex flex-col mt-9 text-2xl rounded-xl shadow-sm bg-black bg-opacity-80 max-md:max-w-full">
+                    <div class="flex flex-col mt-5 text-2xl rounded-xl shadow-sm bg-black bg-opacity-80 max-md:max-w-full">
                         <div class="flex gap-3 px-4 py-3.5 max-md:flex-wrap">
                             <strong>Puntuación Total:</strong>
                             <p class="flex-1 max-md:max-w-full"><%= @total_score %></p>
@@ -33,8 +39,8 @@
                             <strong>Niveles Completados:</strong>
                             <p class="flex-1 max-md:max-w-full"><%= @levels_completed %></p>
                         </div>
-                    </section>
-                </article>
+                    </div>
+                </div>
             </div>
             <aside class="flex flex-col ml-5 max-md:ml-0 max-md:w-full">
                 <button class="justify-center self-start px-4 py-2 text-base font-medium leading-6 rounded-xl bg-orange-600 hover:scale-105 hover:bg-red-600 hover:border-y-2 hover:border-x-2 hover:transition-all transition duration-200" onclick="window.location.href='/logout'">Cerrar Sesión</button>

@@ -63,7 +63,8 @@ class MyApp < Sinatra::Application
             @error_message = "Usted ya tenía una cuenta previa"
             erb :login
         else
-            user = User.new(name: params[:name], mail: params[:mail], password: params[:password])
+            image = Image.first
+            user = User.new(name: params[:name], mail: params[:mail], password: params[:password], image: image)
             if user.save
                 @gm.createGameDataFor(user: user)
                 session[:user_id] = user.id
@@ -89,7 +90,7 @@ class MyApp < Sinatra::Application
         end
     end
 
-    get '/uploadPic' do
+    get '/actualizarFoto' do
         if session[:user_id]
             erb :upload_image
         else
@@ -97,23 +98,35 @@ class MyApp < Sinatra::Application
         end
     end
 
-    post "/uploadPic" do
+    post "/actualizarFoto" do
         if session[:user_id]
+            defaultPic = Image.first
             img = Image.new
             user = User.find(session[:user_id])
             img.image = params[:file] #carrierwave sube el archivo automáticamente.
             img.caption = "Profile Pic" #Se puede recibir otro con params.
             if !img.nil? && !img.image.nil? && img.valid? #Se pueden agregar más restricciones
-                if !user.image.nil?
-                    user.image.destroy
+                begin
+                    if !user.image.nil?
+                        i = user.image
+                        user.image = nil
+                        user.save!
+                    end
+                    user.image = img
+                    img.save!
+                    user.save!
+                    if !i.nil? && i.users.empty? && i != defaultPic
+                        i.remove_image!  
+                        Image.delete(i)
+                    end
+                rescue => error # Si la imagen nueva no se guarda correctamente, o si la anterior no se borra de la base de datos, se restaura la anterior.
+                        user.image = i
+                        user.save
+                        puts error.message
                 end
-                img.user = user
-                puts img.image
-                img.save!
             end
         end
-        #Redirect to view
-        redirect '/uploadPic'
+        redirect '/perfil'
     end
 
     get '/jugar' do
