@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_16_221316) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_09_132618) do
   create_table "answers", force: :cascade do |t|
     t.string "answer"
     t.boolean "correct"
@@ -22,6 +22,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_221316) do
 
   create_table "exams", force: :cascade do |t|
     t.integer "minScore"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "falling_objects", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
