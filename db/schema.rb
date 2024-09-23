@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_16_221316) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_12_234006) do
   create_table "answers", force: :cascade do |t|
     t.string "answer"
     t.boolean "correct"
@@ -22,6 +22,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_221316) do
 
   create_table "exams", force: :cascade do |t|
     t.integer "minScore"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "image", null: false
+    t.string "caption", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -85,12 +92,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_221316) do
     t.string "name"
     t.string "mail"
     t.string "password"
+    t.integer "image_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["image_id"], name: "index_users_on_image_id"
   end
 
   add_foreign_key "answers", "questions"
   add_foreign_key "questions", "levels"
   add_foreign_key "user_levels", "levels"
   add_foreign_key "user_levels", "users"
+  add_foreign_key "users", "images"
 end

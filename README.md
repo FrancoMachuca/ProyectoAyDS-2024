@@ -1,0 +1,1 @@
+Nota: Se necesita la libreria de Vips (Procesamiento de imagenes) para ejecutar el proyecto en MacOS/Linux: https://github.com/libvips/ruby-vips 
