@@ -194,10 +194,10 @@ class MyApp < Sinatra::Application
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
             @user = User.find_by(id: session[:user_id])
+            @answers = Answer.where(question_id: @question.id)
             if @question && @level
-
                 if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" ||
-                   @question.questionable_type == "MouseTranslation"
+                   @question.questionable_type == "MouseTranslation" || @question.questionable_type == "FallingObject"
                     @user_answer = @qm.buildUserAnswer(answer: params[:user_guess], question: @question)
                 else
                     @user_answer = Answer.find_by(id: params[:answer_id])
@@ -216,7 +216,7 @@ class MyApp < Sinatra::Application
                     session[:user_level_score] = 0
                     if @gm.completedLevel?(level: @level, user: @user)
                         @show_success_popup = true
-                    else 
+                    else
                         @show_failure_popup = true
                     end
                     @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)

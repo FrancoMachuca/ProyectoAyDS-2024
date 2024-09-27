@@ -11,12 +11,14 @@ require_relative '../models/to_complete'
 require_relative '../models/mouse_translation'
 require_relative '../models/image'
 require_relative '../models/default_image'
+require_relative '../models/falling_object'
 
 image = DefaultImage.new
 File.open('public\uploads\genericAvatar.png') do |f|
   image.image = f
 end
 image.caption = 'Profile Pic'
+
 
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
@@ -30,7 +32,8 @@ levels = [
   {name: 'Palabras I', playable: Lesson.create!()},
   {name: 'Palabras II', playable: Lesson.create!()},
   {name: 'Palabras III', playable: Lesson.create!()},
-  {name: 'Examen I', playable: Exam.create!(minScore: 500)}
+  {name: 'Examen I', playable: Exam.create!(minScore: 500)},
+  {name: 'Nuevo juego', playable: Lesson.create!()}
 ]
 
 users.each do |u|
@@ -327,6 +330,38 @@ questions_data = [
     questionable: To_complete.create!(keyword: "SILLA", toCompleteMorse: "... __ .-.. .-.. .-"),
     answers: [
       {answer: "... .. .-.. .-.. .-", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "A" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: ".-", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "S" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "...", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "B" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "-...", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "P" a código morse',
+    level_name: 'Nuevo nivel',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: ".--.", correct: true}
     ]
   }
 ]

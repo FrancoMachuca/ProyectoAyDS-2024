@@ -189,8 +189,8 @@ function fillProgressBar() {
   progressInterval = setInterval(() => {
     if (width >= 100) {
       clearInterval(progressInterval);
-      morseString += '-';
-      displayMorseOutput('-');
+      morseString += ' ';
+      displayMorseOutput(' ');
       resetProgressBar();
       checkCompletion();
       clickCount = 0;
