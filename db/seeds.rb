@@ -14,6 +14,7 @@ require_relative '../models/falling_object'
 =======
 require_relative '../models/image'
 require_relative '../models/default_image'
+require_relative '../models/falling_object'
 
 image = DefaultImage.new
 File.open('public\uploads\genericAvatar.png') do |f|
