@@ -81,6 +81,30 @@ questions_data = [
       {answer: '.-', correct: true}
     ]
   },
+  {
+    description: 'Completa la siguiente letra en código morse:',
+    level_name: 'Tutorial',
+    questionable: To_complete.create!(keyword: "C", toCompleteMorse: "-__."),
+    answers: [
+      {answer: "-.-.", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce ".---" al Español',
+    level_name: 'Tutorial',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'j', correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "M" a código morse',
+    level_name: 'Tutorial',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "--", correct: true}
+    ]
+  },
   # Nivel 1: Aprender letras (Fácil)
   {
     description: 'Traduce ".-" al Español',
