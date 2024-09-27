@@ -114,6 +114,24 @@
   </div>
 </div>
 
+<!-- Tutorial Modal (only for tutorial levels) -->
+<% if @level.playable_type == "Tutorial" %>
+<div id="tutorial-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <h3 class="text-xl font-bold mb-4">Tutorial</h3>
+    <p>¡Bienvenido al tutorial! Aquí aprenderás cómo funcionan las preguntas de pulsación. Debes escribir la palabra que aparece en Español a código morse con el ratón. 
+      Al precionar el botón principal con un click empieza a llenarse una barra que posee dos indicadores. Debes presionar el botón nuevamente en alguno de esos indicadores; el primer indicador 
+      representa al punto, el segundo al guión. Fallar en el segundo click supone la eliminación de la palabra, en caso de no apretar el botón se generará un espacio. Una vez termines de formar la palabra
+      aprieta el botón para enviar la solución. Para pasar este nivel debes escribir '.-'</p>
+    <button 
+  onclick="toggleTutorialModal()" 
+  class="mt-6 px-6 py-3 bg-black text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-gray-800 transition duration-300 ease-in-out transform hover:scale-105">
+  ¡Entendido!
+</button>
+  </div>
+</div>
+<% end %>
+
 <!-- Failure Modal -->
 <div id="failure-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
   <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
@@ -151,6 +169,11 @@ function toggleFailureModal() {
 
 function toggleFailureLessonModal() {
   var modal = document.getElementById('failure_lesson-modal');
+  modal.classList.toggle('hidden');
+}
+
+function toggleTutorialModal() {
+  var modal = document.getElementById('tutorial-modal');
   modal.classList.toggle('hidden');
 }
 
@@ -276,6 +299,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <% if @show_failure_popup%>
 document.addEventListener('DOMContentLoaded', function() {
     toggleFailureModal();
+});
+<% end %>
+
+<% if @level.playable_type == "Tutorial"  && !@show_failure_popup && !@show_success_popup %>
+document.addEventListener('DOMContentLoaded', function() {
+    toggleTutorialModal();
 });
 <% end %>
 </script>

@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 <% end %>
 
-<% if @level.playable_type == "Tutorial" %>
+<% if @level.playable_type == "Tutorial"  && !@show_failure_popup && !@show_success_popup%>
 document.addEventListener('DOMContentLoaded', function() {
     toggleTutorialModal();
 });

@@ -73,6 +73,14 @@ questions_data = [
       {answer: 'falsa', correct: false}
     ]
   },
+  {
+    descripcion: 'Test',
+    level_name: 'Tutorial',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '.-', correct: true}
+    ]
+  },
   # Nivel 1: Aprender letras (Fácil)
   {
     description: 'Traduce ".-" al Español',
