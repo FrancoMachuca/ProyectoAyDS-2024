@@ -12,6 +12,7 @@ require_relative '../models/mouse_translation'
 require_relative '../models/image'
 require_relative '../models/default_image'
 require_relative '../models/falling_object'
+require_relative '../models/tutorial'
 
 image = DefaultImage.new
 File.open('public\uploads\genericAvatar.png') do |f|
@@ -27,6 +28,7 @@ users = [
 ]
 
 levels = [
+  {name: 'Tutorial', playable: Tutorial.create!()},
   {name: 'Letras I', playable: Lesson.create!()},
   {name: 'Letras II', playable: Lesson.create!()},
   {name: 'Palabras I', playable: Lesson.create!()},
@@ -60,6 +62,17 @@ end
 
 # Creación de preguntas
 questions_data = [
+  {
+    descripcion: 'Test',
+    level_name: 'Tutorial',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: 'Correcta', correct: true},
+      {answer: 'falsa', correct: false},
+      {answer: 'falsa', correct: false},
+      {answer: 'falsa', correct: false}
+    ]
+  },
   # Nivel 1: Aprender letras (Fácil)
   {
     description: 'Traduce ".-" al Español',
