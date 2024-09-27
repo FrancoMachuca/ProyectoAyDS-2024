@@ -248,7 +248,7 @@ RSpec.describe 'The Server' do
       follow_redirect!
       post '/level/1/3/check', user_guess: 'b'
       follow_redirect!
-      post '/level/1/4/check', user_guess: '.-' 
+      post '/level/1/4/check', user_guess: '.-'
       expect(last_response).to be_ok
     end
 
@@ -261,11 +261,11 @@ RSpec.describe 'The Server' do
       follow_redirect!
       post '/level/1/3/check', user_guess: 'bca'
       follow_redirect!
-      post '/level/1/4/check', user_guess: '.' 
+      post '/level/1/4/check', user_guess: '.'
       expect(last_response).to be_ok
     end
   end
-  
+
 
   context "registration" do
     before(:each) do
@@ -297,11 +297,13 @@ RSpec.describe 'The Server' do
     let(:question2) { Question.create(description: "prueba1", questionable_type: "Translation", level: level) }
     let(:question3) { Question.create(description: "prueba2", questionable_type: "To_complete", level: level) }
     let(:question4) { Question.create(description: "prueba3", questionable_type: "MouseTranslation", level: level) }
+    let(:question5) { Question.create(description: "prueba4", questionable_type: "FallingObject", level: level) }
 
     before do
       level.questions.push(question2)
       level.questions.push(question3)
       level.questions.push(question4)
+      level.questions.push(question5)
     end
 
     describe "#show" do
@@ -319,6 +321,10 @@ RSpec.describe 'The Server' do
 
       it "shows mouse_translation view" do
         expect(qm.show(question: question4)).to eq(:mouse_translation)
+      end
+
+      it "shows falling_object view" do
+        expect(qm.show(question: question5)).to eq(:falling_object)
       end
     end
 
@@ -370,6 +376,19 @@ RSpec.describe 'The Server' do
         correct_answer = Answer.create(answer: "respuesta", correct: true, question: question4)
         incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question4)
         expect(qm.correctAnswer?(answer: incorrect_answer, question: question4)).to be false
+        correct_answer.destroy
+      end
+
+      it "falling_object return true if user_answer equals falling_object expected answer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question5)
+        expect(qm.correctAnswer?(answer: correct_answer, question: question5)).to be true
+        correct_answer.destroy
+      end
+
+      it "falling_object return false if user_answer not equals falling_object expected answer" do
+        correct_answer = Answer.create(answer: "respuesta", correct: true, question: question5)
+        incorrect_answer = Answer.new(answer: "otra respuesta", correct: true, question: question5)
+        expect(qm.correctAnswer?(answer: incorrect_answer, question: question5)).to be false
         correct_answer.destroy
       end
 
