@@ -7,10 +7,12 @@ gem 'sqlite3', '~> 1.4'
 gem 'rake'
 gem "require_all"
 gem 'rack'
-gem "tailwindcss-rails", "~> 2.6"
+gem 'carrierwave'
+gem 'ruby-vips'
 
 group :test, :development do
     gem 'rspec'
     gem 'rack-test'
   end
 gem "simplecov", "~> 0.22.0"
+gem "tailwindcss-rails", "~> 2.7"

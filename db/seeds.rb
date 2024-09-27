@@ -9,7 +9,18 @@ require_relative '../models/answer'
 require_relative '../models/user_level'
 require_relative '../models/to_complete'
 require_relative '../models/mouse_translation'
+<<<<<<< HEAD
 require_relative '../models/falling_object'
+=======
+require_relative '../models/image'
+require_relative '../models/default_image'
+
+image = DefaultImage.new
+File.open('public\uploads\genericAvatar.png') do |f|
+  image.image = f
+end
+image.caption = 'Profile Pic'
+>>>>>>> 8b9792e122b9c1ff33ba29e71680491fe9487864
 
 users = [
   {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
@@ -29,6 +40,7 @@ levels = [
 
 users.each do |u|
   user = User.create(u)
+  user.image = image
   user.save
 end
 

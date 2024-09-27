@@ -1,5 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'carrierwave'
+require 'carrierwave/orm/activerecord'
 require './models/user'
 require './models/level'
 require './models/lesson'
@@ -11,10 +13,17 @@ require './models/mouse_translation'
 require './models/answer'
 require './models/user_level'
 require './models/to_complete'
+require './models/image'
 require './controllers/game_data_manager'
 require './controllers/questions_manager'
+require './uploader/image_uploader'
 
 class MyApp < Sinatra::Application
+    #Configuración de Carrierwave
+    CarrierWave.configure do |config|
+        config.root = File.dirname(__FILE__) + "/public"
+    end
+
     def initialize(myapp = nil)
         super()
         @gm = GameDataManager.new
@@ -54,7 +63,8 @@ class MyApp < Sinatra::Application
             @error_message = "Usted ya tenía una cuenta previa"
             erb :login
         else
-            user = User.new(name: params[:name], mail: params[:mail], password: params[:password])
+            image = Image.first
+            user = User.new(name: params[:name], mail: params[:mail], password: params[:password], image: image)
             if user.save
                 @gm.createGameDataFor(user: user)
                 session[:user_id] = user.id
@@ -78,6 +88,45 @@ class MyApp < Sinatra::Application
         else
             redirect '/login'
         end
+    end
+
+    get '/actualizarFoto' do
+        if session[:user_id]
+            erb :upload_image
+        else
+            redirect '/login'
+        end
+    end
+
+    post "/actualizarFoto" do
+        if session[:user_id]
+            defaultPic = Image.first
+            img = Image.new
+            user = User.find(session[:user_id])
+            img.image = params[:file] #carrierwave sube el archivo automáticamente.
+            img.caption = "Profile Pic" #Se puede recibir otro con params.
+            if !img.nil? && !img.image.nil? && img.valid? #Se pueden agregar más restricciones
+                begin
+                    if !user.image.nil?
+                        i = user.image
+                        user.image = nil
+                        user.save!
+                    end
+                    user.image = img
+                    img.save!
+                    user.save!
+                    if !i.nil? && i.users.empty? && i != defaultPic
+                        i.remove_image!  
+                        Image.delete(i)
+                    end
+                rescue => error # Si la imagen nueva no se guarda correctamente, o si la anterior no se borra de la base de datos, se restaura la anterior.
+                        user.image = i
+                        user.save
+                        puts error.message
+                end
+            end
+        end
+        redirect '/perfil'
     end
 
     get '/jugar' do
