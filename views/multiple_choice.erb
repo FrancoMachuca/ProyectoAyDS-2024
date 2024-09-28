@@ -51,6 +51,21 @@
   </div>
 </div>
 
+<!-- Tutorial Modal (only for tutorial levels) -->
+<% if @level.playable_type == "Tutorial" %>
+<div id="tutorial-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <h3 class="text-xl font-bold mb-4">Tutorial</h3>
+    <p>Bienvenido al tutorial del juego Multiple Choice. Traduce la traducción y elige la respuesta correcta.</p>
+    <button 
+  onclick="toggleTutorialModal()" 
+  class="mt-6 px-6 py-3 bg-black text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-gray-800 transition duration-300 ease-in-out transform hover:scale-105">
+  ¡Entendido!
+</button>
+  </div>
+</div>
+<% end %>
+
 <!-- Quit Modal -->
 <div id="quit-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
   <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
@@ -105,6 +120,11 @@ function toggleFailureLessonModal() {
   modal.classList.toggle('hidden');
 }
 
+function toggleTutorialModal() {
+  var modal = document.getElementById('tutorial-modal');
+  modal.classList.toggle('hidden');
+}
+
 function redirectToMenu() {
   window.location.href = '/jugar';
 }
@@ -132,6 +152,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <% if @show_failure_popup %>
 document.addEventListener('DOMContentLoaded', function() {
     toggleFailureModal();
+});
+<% end %>
+
+<% if @level.playable_type == "Tutorial"  && !@show_failure_popup && !@show_success_popup%>
+document.addEventListener('DOMContentLoaded', function() {
+    toggleTutorialModal();
 });
 <% end %>
 </script>

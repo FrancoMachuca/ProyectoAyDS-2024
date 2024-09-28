@@ -65,6 +65,23 @@
   </div>
 </div>
 
+<!-- Tutorial Modal (only for tutorial levels) -->
+<% if @level.playable_type == "Tutorial" %>
+<div id="tutorial-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+    <h3 class="text-xl font-bold mb-4">Tutorial</h3>
+    <p>Bienvenido al tutorial del juego falling objects. La tarea es simple: Traduce la palabra del Español al código morse, tomando los puntos o guines que caen del cielo con tu barra de movimiento.
+      la barra se mueve tanto con la tecla a y d del teclado, como con las teclas <-- y -->. La pregunta se termina al formar una palabra de igual longitud que la que debes traducir.
+    </p>
+    <button 
+  onclick="toggleTutorialModal()" 
+  class="mt-6 px-6 py-3 bg-black text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-gray-800 transition duration-300 ease-in-out transform hover:scale-105">
+  ¡Entendido!
+</button>
+  </div>
+</div>
+<% end %>
+
 <!-- Quit Modal -->
 <div id="quit-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
   <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
@@ -120,6 +137,10 @@ function toggleFailureModal() {
 
 function toggleFailureLessonModal() {
   toggleModal('failure_lesson-modal')
+}
+
+function toggleTutorialModal() {
+  toggleModal('tutorial-modal')
 }
 
 function redirectToMenu() {
@@ -262,7 +283,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 <% end %>
 
+<% if @level.playable_type == "Tutorial"  && !@show_failure_popup && !@show_success_popup %>
+document.addEventListener('DOMContentLoaded', function() {
+    toggleTutorialModal();
+});
+<% end %>
 </script>
-
 </body>
 </html>

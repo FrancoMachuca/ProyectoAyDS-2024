@@ -12,6 +12,7 @@ require_relative '../models/mouse_translation'
 require_relative '../models/image'
 require_relative '../models/default_image'
 require_relative '../models/falling_object'
+require_relative '../models/tutorial'
 
 image = DefaultImage.new
 File.open('public\uploads\genericAvatar.png') do |f|
@@ -27,6 +28,7 @@ users = [
 ]
 
 levels = [
+  {name: 'Tutorial', playable: Tutorial.create!()},
   {name: 'Letras I', playable: Lesson.create!()},
   {name: 'Letras II', playable: Lesson.create!()},
   {name: 'Palabras I', playable: Lesson.create!()},
@@ -60,6 +62,49 @@ end
 
 # Creación de preguntas
 questions_data = [
+  {
+    descripcion: 'Test',
+    level_name: 'Tutorial',
+    questionable: Multiple_choice.create!(),
+    answers: [
+      {answer: 'Correcta', correct: true},
+      {answer: 'falsa', correct: false},
+      {answer: 'falsa', correct: false},
+      {answer: 'falsa', correct: false}
+    ]
+  },
+  {
+    descripcion: 'Test',
+    level_name: 'Tutorial',
+    questionable: MouseTranslation.create!(),
+    answers: [
+      {answer: '.-', correct: true}
+    ]
+  },
+  {
+    description: 'Completa la siguiente letra en código morse:',
+    level_name: 'Tutorial',
+    questionable: To_complete.create!(keyword: "C", toCompleteMorse: "-__."),
+    answers: [
+      {answer: "-.-.", correct: true}
+    ]
+  },
+  {
+    description: 'Traduce ".---" al Español',
+    level_name: 'Tutorial',
+    questionable: Translation.create!(),
+    answers: [
+      {answer: 'j', correct: true}
+    ]
+  },
+  {
+    description: 'Traduce "M" a código morse',
+    level_name: 'Tutorial',
+    questionable: FallingObject.create!(),
+    answers: [
+      {answer: "--", correct: true}
+    ]
+  },
   # Nivel 1: Aprender letras (Fácil)
   {
     description: 'Traduce ".-" al Español',
