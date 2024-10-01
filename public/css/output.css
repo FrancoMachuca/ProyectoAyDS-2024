@@ -620,6 +620,10 @@ video {
   top: 0.5rem;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .m-auto {
   margin: auto;
 }
@@ -627,6 +631,10 @@ video {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.mb-0 {
+  margin-bottom: 0px;
 }
 
 .mb-0 {
@@ -675,6 +683,10 @@ video {
 
 .mt-3 {
   margin-top: 0.75rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .mt-4 {
@@ -790,6 +802,7 @@ video {
   width: -moz-min-content;
   width: min-content;
 }
+
 
 .max-w-\[521px\] {
   max-width: 521px;
