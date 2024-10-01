@@ -26,6 +26,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_12_234006) do
     t.datetime "updated_at"
   end
 
+  create_table "falling_objects", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "images", force: :cascade do |t|
     t.string "image", null: false
     t.string "caption", null: false

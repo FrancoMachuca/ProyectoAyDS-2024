@@ -334,7 +334,7 @@ questions_data = [
   },
   {
     description: 'Traduce "A" a código morse',
-    level_name: 'Nuevo nivel',
+    level_name: 'Nuevo juego',
     questionable: FallingObject.create!(),
     answers: [
       {answer: ".-", correct: true}
@@ -342,7 +342,7 @@ questions_data = [
   },
   {
     description: 'Traduce "S" a código morse',
-    level_name: 'Nuevo nivel',
+    level_name: 'Nuevo juego',
     questionable: FallingObject.create!(),
     answers: [
       {answer: "...", correct: true}
@@ -350,7 +350,7 @@ questions_data = [
   },
   {
     description: 'Traduce "B" a código morse',
-    level_name: 'Nuevo nivel',
+    level_name: 'Nuevo juego',
     questionable: FallingObject.create!(),
     answers: [
       {answer: "-...", correct: true}
@@ -358,7 +358,7 @@ questions_data = [
   },
   {
     description: 'Traduce "P" a código morse',
-    level_name: 'Nuevo nivel',
+    level_name: 'Nuevo juego',
     questionable: FallingObject.create!(),
     answers: [
       {answer: ".--.", correct: true}
