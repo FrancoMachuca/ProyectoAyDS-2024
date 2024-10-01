@@ -59,5 +59,32 @@
         </div>
     </div>
 </section>
+<audio id="audio" src="\media\st2.mp3" preload="auto" loop>
+    </audio>
+
+    <script>
+        if (localStorage.getItem('audioMenuTime')) {
+            audio.volume = 0.15
+            audio.currentTime = localStorage.getItem('audioMenuTime');
+         }
+
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('audioMenuTime', audio.currentTime);
+        });
+        const playPauseText = document.getElementById('playPauseText');
+        function playAudio() {
+            const audio = document.getElementById('audio');
+            if (audio.paused) {
+                audio.volume = 0.25;
+                audio.play();
+                playPauseText.textContent = 'Pausar Música';
+            } else {
+                audio.pause();
+                playPauseText.textContent = 'Reproducir Música';
+            }
+    }
+
+    window.onload = playAudio();
+    </script>
 </body>
 </html>
