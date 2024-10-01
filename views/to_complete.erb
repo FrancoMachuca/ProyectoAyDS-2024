@@ -36,13 +36,22 @@
           </form>
         </div>
       </div>
+      <button onclick="playAudio()" class="w-min flex gap-2 p-2 bg-black text-white rounded-xl shadow-sm transition duration-200 hover:bg-purple-700 hover:transition-all hover:scale-105" >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+        </svg>
+        <span id="playPauseText" class="text-sm">Reproducir Música</span>
+      </button>
     </div>
   </article>
 </section>
 
+<audio id="audio" src="\media\st1.mp3" preload="auto" loop>
+</audio>
+
 <!-- Help Modal -->
 <div id="help-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
     <button onclick="toggleHelpModal()" class="relative ">&times;</button>
     <img src="https://www.electronics-notes.com/images/morse-code-table-alphabet-letters.svg" alt="Tabla" class="w-full h-auto">
   </div>
@@ -66,33 +75,58 @@
 
 <!-- Quit Modal -->
 <div id="quit-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
     <%= erb :quit_warning %>
   </div>
 </div>
 
 <!-- Success Modal -->
 <div id="success-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
     <%= erb :success %>
   </div>
 </div>
 
 <!-- Failure Modal -->
 <div id="failure-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
     <%= erb :exam_failed %>
   </div>
 </div>
 
 <!-- Failure Lesson Modal -->
 <div id="failure_lesson-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white flex flex-col items-end rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
+  <div class="bg-white flex flex-col items-center rounded-lg overflow-hidden shadow-xl max-w-lg w-full p-4">
     <%= erb :lesson_failed %>
   </div>
 </div>
 
 <script>
+
+  if (localStorage.getItem('audioTime')) {
+    audio.volume = 0.15
+    audio.currentTime = localStorage.getItem('audioTime');
+  }
+
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('audioTime', audio.currentTime);
+  });
+
+  const playPauseText = document.getElementById('playPauseText');
+  function playAudio() {
+    const audio = document.getElementById('audio');
+    if (audio.paused) {
+            audio.volume = 0.15;
+            audio.play();
+            playPauseText.textContent = 'Pausar Música';
+        } else {
+            audio.pause();
+            playPauseText.textContent = 'Reproducir Música';
+        }
+  }
+
+  window.onload = playAudio();
+
 function toggleHelpModal() {
   var modal = document.getElementById('help-modal');
   modal.classList.toggle('hidden');
