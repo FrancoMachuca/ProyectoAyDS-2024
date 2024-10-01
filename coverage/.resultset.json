@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/myapp.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/myapp.rb": {
         "lines": [
           1,
           1,
@@ -18,8 +18,17 @@
           1,
           1,
           1,
+          1,
+          1,
+          1,
+          1,
           null,
           1,
+          null,
+          1,
+          1,
+          null,
+          null,
           1,
           32,
           32,
@@ -64,6 +73,7 @@
           1,
           1,
           1,
+          1,
           null,
           null,
           null,
@@ -74,15 +84,54 @@
           null,
           null,
           1,
-          3,
           2,
-          2,
-          2,
-          2,
-          2,
+          1,
+          1,
+          1,
+          1,
+          1,
           null,
           1,
           null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          0,
           null,
           null,
           1,
@@ -151,7 +200,7 @@
           12,
           12,
           12,
-          11,
+          10,
           10,
           null,
           7,
@@ -159,7 +208,7 @@
           3,
           null,
           10,
-          4,
+          3,
           null,
           null,
           10,
@@ -179,7 +228,7 @@
           2,
           null,
           null,
-          1,
+          2,
           null,
           null,
           1,
@@ -188,16 +237,17 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/user.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/user.rb": {
         "lines": [
           1,
           1,
           1,
           1,
+          1,
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/level.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/level.rb": {
         "lines": [
           1,
           1,
@@ -215,7 +265,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/lesson.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/lesson.rb": {
         "lines": [
           1,
           1,
@@ -223,7 +273,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/exam.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/exam.rb": {
         "lines": [
           1,
           1,
@@ -231,7 +281,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/question.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/question.rb": {
         "lines": [
           1,
           1,
@@ -250,7 +300,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/multiple_choice.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/multiple_choice.rb": {
         "lines": [
           1,
           1,
@@ -258,7 +308,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/translation.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/translation.rb": {
         "lines": [
           1,
           1,
@@ -266,17 +316,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/mouse_translation.rb": {
-        "lines": [
-          null,
-          1,
-          null,
-          1,
-          1,
-          null
-        ]
-      },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/answer.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/mouse_translation.rb": {
         "lines": [
           1,
           1,
@@ -284,7 +324,15 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/user_level.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/answer.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/user_level.rb": {
         "lines": [
           1,
           1,
@@ -293,7 +341,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/to_complete.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/to_complete.rb": {
         "lines": [
           1,
           1,
@@ -301,7 +349,53 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/controllers/game_data_manager.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/models/image.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/uploader/image_uploader.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          0,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          null
+        ]
+      },
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/uploader/seed_image_uploader.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          0,
+          null,
+          null
+        ]
+      },
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/controllers/game_data_manager.rb": {
         "lines": [
           1,
           1,
@@ -315,38 +409,38 @@
           null,
           null,
           1,
-          24,
+          19,
           null,
           null,
           1,
-          24,
+          19,
           null,
           null,
           1,
-          2,
-          2,
-          2,
-          7,
           1,
           1,
           1,
+          1,
+          0,
+          0,
+          0,
           null,
           null,
-          6,
-          5,
+          1,
+          0,
           null,
           null,
           null,
-          2,
+          1,
           null,
           null,
           1,
           124,
           123,
           123,
-          19,
+          0,
           null,
-          104,
+          123,
           null,
           null,
           1,
@@ -381,12 +475,12 @@
           null,
           null,
           1,
-          5,
-          21,
-          21,
+          4,
+          16,
+          16,
           null,
-          5,
-          9,
+          4,
+          8,
           null,
           null,
           null,
@@ -394,7 +488,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/controllers/questions_manager.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/controllers/questions_manager.rb": {
         "lines": [
           1,
           1,
@@ -408,9 +502,9 @@
           1,
           24,
           null,
-          7,
+          8,
           null,
-          9,
+          8,
           null,
           2,
           null,
@@ -449,7 +543,7 @@
           null
         ]
       },
-      "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/spec/test_spec.rb": {
+      "C:/Users/franc/Documents/GitHub/ProyectoAyDS-2024/spec/test_spec.rb": {
         "lines": [
           1,
           null,
@@ -542,8 +636,8 @@
           null,
           1,
           1,
-          6,
-          6,
+          7,
+          7,
           null,
           null,
           1,
@@ -580,33 +674,6 @@
           1,
           1,
           1,
-          1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          1,
-          14,
-          14,
-          14,
-          14,
-          14,
-          84,
-          84,
-          null,
-          14,
-          14,
-          null,
-          null,
-          1,
-          14,
-          null,
-          null,
-          1,
-          1,
-          1,
-          1,
           null,
           null,
           1,
@@ -614,20 +681,25 @@
           1,
           1,
           1,
-          1,
-          1,
-          1,
+          null,
           null,
           null,
           1,
           1,
+          13,
+          13,
+          13,
+          13,
+          13,
+          78,
+          78,
+          null,
+          13,
+          13,
+          null,
+          null,
           1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
+          13,
           null,
           null,
           1,
@@ -636,13 +708,6 @@
           1,
           null,
           null,
-          1,
-          1,
-          1,
-          null,
-          null,
-          1,
-          1,
           1,
           1,
           1,
@@ -659,16 +724,6 @@
           1,
           1,
           1,
-          null,
-          null,
-          1,
-          1,
-          1,
-          1,
-          1,
-          1,
-          null,
-          1,
           1,
           1,
           1,
@@ -682,8 +737,47 @@
           null,
           1,
           1,
-          0,
-          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
           null,
           null,
           1,
@@ -874,6 +968,6 @@
         ]
       }
     },
-    "timestamp": 1727126193
+    "timestamp": 1727749307
   }
 }
