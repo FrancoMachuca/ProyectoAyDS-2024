@@ -124,6 +124,11 @@ RSpec.describe 'The Server' do
       expect(last_response).to be_ok
     end
 
+    it "shows the photo update page" do
+      get '/actualizarFoto'
+      expect(last_response).to be_ok
+    end
+
     it "doesn't allow to play locked levels" do
       get '/level/2'
       expect(last_response).to be_redirect
@@ -163,7 +168,7 @@ RSpec.describe 'The Server' do
       gm.unlockNextLevelFor(user: u, possiblyCompleted: Level.find(5))
       get '/level/6'
       follow_redirect!
-      expect(last_request.path).to eq('/level/6/21')
+      expect(last_request.path).to eq('/level/6/22')
     end
 
     it "unlocks levels correctly" do
@@ -174,17 +179,12 @@ RSpec.describe 'The Server' do
       gm.unlockNextLevelFor(user: u, possiblyCompleted: Level.find(4))
       get '/level/5'
       follow_redirect!
-      expect(last_request.path).to eq('/level/5/17')
+      expect(last_request.path).to eq('/level/5/18')
     end
 
     it "enters to an exam correctly" do
       get '/level/6'
       follow_redirect!
-      expect(last_response).to be_ok
-    end
-
-    it "shows the profile page correctly" do
-      get '/perfil'
       expect(last_response).to be_ok
     end
 
@@ -201,22 +201,22 @@ RSpec.describe 'The Server' do
     end
 
     it "checks an answer correctly (User-input)" do
-      get '/level/1'
+      get '/level/2'
       follow_redirect!
-      post '/level/1/1/check', user_guess: 'a'
+      post '/level/2/6/check', user_guess: 'a'
       follow_redirect!
-      expect(last_request.path).to eq('/level/1/2')
+      expect(last_request.path).to eq('/level/2/7')
     end
 
     it "checks an answer correctly (Multiple-choice)" do
       get '/level/2'
       follow_redirect!
-      post '/level/1/2/check', answer_id: '2'
+      post '/level/2/7/check', answer_id: '2'
       follow_redirect!
-      expect(last_request.path).to eq('/level/1/3')
+      expect(last_request.path).to eq('/level/2/8')
     end
     it "redirects to the level selection page when trying to access an invalid question" do
-      get '/level/1/21'
+      get '/level/2/21'
       follow_redirect!
       expect(last_request.path).to eq('/jugar')
     end
@@ -228,7 +228,7 @@ RSpec.describe 'The Server' do
     end
 
     it "redirects to the level selection page when trying to answer an invalid question" do
-      post '/level/1/45/check', user_guess: 'a'
+      post '/level/2/5000/check', user_guess: 'a'
       follow_redirect!
       expect(last_request.path).to eq('/jugar')
     end
@@ -240,28 +240,28 @@ RSpec.describe 'The Server' do
     end
 
     it "shows the level success popup correctly" do
-      get '/level/1'
+      get '/level/2'
       follow_redirect!
-      post '/level/1/1/check', user_guess: 'a'
+      post '/level/2/6/check', user_guess: 'a'
       follow_redirect!
-      post '/level/1/2/check', answer_id: '1'
+      post '/level/2/7/check', answer_id: '1'
       follow_redirect!
-      post '/level/1/3/check', user_guess: 'b'
+      post '/level/2/8/check', user_guess: 'b'
       follow_redirect!
-      post '/level/1/4/check', user_guess: '.-'
+      post '/level/2/9/check', user_guess: '.-'
       expect(last_response).to be_ok
     end
 
     it "shows the level failed popup correctly" do
-      get '/level/1'
+      get '/level/2'
       follow_redirect!
-      post '/level/1/1/check', user_guess: 'abc'
+      post '/level/2/6/check', user_guess: 'abc'
       follow_redirect!
-      post '/level/1/2/check', answer_id: '4'
+      post '/level/2/7/check', answer_id: '4'
       follow_redirect!
-      post '/level/1/3/check', user_guess: 'bca'
+      post '/level/2/8/check', user_guess: 'bca'
       follow_redirect!
-      post '/level/1/4/check', user_guess: '.'
+      post '/level/2/9/check', user_guess: '.'
       expect(last_response).to be_ok
     end
   end
