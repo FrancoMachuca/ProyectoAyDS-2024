@@ -1,4 +1,6 @@
 require_relative '../models/user'
+require_relative '../models/admin'
+require_relative '../models/player'
 require_relative '../models/level'
 require_relative '../models/lesson'
 require_relative '../models/exam'
@@ -6,7 +8,7 @@ require_relative '../models/question'
 require_relative '../models/multiple_choice'
 require_relative '../models/translation'
 require_relative '../models/answer'
-require_relative '../models/user_level'
+require_relative '../models/player_level'
 require_relative '../models/to_complete'
 require_relative '../models/mouse_translation'
 require_relative '../models/image'
@@ -21,8 +23,11 @@ end
 image.caption = 'Profile Pic'
 
 
-users = [
-  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
+admins = [
+  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'}
+]
+
+players = [
   {name: 'Valentino Natali', mail: 'R@example.com', password: '123'},
   {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456'}
 ]
@@ -38,10 +43,16 @@ levels = [
   {name: 'Nuevo juego', playable: Lesson.create!()}
 ]
 
-users.each do |u|
-  user = User.create(u)
-  user.image = image
-  user.save
+admins.each do |u|
+  admin = Admin.create(u)
+  admin.image = image
+  admin.save
+end
+
+players.each do |u|
+  player = Player.create(u)
+  player.image = image
+  player.save
 end
 
 levels.each do |l|
@@ -53,11 +64,11 @@ levels.each do |l|
   end
 end
 
-users = User.all
+players = Player.all
 level = Level.first
 
-users.each do |u|
-  UserLevel.create(user: u, level: level, userLevelScore: 0)
+players.each do |u|
+  PlayerLevel.create(player: u, level: level, playerLevelScore: 0)
 end
 
 # Creación de preguntas

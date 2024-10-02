@@ -4,6 +4,7 @@ class CreateUsersTable < ActiveRecord::Migration[7.1]
         u.string :name
         u.string :mail
         u.string :password
+        u.string :type
         u.references :image, foreign_key: true
 
         u.datetime :created_at

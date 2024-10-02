@@ -2,6 +2,8 @@ require 'sinatra/base'
 require 'sinatra/activerecord'
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
+require './models/admin'
+require './models/player'
 require './models/user'
 require './models/level'
 require './models/lesson'
@@ -11,7 +13,7 @@ require './models/multiple_choice'
 require './models/translation'
 require './models/mouse_translation'
 require './models/answer'
-require './models/user_level'
+require './models/player_level'
 require './models/to_complete'
 require './models/image'
 require './controllers/game_data_manager'
@@ -211,7 +213,7 @@ class MyApp < Sinatra::Application
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else
                     @user = User.find_by(id: session[:user_id])
-                    @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
+                    @gm.addPlayerLevelScore(user: @user, level: @level, value: session[:user_level_score])
                     @final_score = session[:user_level_score]
                     session[:user_level_score] = 0
                     if @gm.completedLevel?(level: @level, user: @user)
