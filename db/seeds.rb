@@ -22,14 +22,10 @@ File.open('public\uploads\genericAvatar.png') do |f|
 end
 image.caption = 'Profile Pic'
 
-
-admins = [
-  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'}
-]
-
-players = [
-  {name: 'Valentino Natali', mail: 'R@example.com', password: '123'},
-  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456'}
+users = [
+  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita', userable: Admin.create!()},
+  {name: 'Valentino Natali', mail: 'R@example.com', password: '123', userable: Player.create!()},
+  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456', userable: Player.create!()}
 ]
 
 levels = [
@@ -43,16 +39,10 @@ levels = [
   {name: 'Nuevo juego', playable: Lesson.create!()}
 ]
 
-admins.each do |u|
-  admin = Admin.create(u)
-  admin.image = image
-  admin.save
-end
-
-players.each do |u|
-  player = Player.create(u)
-  player.image = image
-  player.save
+users.each do |u|
+  user = User.create(u)
+  user.image = image
+  user.save
 end
 
 levels.each do |l|
@@ -68,7 +58,8 @@ players = Player.all
 level = Level.first
 
 players.each do |u|
-  PlayerLevel.create(player: u, level: level, playerLevelScore: 0)
+  puts u
+  PlayerLevel.create!(player: u, level: level, playerLevelScore: 0)
 end
 
 # Creación de preguntas

@@ -1,4 +1,5 @@
 require 'active_record'
 require './models/user.rb'
-class Admin < User
+class Admin < ActiveRecord::Base
+  include Userable
 end

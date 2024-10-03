@@ -12,10 +12,8 @@
 
 ActiveRecord::Schema[7.2].define(version: 2024_10_02_185218) do
   create_table "admins", force: :cascade do |t|
-    t.integer "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["user_id"], name: "index_admins_on_user_id"
   end
 
   create_table "answers", force: :cascade do |t|
@@ -79,10 +77,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_02_185218) do
   end
 
   create_table "players", force: :cascade do |t|
-    t.integer "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["user_id"], name: "index_players_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -117,17 +113,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_02_185218) do
     t.string "mail"
     t.string "password"
     t.string "type"
+    t.integer "userable_id"
+    t.string "userable_type"
     t.integer "image_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["image_id"], name: "index_users_on_image_id"
   end
 
-  add_foreign_key "admins", "users"
   add_foreign_key "answers", "questions"
   add_foreign_key "player_levels", "levels"
   add_foreign_key "player_levels", "players"
-  add_foreign_key "players", "users"
   add_foreign_key "questions", "levels"
   add_foreign_key "users", "images"
 end
