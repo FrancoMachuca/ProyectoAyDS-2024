@@ -112,7 +112,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_02_185218) do
     t.string "name"
     t.string "mail"
     t.string "password"
-    t.string "type"
     t.integer "userable_id"
     t.string "userable_type"
     t.integer "image_id"

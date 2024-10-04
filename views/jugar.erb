@@ -16,7 +16,7 @@
         <h1 class="title font-bold">Selección de Niveles</h1>
         <div class="levels-container">
             <% @levels.each do |level| %>
-                <% if @levels_unlocked.include?(level) && @gm.completedLevel?(level: level, user: @user) %>
+                <% if @levels_unlocked.include?(level) && @gm.completedLevel?(level: level, player: @player) %>
                     <div class="level completed shadow-sm bg-opacity-60 hover:font-semibold hover:scale-105 hover:ease-in hover:bg-orange-500 hover:border-y-2 hover:border-x-2 hover:transition-all transition duration-200" " onclick="location.href='/level/<%= level.id %>'" data-level="Nivel <%= level.id %>">
                         <%= level.name %>
                     </div>

@@ -6,28 +6,28 @@ require '.\models\player_level'
 class GameDataManager
 
     def createGameDataFor(player: Player)
-        UserLevel.create(player: player, level: Level.first, playerLevelScore: 0)
+        PlayerLevel.create(player: player, level: Level.first, playerLevelScore: 0)
     end
 
     def getGameDataOf(player: Player)
         return PlayerLevel.where(player: player)
     end
-    
+
     def getTotalScoreOf(player: Player)
         return getGameDataOf(player: player).sum('playerLevelScore')
     end
 
-    def getAmountOfLevelsCompleted(user: Player)
-        u = PlayerLevel.where(player: user)
+    def getAmountOfLevelsCompleted(player: Player)
+        u = PlayerLevel.where(player: player)
         sum = 0
         u.each do |row|
             if row.level.playable_type == "Exam"
                 exam = row.level.exam
-                if exam.minScore <= row.userLevelScore
+                if exam.minScore <= row.playerLevelScore
                     sum += 1
                 end
             else
-                if row.userLevelScore > 0
+                if row.playerLevelScore > 0
                     sum += 1
                 end
             end
@@ -39,9 +39,9 @@ class GameDataManager
         if unlockedLevel?(level: level, player: player)
             row = PlayerLevel.find_by(player: player, level: level)
             if row.level.playable_type == "Exam"
-                return row.userLevelScore >= row.level.exam.minScore
+                return row.playerLevelScore >= row.level.exam.minScore
             else
-                return row.userLevelScore > 0
+                return row.playerLevelScore > 0
             end
         else
             return false
@@ -49,12 +49,12 @@ class GameDataManager
     end
 
     def unlockedLevel?(level: Level, player: Player)
-        row = PlayerLevel.find_by(user: player, level: level)
+        row = PlayerLevel.find_by(player: player, level: level)
         return !row.nil?
     end
 
     def unlockNextLevelFor(player: Player, possiblyCompleted: Level)
-        if completedLevel?(level: possiblyCompleted, Player: player)
+        if completedLevel?(level: possiblyCompleted, player: player)
             nextLevel = Level.where("id > ?", possiblyCompleted.id).first
             if nextLevel
                 PlayerLevel.create(player: player, level: nextLevel, playerLevelScore: 0)
@@ -71,11 +71,11 @@ class GameDataManager
         end
     end
 
-    def resetUserLevelScore(player: Player, level: Level)
+    def resetPlayerLevelScore(player: Player, level: Level)
         addPlayerLevelScore(player: player, level: level, value: 0)
     end
 
-    def getUserRank(player: Player)
+    def getPlayerRank(player: Player)
         all_users = Player.all
         user_scores = all_users.map { |u| [u, getTotalScoreOf(player: u)] }
         sorted_user_scores = user_scores.sort_by { |_, score| -score }
