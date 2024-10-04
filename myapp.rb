@@ -242,6 +242,6 @@ class MyApp < Sinatra::Application
     end
 
     get '/admin' do
-        erb :menu_admin
+        erb :admin_menu
     end
 end
