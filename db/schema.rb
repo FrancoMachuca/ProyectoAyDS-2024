@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_27_194829) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_02_185218) do
+  create_table "admins", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "answers", force: :cascade do |t|
     t.string "answer"
     t.boolean "correct"
@@ -61,6 +66,21 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_27_194829) do
     t.datetime "updated_at"
   end
 
+  create_table "player_levels", force: :cascade do |t|
+    t.integer "player_id"
+    t.integer "level_id"
+    t.integer "playerLevelScore"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["level_id"], name: "index_player_levels_on_level_id"
+    t.index ["player_id"], name: "index_player_levels_on_player_id"
+  end
+
+  create_table "players", force: :cascade do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.string "description"
     t.integer "level_id"
@@ -88,20 +108,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_27_194829) do
     t.datetime "updated_at"
   end
 
-  create_table "user_levels", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "level_id"
-    t.integer "userLevelScore"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["level_id"], name: "index_user_levels_on_level_id"
-    t.index ["user_id"], name: "index_user_levels_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "mail"
     t.string "password"
+    t.integer "userable_id"
+    t.string "userable_type"
     t.integer "image_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -109,8 +121,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_27_194829) do
   end
 
   add_foreign_key "answers", "questions"
+  add_foreign_key "player_levels", "levels"
+  add_foreign_key "player_levels", "players"
   add_foreign_key "questions", "levels"
-  add_foreign_key "user_levels", "levels"
-  add_foreign_key "user_levels", "users"
   add_foreign_key "users", "images"
 end
