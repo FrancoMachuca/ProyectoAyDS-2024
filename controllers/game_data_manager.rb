@@ -1,33 +1,33 @@
-require '.\models\player'
+require '.\models\user'
 require '.\models\level'
-require '.\models\player_level'
+require '.\models\user_level'
 # Esta clase se encarga de realizar todas las operaciones relacionadas con la modificación
 # y consulta del progreso de los usuarios, tanto en niveles particulares como en general.
 class GameDataManager
 
-    def createGameDataFor(player: Player)
-        PlayerLevel.create(player: player, level: Level.first, playerLevelScore: 0)
+    def createGameDataFor(user: User)
+        UserLevel.create(user: user, level: Level.first, userLevelScore: 0)
     end
 
-    def getGameDataOf(player: Player)
-        return PlayerLevel.where(player: player)
+    def getGameDataOf(user: User)
+        return UserLevel.where(user: user)
+    end
+    
+    def getTotalScoreOf(user: User)
+        return getGameDataOf(user: user).sum('userLevelScore')
     end
 
-    def getTotalScoreOf(player: Player)
-        return getGameDataOf(player: player).sum('playerLevelScore')
-    end
-
-    def getAmountOfLevelsCompleted(player: Player)
-        u = PlayerLevel.where(player: player)
+    def getAmountOfLevelsCompleted(user: User)
+        u = UserLevel.where(user: user)
         sum = 0
         u.each do |row|
             if row.level.playable_type == "Exam"
                 exam = row.level.exam
-                if exam.minScore <= row.playerLevelScore
+                if exam.minScore <= row.userLevelScore
                     sum += 1
                 end
             else
-                if row.playerLevelScore > 0
+                if row.userLevelScore > 0
                     sum += 1
                 end
             end
@@ -35,53 +35,53 @@ class GameDataManager
         return sum
     end
 
-    def completedLevel?(level: Level, player: Player)
-        if unlockedLevel?(level: level, player: player)
-            row = PlayerLevel.find_by(player: player, level: level)
+    def completedLevel?(level: Level, user: User)
+        if unlockedLevel?(level: level, user: user)
+            row = UserLevel.find_by(user: user, level: level)
             if row.level.playable_type == "Exam"
-                return row.playerLevelScore >= row.level.exam.minScore
+                return row.userLevelScore >= row.level.exam.minScore
             else
-                return row.playerLevelScore > 0
+                return row.userLevelScore > 0
             end
         else
             return false
         end
     end
 
-    def unlockedLevel?(level: Level, player: Player)
-        row = PlayerLevel.find_by(player: player, level: level)
+    def unlockedLevel?(level: Level, user: User)
+        row = UserLevel.find_by(user: user, level: level)
         return !row.nil?
     end
 
-    def unlockNextLevelFor(player: Player, possiblyCompleted: Level)
-        if completedLevel?(level: possiblyCompleted, player: player)
+    def unlockNextLevelFor(user: User, possiblyCompleted: Level)
+        if completedLevel?(level: possiblyCompleted, user: user)
             nextLevel = Level.where("id > ?", possiblyCompleted.id).first
             if nextLevel
-                PlayerLevel.create(player: player, level: nextLevel, playerLevelScore: 0)
+                UserLevel.create(user: user, level: nextLevel, userLevelScore: 0)
                 return true
             end
         end
         return false
     end
 
-    def addPlayerLevelScore(player: Player, level: Level, value: int)
-        row = PlayerLevel.find_by(player: player, level: level)
+    def addUserLevelScore(user: User, level: Level, value: int)
+        row = UserLevel.find_by(user: user, level: level)
         if row
-            row.update(playerLevelScore: value)
+            row.update(userLevelScore: value)
         end
     end
 
-    def resetPlayerLevelScore(player: Player, level: Level)
-        addPlayerLevelScore(player: player, level: level, value: 0)
+    def resetUserLevelScore(user: User, level: Level)
+        addUserLevelScore(user: user, level: level, value: 0)
     end
 
-    def getPlayerRank(player: Player)
-        all_users = Player.all
-        user_scores = all_users.map { |u| [u, getTotalScoreOf(player: u)] }
+    def getUserRank(user: User)
+        all_users = User.all
+        user_scores = all_users.map { |u| [u, getTotalScoreOf(user: u)] }
         sorted_user_scores = user_scores.sort_by { |_, score| -score }
 
         sorted_user_scores.each_with_index do |(u, _), index|
-            return index + 1 if u.id == player.id
+            return index + 1 if u.id == user.id
         end
         nil # En caso de que el usuario no se encuentre
     end

@@ -1,6 +1,4 @@
 require_relative '../models/user'
-require_relative '../models/admin'
-require_relative '../models/player'
 require_relative '../models/level'
 require_relative '../models/lesson'
 require_relative '../models/exam'
@@ -8,7 +6,7 @@ require_relative '../models/question'
 require_relative '../models/multiple_choice'
 require_relative '../models/translation'
 require_relative '../models/answer'
-require_relative '../models/player_level'
+require_relative '../models/user_level'
 require_relative '../models/to_complete'
 require_relative '../models/mouse_translation'
 require_relative '../models/image'
@@ -22,10 +20,11 @@ File.open('public\uploads\genericAvatar.png') do |f|
 end
 image.caption = 'Profile Pic'
 
+
 users = [
-  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita', userable: Admin.create!()},
-  {name: 'Valentino Natali', mail: 'R@example.com', password: '123', userable: Player.create!()},
-  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456', userable: Player.create!()}
+  {name: 'Franco Machuca', mail: 'e@example.com', password: 'bokita'},
+  {name: 'Valentino Natali', mail: 'R@example.com', password: '123'},
+  {name: 'Ignacio Cerutti Norris', mail: 'L@example.com', password: '456'}
 ]
 
 levels = [
@@ -54,12 +53,11 @@ levels.each do |l|
   end
 end
 
-players = Player.all
+users = User.all
 level = Level.first
 
-players.each do |u|
-  puts u
-  PlayerLevel.create!(player: u, level: level, playerLevelScore: 0)
+users.each do |u|
+  UserLevel.create(user: u, level: level, userLevelScore: 0)
 end
 
 # Creación de preguntas
