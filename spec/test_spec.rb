@@ -140,11 +140,11 @@ RSpec.describe 'The Server' do
   context "when playing" do
     before(:each) do
       get '/logout'
-      u = Player.new(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
+      u = User.new(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
       u.save
       i = 1
       while i <= 6
-        PlayerLevel.create(player: u, level: Level.find(i), playerLevelScore: 500)
+        UserLevel.create(user: u, level: Level.find(i), userLevelScore: 500)
         i += 1
       end
       post '/login', name: 'Homero Simpson', password: 'callefalsa123'
@@ -152,7 +152,7 @@ RSpec.describe 'The Server' do
     end
 
     after(:each) do
-      Player.find_by(name: 'Homero Simpson').destroy
+      User.find_by(name: 'Homero Simpson').destroy
     end
 
     it "enters to a level correctly" do
@@ -162,21 +162,21 @@ RSpec.describe 'The Server' do
     end
 
     it "unlocks exams correctly" do
-      u = Player.find_by(name: 'Homero Simpson')
-      PlayerLevel.destroy_by(player: u, level: Level.find(6), playerLevelScore: 500)
+      u = User.find_by(name: 'Homero Simpson')
+      UserLevel.destroy_by(user: u, level: Level.find(6), userLevelScore: 500)
       gm = GameDataManager.new
-      gm.unlockNextLevelFor(player: u, possiblyCompleted: Level.find(5))
+      gm.unlockNextLevelFor(user: u, possiblyCompleted: Level.find(5))
       get '/level/6'
       follow_redirect!
       expect(last_request.path).to eq('/level/6/22')
     end
 
     it "unlocks levels correctly" do
-      u = Player.find_by(name: 'Homero Simpson')
-      PlayerLevel.destroy_by(player: u, level: Level.find(6))
-      PlayerLevel.destroy_by(player: u, level: Level.find(5))
+      u = User.find_by(name: 'Homero Simpson')
+      UserLevel.destroy_by(user: u, level: Level.find(6))
+      UserLevel.destroy_by(user: u, level: Level.find(5))
       gm = GameDataManager.new
-      gm.unlockNextLevelFor(player: u, possiblyCompleted: Level.find(4))
+      gm.unlockNextLevelFor(user: u, possiblyCompleted: Level.find(4))
       get '/level/5'
       follow_redirect!
       expect(last_request.path).to eq('/level/5/18')
@@ -189,11 +189,11 @@ RSpec.describe 'The Server' do
     end
 
     it "doesn't unlock a level without having beaten the previous one first" do
-      u = Player.find_by(name: 'Homero Simpson')
-      PlayerLevel.destroy_by(player: u, level: Level.find(6))
-      PlayerLevel.destroy_by(player: u, level: Level.find(5))
+      u = User.find_by(name: 'Homero Simpson')
+      UserLevel.destroy_by(user: u, level: Level.find(6))
+      UserLevel.destroy_by(user: u, level: Level.find(5))
       gm = GameDataManager.new
-      gm.unlockNextLevelFor(player: u, possiblyCompleted: Level.find(5))
+      gm.unlockNextLevelFor(user: u, possiblyCompleted: Level.find(5))
       get '/level/6'
       expect(last_response).to be_redirect
       follow_redirect!
@@ -273,7 +273,7 @@ RSpec.describe 'The Server' do
     end
 
     after(:each) do
-      Player.find_by(name: 'Homero Simpson').destroy
+      User.find_by(name: 'Homero Simpson').destroy
     end
 
     it "registers a new user correctly" do
@@ -284,7 +284,7 @@ RSpec.describe 'The Server' do
     end
 
     it "shows an error if the user already exists" do
-      Player.create(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
+      User.create(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
       post '/registro', name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com'
       expect(last_response).to_not be_redirect
     end
