@@ -1,6 +1,12 @@
 require 'active_record'
 class User < ActiveRecord::Base
-    has_many :user_levels, dependent: :destroy
-    has_many :levels, through: :user_levels
+    delegated_type :userable, types: %W[ Player Admin]
     belongs_to :image
+end
+
+module Userable
+    extend ActiveSupport::Concern
+    included do
+        has_one :user, as: :userable, touch: true
+    end 
 end

@@ -1,0 +1,32 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashes & Dots - Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="/css/output.css" rel="stylesheet">
+  <link href="icon.ico" rel="icon">
+</head>
+<section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300">
+  <div class="flex flex-col justify-around px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 h-full pointer-events-auto">
+          
+      <h1 class="self-center mt-8 text-3xl font-extrabold">Panel de Administración</h1>
+      
+      <!-- Botón para dar de alta niveles y preguntas -->
+      <button onclick="window.location.href='/admin/niveles_preguntas'" class="justify-center self-center px-4 py-2 text-white rounded-lg bg-black transition duration-200 hover:bg-purple-700 hover:scale-105">
+        Alta de Niveles y Preguntas
+      </button>
+
+      <!-- Botón para listar preguntas respondidas incorrectamente -->
+      <button onclick="window.location.href='/admin/preguntas_incorrectas'" class="justify-center self-center px-4 py-2  text-white rounded-lg bg-black transition duration-200 hover:bg-purple-700 hover:scale-105">
+        Preguntas Más Respondidas Incorrectamente
+      </button>
+
+      <!-- Botón para listar preguntas respondidas correctamente -->
+      <button onclick="window.location.href='/admin/preguntas_correctas'" class="justify-center self-center px-4 py-2  text-white rounded-lg bg-black transition duration-200 hover:bg-purple-700 hover:scale-105">
+        Preguntas Más Respondidas Correctamente
+      </button>
+      <button class="justify-center mt-6 w-auto self-end px-4 py-2 text-base font-medium leading-6 rounded-xl text-white bg-orange-600 hover:scale-105 hover:bg-red-600 hover:border-y-2 hover:border-x-2 hover:transition-all transition duration-200" onclick="window.location.href='/logout'">Cerrar Sesión</button>
+  </div>
+</section>
