@@ -47,12 +47,14 @@ class MyApp < Sinatra::Application
     post '/login' do
         user = User.find_by(name: params[:name], password: params[:password])
         if user
+            session[:user_id] = user.id
             if user.userable_type == 'Player'
-              session[:player_id] = user.player_id
-              session[:user_id] = user.id
-              redirect '/jugar'
+                session[:player_id] = user.player_id
+                redirect '/jugar'
             else
-              redirect '/admin'
+                session[:admin_id] = user.admin.id
+
+                redirect '/admin'
             end
 
         else
@@ -215,13 +217,16 @@ class MyApp < Sinatra::Application
                 end
                 if @qm.correctAnswer?(answer: @player_answer, question: @question)
                     session[:user_level_score] += 100
+                    @question.update(times_answered_correctly: (@question.times_answered_correctly + 1))
+                else
+                    @question.update(times_answered_incorrectly: (@question.times_answered_incorrectly + 1))
                 end
 
                 @next_question = @qm.nextQuestion(question: @question)
                 if @next_question
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else
-                    @player = Player.find_by(id: session[:user_id])
+                    @player = Player.find_by(id: session[:player_id])
                     @gm.addPlayerLevelScore(player: @player, level: @level, value: session[:user_level_score])
                     @final_score = session[:user_level_score]
                     session[:user_level_score] = 0
@@ -243,5 +248,25 @@ class MyApp < Sinatra::Application
 
     get '/admin' do
         erb :admin_menu
+    end
+
+    get '/admin/preguntasCorrectas' do
+        if session[:admin_id] && 
+            @levels = Level.where.not(playable_type: "Tutorial")
+            @questions = Question.where(level: @levels)
+            erb :correctly_answered_questions
+        else 
+            redirect "/login"
+        end
+    end
+
+    get '/admin/preguntasIncorrectas' do
+        if session[:admin_id]
+            @levels = Level.where.not(playable_type: "Tutorial")
+            @questions = Question.where(level: @levels)
+            erb :incorrectly_answered_questions
+        else
+            redirect "/login"
+        end
     end
 end
