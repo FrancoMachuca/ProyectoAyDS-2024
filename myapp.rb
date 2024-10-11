@@ -250,12 +250,24 @@ class MyApp < Sinatra::Application
         erb :admin_menu
     end
 
+    get '/admin/niveles_preguntas' do
+        if session[:admin_id]
+            @levels = Level.where.not(playable_type: "Tutorial")
+            @level_types = Level.playable_types
+            @questions = Question.where(level: @levels)
+            @question_types = Question.questionable_types
+            erb :questions_and_levels_upload
+        else
+            redirect "/login"
+        end
+    end
+
     get '/admin/preguntasCorrectas' do
-        if session[:admin_id] && 
+        if session[:admin_id] &&
             @levels = Level.where.not(playable_type: "Tutorial")
             @questions = Question.where(level: @levels)
             erb :correctly_answered_questions
-        else 
+        else
             redirect "/login"
         end
     end

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashes & Dots</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="/css/output.css" rel="stylesheet">
+  <link href="icon.ico" rel="icon">
+</head>
+<body>
+<section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300 overflow-hidden">
+  <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 max-h-screen overflow-auto">
+      <h1 class="self-center mt-8 text-3xl font-extrabold">Crear un nivel y/o una pregunta</h1>
+      <form class="flex flex-col" action="/niveles_preguntas" method="POST">
+        <label for="levels" class="block mt-3">Seleccione un nivel:</label>
+        <select
+            id="levels"
+            name="level"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+        >
+        <%@levels.each_with_index do |level, index|%>
+            <option value="<%= level.id%>"> <%= index+1%>. <%= level.name%></option>
+        <%end%>
+            <option value="new">Crear nuevo nivel</option>
+        </select>
+
+        <div id="new-level-fields" style="display: none;">
+            <label for="level_type" class="block mt-3">Seleccione un tipo de nivel:</label>
+            <select
+            id="level_type"
+            name="level_type"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            >
+            <%@level_types.each_with_index do |level_type, index|%>
+            <option value="<%= level_type%>"> <%= index+1%>. <%= level_type%></option>
+            <%end%>
+            </select>
+
+            <label for="level_name" class="block mt-3">Ingrese el nombre del nivel:</label>
+            <input
+              id="level_name"
+              name="level_name"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Nombre" aria-label="Nombre"
+            />
+        </div>
+
+        <label for="question_type" class="block mt-3">Ingrese el tipo de pregunta:</label>
+          <select
+              id="question_type"
+              name="question_type"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+          >
+        <%@question_types.each_with_index do |question_type, index|%>
+            <option value ="<%= question_type%>"> <%= index+1%>. <%= question_type%> </option>
+        <%end%>
+          </select>
+
+        <div id="new-level-fields" style="display: none;">
+          //TODO: Hacer 4 campos para cada pregunta y poner de alguna forma cual es la verdadera
+        </div>
+
+        <label for="question_description" class="block mt-3">Ingrese la descripcion de la pregunta:</label>
+          <input
+              id="question_description"
+              name="question_description"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Descripcion" aria-label="Descripcion"
+          />
+
+          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
+            Crear nivel y/o pregunta
+          </button>
+      </form>
+  </div>
+</section>
+<script>
+    function toggleNewLevelFields() {
+      const levelSelect = document.getElementById('levels');
+      const newLevelFields = document.getElementById('new-level-fields');
+      
+      if (levelSelect.value === "new") {
+        newLevelFields.style.display = "block";
+      } else {
+        newLevelFields.style.display = "none";
+      }
+    }
+
+    function toggleMultipleChoiceFields() {
+      const levelSelect = document.getElementById('questions');
+      const newLevelFields = document.getElementById('multiple-choice-fields');
+      
+      if (levelSelect.value === "Multiple_choice") {
+        newLevelFields.style.display = "block";
+      } else {
+        newLevelFields.style.display = "none";
+      }
+    }
+
+     window.onload = function() {
+      document.getElementById('levels').addEventListener('change', toggleNewLevelFields);
+      document.getElementById('questions').addEventListener('change', toggleMultipleChoiceFields);
+    };
+</script>
+</body>
+</html>
