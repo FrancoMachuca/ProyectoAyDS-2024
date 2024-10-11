@@ -60,8 +60,50 @@
         <%end%>
           </select>
 
-        <div id="new-level-fields" style="display: none;">
-          //TODO: Hacer 4 campos para cada pregunta y poner de alguna forma cual es la verdadera
+        <div id="multiple-choice-fields" style="display: none;">
+          <label for="op1" class="block mt-3">Opción 1:</label>
+            <input
+              id = "op1"
+              name = "op1"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Opcion 1" aria-label="Opcion 1"
+            />
+          <label for="op2" class="block mt-3">Opción 2:</label>
+            <input
+              id = "op2"
+              name = "op2"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Opcion 2" aria-label="Opcion 2"
+            />
+          <label for="op3" class="block mt-3">Opción 3:</label>
+            <input
+              id = "op3"
+              name = "op3"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Opcion 3" aria-label="Opcion 3"
+            />
+          <label for="op4" class="block mt-3">Opción 4:</label>
+            <input
+              id = "op4"
+              name = "op4"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Opcion 4" aria-label="Opcion 4"
+            />
+        </div>
+
+        <div id="other-questions-fields" style="display: none;">
+           <label for="correct_answer" class="block mt-3">Introduce la respuesta correcta:</label>
+              <input
+                id = "correct_answer"
+                name = "correct_answer"
+                type="text"
+                class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+                placeholder="Respuesta correcta" aria-label="Respuesta correcta"
+              />
         </div>
 
         <label for="question_description" class="block mt-3">Ingrese la descripcion de la pregunta:</label>
@@ -92,19 +134,35 @@
     }
 
     function toggleMultipleChoiceFields() {
-      const levelSelect = document.getElementById('questions');
-      const newLevelFields = document.getElementById('multiple-choice-fields');
+      const questionTypeSelect = document.getElementById('question_type');
+      const multipleChoiceFields = document.getElementById('multiple-choice-fields');
       
-      if (levelSelect.value === "Multiple_choice") {
-        newLevelFields.style.display = "block";
+      if (questionTypeSelect.value === "Multiple_choice") {
+        multipleChoiceFields.style.display = "block";
       } else {
-        newLevelFields.style.display = "none";
+        multipleChoiceFields.style.display = "none";
       }
     }
 
-     window.onload = function() {
+    function toggleOtherQuestionsFields() {
+      const questionTypeSelect = document.getElementById('question_type');
+      const otherQuestionsFields = document.getElementById('other-questions-fields');
+      
+      if (questionTypeSelect.value !== "Multiple_choice") {
+        otherQuestionsFields.style.display = "block";
+      } else {
+        otherQuestionsFields.style.display = "none";
+      }
+    }
+
+    window.onload = function() {
       document.getElementById('levels').addEventListener('change', toggleNewLevelFields);
-      document.getElementById('questions').addEventListener('change', toggleMultipleChoiceFields);
+      document.getElementById('question_type').addEventListener('change', toggleMultipleChoiceFields);
+      document.getElementById('question_type').addEventListener('change', toggleOtherQuestionsFields);
+
+      toggleNewLevelFields();
+      toggleMultipleChoiceFields();
+      toggleOtherQuestionsFields();
     };
 </script>
 </body>
