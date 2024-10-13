@@ -253,9 +253,15 @@ class MyApp < Sinatra::Application
     get '/admin/niveles_preguntas' do
         if session[:admin_id]
             @levels = Level.where.not(playable_type: "Tutorial")
-            @level_types = Level.playable_types
+            @level_type_values = Level.playable_types
+            @level_type_names = ["Lección", "Examen", "Tutorial"]
+            @level_types = @level_type_names.zip(@level_type_values)
+
             @questions = Question.where(level: @levels)
-            @question_types = Question.questionable_types
+            @question_type_values = Question.questionable_types
+            @question_type_names =  ["Multiple Opción", "Completar la Palabra", "Traducción", "Pulsaciones", "Lluvia Simbólica"]
+            @question_types = @question_type_names.zip(@question_type_values)
+            @mc_answers = 4
             erb :questions_and_levels_upload
         else
             redirect "/login"

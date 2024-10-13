@@ -10,36 +10,13 @@
   <link href="/css/output.css" rel="stylesheet">
   <link href="icon.ico" rel="icon">
 </head>
-<style>
-  .styled-checkbox {
-    width: 2.5rem; /* Ajustar tamaño de los checkboxes */
-    height: 2.5rem;
-    background-color: white;
-    border: 2px solid #d1d5db; /* Mismo color de borde que los inputs */
-    border-radius: 0.375rem; /* Mismo radio que los inputs */
-    appearance: none;
-    cursor: pointer;
-  }
 
-  .styled-checkbox:checked {
-    background-color: #4f46e5; /* Color de fondo cuando está marcada */
-    border-color: #4f46e5; /* Cambiar el color del borde cuando está marcada */
-  }
-
-  .styled-checkbox:checked::before {
-    content: '✔'; /* Mostrar un check al marcar */
-    color: white;
-    font-size: 1.5rem;
-    display: block;
-    text-align: center;
-    line-height: 2.5rem;
-  }
-</style>
 <body>
 <section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300 overflow-hidden">
-  <div class="flex flex-col justify-center px-20 py-20 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 max-h-screen overflow-scroll">
+  <div class="flex flex-col justify-center px-10 py-10 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 max-h-screen">
+    <button onclick="window.location.href = '/admin'"  class=" w-min bg-purple-500 text-white p-2 rounded hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-purple-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg></button>
       <h1 class="self-center mt-8 text-3xl font-extrabold">Crear un nivel y/o una pregunta</h1>
-      <form class="flex flex-col overflow-auto" action="/niveles_preguntas" method="POST">
+      <form class="flex flex-col px-4 overflow-auto" action="/niveles_preguntas" method="POST">
         <label for="levels" class="block mt-3">Seleccione un nivel:</label>
         <select
             id="levels"
@@ -60,7 +37,7 @@
             class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
             >
             <%@level_types.each_with_index do |level_type, index|%>
-            <option value="<%= level_type%>"> <%= index+1%>. <%= level_type%></option>
+            <option value="<%= level_type.second%>"> <%= level_type.first%></option>
             <%end%>
             </select>
 
@@ -81,74 +58,28 @@
               class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
           >
         <%@question_types.each_with_index do |question_type, index|%>
-            <option value ="<%= question_type%>"> <%= index+1%>. <%= question_type%> </option>
+            <option value ="<%= question_type.second%>"> <%= question_type.first%> </option>
         <%end%>
           </select>
 
         <div id="multiple-choice-fields" style="display: none;">
-          <label for="op1" class="block mt-3">Opción 1:</label>
+          <% for i in (1..@mc_answers) do %>
+          <label for="op1" class="block mt-3">Opción <%=i%>:</label>
           <div class="flex items-center">
             <input
-              id="op1"
-              name="op1"
+              id="op<%=i%>"
+              name="op<%=i%>"
               type="text"
               class="justify-center w-11/12 px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
-              placeholder="Opcion 1"
-              aria-label="Opcion 1"
+              placeholder="Opcion <%=i%>"
+              aria-label="Opcion <%=i%>"
             />
             <div class="flex flex-col items-center ml-2">
               <span class="text-sm font-bold mb-1">Correcta</span>
-              <input type="checkbox" class="styled-checkbox correct-checkbox" name="correct_option" value="op1">
+              <input type="checkbox" class="correct-checkbox w-10 h-10 bg-white border-2 border-solid border-[#d1d5db] rounded-md appearance-none cursor-pointer checked:border-x-purple-700 checked:bg-purple-900 checked:before:content-['✔'] checked:before:text-2xl checked:before:block checked:before:text-center " name="correct_option" value="op<%=i%>">
             </div>
           </div>
-
-          <label for="op2" class="block mt-3">Opción 2:</label>
-          <div class="flex items-center">
-            <input
-              id="op2"
-              name="op2"
-              type="text"
-              class="justify-center w-11/12 px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
-              placeholder="Opcion 2"
-              aria-label="Opcion 2"
-            />
-            <div class="flex flex-col items-center ml-2">
-              <span class="text-sm font-bold mb-1">Correcta</span>
-              <input type="checkbox" class="styled-checkbox correct-checkbox" name="correct_option" value="op2">
-            </div>
-          </div>
-
-          <label for="op3" class="block mt-3">Opción 3:</label>
-          <div class="flex items-center">
-            <input
-              id="op3"
-              name="op3"
-              type="text"
-              class="justify-center w-11/12 px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
-              placeholder="Opcion 3"
-              aria-label="Opcion 3"
-            />
-            <div class="flex flex-col items-center ml-2">
-              <span class="text-sm font-bold mb-1">Correcta</span>
-              <input type="checkbox" class="styled-checkbox correct-checkbox" name="correct_option" value="op3">
-            </div>
-          </div>
-
-          <label for="op4" class="block mt-3">Opción 4:</label>
-          <div class="flex items-center">
-            <input
-              id="op4"
-              name="op4"
-              type="text"
-              class="justify-center w-11/12 px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
-              placeholder="Opcion 4"
-              aria-label="Opcion 4"
-            />
-            <div class="flex flex-col items-center ml-2">
-              <span class="text-sm font-bold mb-1">Correcta</span>
-              <input type="checkbox" class="styled-checkbox correct-checkbox" name="correct_option" value="op4">
-            </div>
-          </div>
+          <% end %>
         </div>
 
         <div id="other-questions-fields" style="display: none;">
