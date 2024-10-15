@@ -64,7 +64,7 @@
 
         <div id="multiple-choice-fields" style="display: none;">
           <% for i in (1..@mc_answers) do %>
-          <label for="op1" class="block mt-3">Opción <%=i%>:</label>
+          <label for="op<%=i%>" class="block mt-3">Opción <%=i%>:</label>
           <div class="flex items-center">
             <input
               id="op<%=i%>"
