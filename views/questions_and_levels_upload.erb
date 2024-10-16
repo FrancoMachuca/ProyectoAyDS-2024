@@ -49,6 +49,17 @@
               class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
               placeholder="Nombre" aria-label="Nombre"
             />
+
+            <div id="exam-fields" style="display: none;">
+              <label for="min_score" class="block mt-3">Ingrese el puntaje mínimo para acceder al Examen:</label>
+              <input
+                id="min_score"
+                name="min_score"
+                type="text"
+                class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+                placeholder="Puntaje" aria-label="Puntaje"
+              />
+            </div>
         </div>
 
         <label for="question_type" class="block mt-3">Ingrese el tipo de pregunta:</label>
@@ -76,10 +87,30 @@
             />
             <div class="flex flex-col items-center ml-2">
               <span class="text-sm font-bold mb-1">Correcta</span>
-              <input type="checkbox" class="correct-checkbox w-10 h-10 bg-white border-2 border-solid border-[#d1d5db] rounded-md appearance-none cursor-pointer checked:border-x-purple-700 checked:bg-purple-900 checked:before:content-['✔'] checked:before:text-2xl checked:before:block checked:before:text-center " name="correct_option" value="op<%=i%>">
+              <input type="checkbox" class="correct-checkbox w-10 h-10 bg-white border-2 border-solid border-gray-300 rounded-md appearance-none cursor-pointer checked:border-purple-700 checked:bg-purple-900 checked:text-white checked:before:content-['✔'] checked:before:text-white checked:before:text-2xl checked:before:block checked:before:text-center" name="correct_option" value="op<%=i%>">
             </div>
           </div>
           <% end %>
+        </div>
+
+        <div id="translation-fields" style="display: none;">
+          <label for="translation_type" class="block mt-3">Ingrese el tipo de traducción:</label>
+          <select
+              id="translation_type"
+              name="translation_type"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+          >
+            <option value ="morse_translation"> Traducción de Morse a Español </option>
+            <option value ="spanish_translation"> Traducción de Español a Morse </option>
+          </select>
+          <label for="translation_answer" class="block mt-3">Introduce la respuesta correcta:</label>
+          <input
+            id = "translation_answer"
+            name = "translation_answer"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Respuesta correcta" aria-label="Respuesta correcta"
+          />
         </div>
 
         <div id="other-questions-fields" style="display: none;">
@@ -120,6 +151,17 @@
       }
     }
 
+    function toggleExamFields() {
+      const levelType = document.getElementById('level_type');
+      const examFields = document.getElementById('exam-fields');
+      
+      if (levelType.value === "Exam") {
+        examFields.style.display = "block";
+      } else {
+        examFields.style.display = "none";
+      }
+    }
+
     function toggleMultipleChoiceFields() {
       const questionTypeSelect = document.getElementById('question_type');
       const multipleChoiceFields = document.getElementById('multiple-choice-fields');
@@ -131,11 +173,22 @@
       }
     }
 
+    function toggleTranslationQuestionsFields() {
+      const questionTypeSelect = document.getElementById('question_type');
+      const translationFields = document.getElementById('translation-fields');
+      
+      if (questionTypeSelect.value === "Translation") {
+        translationFields.style.display = "block";
+      } else {
+        translationFields.style.display = "none";
+      }
+    }
+
     function toggleOtherQuestionsFields() {
       const questionTypeSelect = document.getElementById('question_type');
       const otherQuestionsFields = document.getElementById('other-questions-fields');
       
-      if (questionTypeSelect.value !== "Multiple_choice") {
+      if (questionTypeSelect.value !== "Multiple_choice" && questionTypeSelect.value !== "Translation") {
         otherQuestionsFields.style.display = "block";
       } else {
         otherQuestionsFields.style.display = "none";
@@ -144,8 +197,10 @@
 
     window.onload = function() {
       document.getElementById('levels').addEventListener('change', toggleNewLevelFields);
+      document.getElementById('level_type').addEventListener('change', toggleExamFields);
       document.getElementById('question_type').addEventListener('change', toggleMultipleChoiceFields);
       document.getElementById('question_type').addEventListener('change', toggleOtherQuestionsFields);
+      document.getElementById('question_type').addEventListener('change', toggleTranslationQuestionsFields);
 
       toggleNewLevelFields();
       toggleMultipleChoiceFields();
