@@ -18,6 +18,7 @@ require './models/to_complete'
 require './models/image'
 require './controllers/game_data_manager'
 require './controllers/questions_manager'
+require './controllers/levels_manager'
 require './uploader/image_uploader'
 
 class MyApp < Sinatra::Application
@@ -30,6 +31,7 @@ class MyApp < Sinatra::Application
         super()
         @gm = GameDataManager.new
         @qm = QuestionsManager.new
+        @lm = LevelManager.new
     end
 
     set :public_folder, 'public'
@@ -265,6 +267,33 @@ class MyApp < Sinatra::Application
             erb :questions_and_levels_upload
         else
             redirect "/login"
+        end
+    end
+
+    post '/admin/niveles_preguntas' do
+        @question_type = params[:question_type]
+        @question_description = params[:question_description]
+        @correct_answer = params[:correct_answer]
+        @key_word = params[:key_word]
+        @key_word_morse = params[:key_word_morse]
+        @options = []
+        (1..4).each do |i|
+            text = params["op#{i}"]
+            correct = params["correct_option_#{i}"] == 'true'
+
+            @options << { text: text, correct: correct }
+        end
+        if params[:levels] == "new"
+            @level_type = params[:level_type]
+            @level_name = params[:level_name]
+            @min_score = params[:min_score]
+            @lm.createNewLevel(type: @level_type, name: @level_name, min_score: @min_score)
+            @level = Level.last
+            @qm.createNewQuestion(question_type: @question_type,options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+        else
+            @level = Level.find_by(id: params[:levels])
+            @qm.createNewQuestion(question_type: @question_type,options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+            redirect '/admin'
         end
     end
 

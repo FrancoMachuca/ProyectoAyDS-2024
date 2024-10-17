@@ -16,7 +16,7 @@
   <div class="flex flex-col justify-center px-10 py-10 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 max-h-screen">
     <button onclick="window.location.href = '/admin'"  class=" w-min bg-purple-500 text-white p-2 rounded hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-purple-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg></button>
       <h1 class="self-center mt-8 text-3xl font-extrabold">Crear un nivel y/o una pregunta</h1>
-      <form class="flex flex-col px-4 overflow-auto" action="/niveles_preguntas" method="POST">
+      <form class="flex flex-col px-4 overflow-auto" action="/admin/niveles_preguntas" method="POST">
         <label for="levels" class="block mt-3">Seleccione un nivel:</label>
         <select
             id="levels"
@@ -87,7 +87,12 @@
             />
             <div class="flex flex-col items-center ml-2">
               <span class="text-sm font-bold mb-1">Correcta</span>
-              <input type="checkbox" class="correct-checkbox w-10 h-10 bg-white border-2 border-solid border-gray-300 rounded-md appearance-none cursor-pointer checked:border-purple-700 checked:bg-purple-900 checked:text-white checked:before:content-['✔'] checked:before:text-white checked:before:text-2xl checked:before:block checked:before:text-center" name="correct_option" value="op<%=i%>">
+              <input
+                type="checkbox"
+                class="correct-checkbox w-10 h-10 bg-white border-2 border-solid border-gray-300 rounded-md appearance-none cursor-pointer checked:border-purple-700 checked:bg-purple-900 checked:text-white checked:before:content-['✔'] checked:before:text-white checked:before:text-2xl checked:before:block checked:before:text-center"
+                name="correct_option_<%= i %>"
+                value="true"
+              />
             </div>
           </div>
           <% end %>
@@ -103,10 +108,39 @@
             <option value ="morse_translation"> Traducción de Morse a Español </option>
             <option value ="spanish_translation"> Traducción de Español a Morse </option>
           </select>
-          <label for="translation_answer" class="block mt-3">Introduce la respuesta correcta:</label>
+          <label for="correct_answer" class="block mt-3">Introduce la respuesta correcta:</label>
           <input
-            id = "translation_answer"
-            name = "translation_answer"
+            id = "correct_answer"
+            name = "correct_answer"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Respuesta correcta" aria-label="Respuesta correcta"
+          />
+        </div>
+
+        <div id="to-complete-fields" style="display: none;">
+          <label for="key_word" class="block mt-3">Introduce la palabra clave:</label>
+          <input
+            id = "key_word"
+            name = "key_word"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Palabra clave" aria-label="Palabra clave"
+          />
+
+          <label for="key_word_morse" class="block mt-3">Introduce la palabra clave en morse:</label>
+          <input
+            id = "key_word_morse"
+            name = "key_word_morse"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Palabra clave en morse" aria-label="Palabra clave en morse"
+          />
+
+          <label for="correct_answer" class="block mt-3">Introduce la respuesta correcta:</label>
+          <input
+            id = "correct_answer"
+            name = "correct_answer"
             type="text"
             class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
             placeholder="Respuesta correcta" aria-label="Respuesta correcta"
@@ -114,24 +148,24 @@
         </div>
 
         <div id="other-questions-fields" style="display: none;">
-           <label for="correct_answer" class="block mt-3">Introduce la respuesta correcta:</label>
-              <input
-                id = "correct_answer"
-                name = "correct_answer"
-                type="text"
-                class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
-                placeholder="Respuesta correcta" aria-label="Respuesta correcta"
-              />
+          <label for="correct_answer" class="block mt-3">Introduce la respuesta correcta:</label>
+          <input
+            id = "correct_answer"
+            name = "correct_answer"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Respuesta correcta" aria-label="Respuesta correcta"
+          />
         </div>
 
         <label for="question_description" class="block mt-3">Ingrese la descripcion de la pregunta:</label>
-          <input
-              id="question_description"
-              name="question_description"
-              type="text"
-              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
-              placeholder="Descripcion" aria-label="Descripcion"
-          />
+        <input
+          id="question_description"
+          name="question_description"
+          type="text"
+          class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+          placeholder="Descripcion" aria-label="Descripcion"
+        />
 
           <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
             Crear nivel y/o pregunta
@@ -184,11 +218,22 @@
       }
     }
 
+    function toggleToCompleteQuestionsFields() {
+      const questionTypeSelect = document.getElementById('question_type');
+      const toCompleteFields = document.getElementById('to-complete-fields');
+      
+      if (questionTypeSelect.value === "To_complete") {
+        toCompleteFields.style.display = "block";
+      } else {
+        toCompleteFields.style.display = "none";
+      }
+    }
+
     function toggleOtherQuestionsFields() {
       const questionTypeSelect = document.getElementById('question_type');
       const otherQuestionsFields = document.getElementById('other-questions-fields');
       
-      if (questionTypeSelect.value !== "Multiple_choice" && questionTypeSelect.value !== "Translation") {
+      if (questionTypeSelect.value !== "Multiple_choice" && questionTypeSelect.value !== "Translation" && questionTypeSelect.value !== "To_complete") {
         otherQuestionsFields.style.display = "block";
       } else {
         otherQuestionsFields.style.display = "none";
@@ -201,10 +246,10 @@
       document.getElementById('question_type').addEventListener('change', toggleMultipleChoiceFields);
       document.getElementById('question_type').addEventListener('change', toggleOtherQuestionsFields);
       document.getElementById('question_type').addEventListener('change', toggleTranslationQuestionsFields);
+      document.getElementById('question_type').addEventListener('change', toggleToCompleteQuestionsFields);
 
       toggleNewLevelFields();
       toggleMultipleChoiceFields();
-      toggleOtherQuestionsFields();
     };
 
     const checkboxes = document.querySelectorAll('.correct-checkbox');

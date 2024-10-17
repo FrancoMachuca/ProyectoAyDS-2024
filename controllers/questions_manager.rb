@@ -47,5 +47,45 @@ class QuestionsManager
     return Answer.new(answer: answer, correct: false, question: question)
   end
 
+  def createNewQuestion(question_type: String,options: , translation_type: String, key_word: String, key_word_morse: String, correct_answer: String, question_description: String, level: Level)
+    case question_type
+    when "Multiple_choice"
+      @question = Question.create!(description: question_description, level: level, questionable: Multiple_choice.create!())
+      options.each do |op|
+        Answer.create!(answer: op[:text], correct: op[:correct], question: @question)
+      end
+    when "Translation"
+      if translation_type == "morse_translation"
+        unless question_description.match?(/\b[.\-]+\b/)
+          halt 400, "La descripción debe contener al menos una palabra en formato Morse si se seleccionó 'Traducción de Morse a Español'"
+        end
 
+        unless correct_answer.match?(/\A[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+\z/)
+          halt 400, "La respuesta debe estar en español"
+        end
+
+      elsif translation_type == "spanish_translation"
+        unless question_description.match?(/\b[a-zA-ZñÑáéíóúÁÉÍÓÚ]+\b/)
+          halt 400, "La descripción debe contener al menos una palabra en español si se seleccionó 'Traducción de Español a Morse'"
+        end
+
+        unless correct_answer.match?(/\A[.\- ]+\z/)
+          halt 400, "La respuesta debe estar en formato Morse (solo . y -)"
+        end
+      end
+
+      @question = Question.create!(description: question_description, level: level, questionable: Translation.create!())
+      Answer.create!(answer: correct_answer, correct: true, question: @question)
+    when "To_complete"
+      @question = Question.create!(description: question_description, level: level, questionable: To_complete.create!(keyword: key_word, toCompleteMorse: key_word_morse))
+      Answer.create!(answer: correct_answer, correct: true, question: @question)
+    when "MouseTranslation"
+      @question = Question.create!(description: question_description, level: level, questionable: MouseTranslation.create!())
+      Answer.create!(answer: correct_answer, correct: true, question: @question)
+    when "FallingObject"
+      @question = Question.create!(description: question_description, level: level, questionable: FallingObject.create!())
+      Answer.create!(answer: correct_answer, correct: true, question: @question)
+    end
+    return "Pregunta creada exitosamente"
+  end
 end
