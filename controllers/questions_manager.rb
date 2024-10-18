@@ -76,7 +76,7 @@ class QuestionsManager
   end
 
   def validateParams(question_type: String, options: Array, translation_type: String, key_word: String, key_word_morse: String, correct_answer: String, question_description: String, level: Level)
-    if Level.exists?(level.id)
+    if level != nil && Level.exists?(level.id)
       case question_type
       when 'Multiple_choice'
         return (options.size <= 4 and
@@ -86,7 +86,7 @@ class QuestionsManager
       when 'Translation'
         case translation_type
         when 'morse_translation'
-          return question_description.match?(/.*[.\-]+.*$/) && correct_answer.match?(/\A[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ]+\z/))
+          return (question_description.match?(/.*[.\-]+.*$/) && correct_answer.match?(/\A[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ]+\z/))
         when 'spanish_translation'
           return (question_description.match?(/\A[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ]+\z/) && correct_answer.match?(/\A[.\- ]+\z/))
         else
@@ -102,6 +102,8 @@ class QuestionsManager
       else
         return false
       end
+    else
+      return false
     end
   end
 end

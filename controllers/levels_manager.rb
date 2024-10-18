@@ -8,7 +8,7 @@ class LevelManager
     when "Tutorial"
       Level.create!(name: name, playable: Tutorial.create!())
     when "Exam"
-      Exam.create!(name: name, playable: Exam.create!(minScore: min_score))
+      Level.create!(name: name, playable: Exam.create!(minScore: min_score))
     end
   end
 end

@@ -315,7 +315,7 @@ class MyApp < Sinatra::Application
     end
 
     get '/admin/preguntasCorrectas' do
-        if session[:admin_id] &&
+        if session[:admin_id]
             @levels = Level.where.not(playable_type: "Tutorial")
             @questions = Question.where(level: @levels)
             erb :correctly_answered_questions
