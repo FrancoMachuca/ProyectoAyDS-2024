@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'sinatra/flash'
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 require './models/admin'
@@ -252,7 +253,7 @@ class MyApp < Sinatra::Application
         erb :admin_menu
     end
 
-    get '/admin/niveles_preguntas' do
+    get '/admin/nivelesPreguntas' do
         if session[:admin_id]
             @levels = Level.where.not(playable_type: "Tutorial")
             @level_type_values = Level.playable_types
@@ -270,30 +271,44 @@ class MyApp < Sinatra::Application
         end
     end
 
-    post '/admin/niveles_preguntas' do
-        @question_type = params[:question_type]
-        @question_description = params[:question_description]
-        @correct_answer = params[:correct_answer]
-        @key_word = params[:key_word]
-        @key_word_morse = params[:key_word_morse]
-        @options = []
-        (1..4).each do |i|
-            text = params["op#{i}"]
-            correct = params["correct_option_#{i}"] == 'true'
+    post '/admin/nivelesPreguntas' do
+        if session[:admin_id]
+            @question_type = params[:question_type]
+            @question_description = params[:question_description]
+            @correct_answer = params[:correct_answer]
+            @key_word = params[:key_word]
+            @key_word_morse = params[:key_word_morse]
+            @options = []
+            (1..4).each do |i|
+                text = params["op#{i}"]
+                correct = params["correct_option_#{i}"] == 'true'
 
-            @options << { text: text, correct: correct }
-        end
-        if params[:levels] == "new"
-            @level_type = params[:level_type]
-            @level_name = params[:level_name]
-            @min_score = params[:min_score]
-            @lm.createNewLevel(type: @level_type, name: @level_name, min_score: @min_score)
-            @level = Level.last
-            @qm.createNewQuestion(question_type: @question_type,options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+                @options << { text: text, correct: correct }
+            end
+            if params[:levels] == "new"
+                @level_type = params[:level_type]
+                @level_name = params[:level_name]
+                @min_score = params[:min_score]
+                @lm.createNewLevel(type: @level_type, name: @level_name, min_score: @min_score)
+                @level = Level.last
+            else
+                @level = Level.find_by(id: params[:levels])
+            end
+            if @qm.validateParams(question_type: @question_type, options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+                if @qm.createNewQuestion(question_type: @question_type, options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+                    flash[:success] = "Pregunta y/o nivel creados correctamente."  
+                else
+                    flash[:alert] = "Se ha producido un error al crear la pregunta y/o nivel. Intentalo de nuevo." 
+                end
+            else
+                if params[:levels] == "new"
+                    @level.destroy
+                end
+                flash[:alert] = "Se ha producido un error de validación. Verifica la información de la pregunta introducida"
+            end
+            redirect '/admin/nivelesPreguntas'
         else
-            @level = Level.find_by(id: params[:levels])
-            @qm.createNewQuestion(question_type: @question_type,options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
-            redirect '/admin'
+            redirect '/login'
         end
     end
 

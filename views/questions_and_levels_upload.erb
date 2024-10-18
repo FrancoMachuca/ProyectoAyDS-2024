@@ -15,12 +15,18 @@
 <section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300 overflow-hidden">
   <div class="flex flex-col justify-center px-10 py-10 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 max-h-screen">
     <button onclick="window.location.href = '/admin'"  class=" w-min bg-purple-500 text-white p-2 rounded hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-purple-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg></button>
+      <% flash.keys.each do |type| %>
+        <div data-alert class="flash <%= type %> alert-box radius">
+        <%= flash[type] %>
+        <a href="#" class="close">&times;</a>
+        </div>
+      <% end %>
       <h1 class="self-center mt-8 text-3xl font-extrabold">Crear un nivel y/o una pregunta</h1>
-      <form class="flex flex-col px-4 overflow-auto" action="/admin/niveles_preguntas" method="POST">
+      <form class="flex flex-col px-4 overflow-auto" action="/admin/nivelesPreguntas" method="POST">
         <label for="levels" class="block mt-3">Seleccione un nivel:</label>
         <select
             id="levels"
-            name="level"
+            name="levels"
             class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
         >
         <%@levels.each_with_index do |level, index|%>
@@ -51,7 +57,7 @@
             />
 
             <div id="exam-fields" style="display: none;">
-              <label for="min_score" class="block mt-3">Ingrese el puntaje mínimo para acceder al Examen:</label>
+              <label for="min_score" class="block mt-3">Ingrese el puntaje mínimo para aprobar el Examen:</label>
               <input
                 id="min_score"
                 name="min_score"
