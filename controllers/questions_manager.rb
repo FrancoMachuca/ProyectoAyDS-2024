@@ -1,6 +1,7 @@
 require './models/question'
 require './models/answer'
 require './models/level'
+require './models/falling_object'
 # Esta clase se encarga de administrar las preguntas del juego y sus respuestas, a través de
 # métodos que le permiten devolver una vista de un tipo de pregunta determinado,
 # determinar si una respuesta a una pregunta es correcta, devolver la pregunta siguiente a otra, entre otros.
@@ -78,23 +79,23 @@ class QuestionsManager
     if Level.exists?(level.id)
       case question_type
       when 'Multiple_choice'
-        return (options.size <= 4 and 
-                options.all? {|elem| !elem[:text].empty? and !elem[:correct].empty?} and 
+        return (options.size <= 4 and
+                options.all? {|elem| !elem[:text].to_s.empty?} and
                 options.one? {|elem| elem[:correct]})
 
       when 'Translation'
         case translation_type
         when 'morse_translation'
-          return (question_description.match?(/[.|-]+/) and correct_answer.match?(/[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9]+/))
+          return question_description.match?(/.*[.\-]+.*$/) && correct_answer.match?(/\A[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ]+\z/))
         when 'spanish_translation'
-          return (question_description.match?(/[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9]+/) and correct_answer.match?(/^[.-]+$/))
+          return (question_description.match?(/\A[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 ]+\z/) && correct_answer.match?(/\A[.\- ]+\z/))
         else
           return false
         end
 
       when 'To_complete'
         return (key_word.match?(/[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9]+/) and key_word_morse.match?(/^[.-]+$/))
-      
+
       when 'MouseTranslation', 'FallingObject'
         return correct_answer.match?(/^[.-]+$/)
 

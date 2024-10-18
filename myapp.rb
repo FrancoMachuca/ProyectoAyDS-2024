@@ -275,9 +275,10 @@ class MyApp < Sinatra::Application
         if session[:admin_id]
             @question_type = params[:question_type]
             @question_description = params[:question_description]
-            @correct_answer = params[:correct_answer]
+            @correct_answer = params[:correct_answer].compact.first
             @key_word = params[:key_word]
             @key_word_morse = params[:key_word_morse]
+            @translation_type = params[:translation_type]
             @options = []
             (1..4).each do |i|
                 text = params["op#{i}"]
@@ -285,6 +286,7 @@ class MyApp < Sinatra::Application
 
                 @options << { text: text, correct: correct }
             end
+            puts params.inspect
             if params[:levels] == "new"
                 @level_type = params[:level_type]
                 @level_name = params[:level_name]
@@ -296,9 +298,9 @@ class MyApp < Sinatra::Application
             end
             if @qm.validateParams(question_type: @question_type, options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
                 if @qm.createNewQuestion(question_type: @question_type, options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
-                    flash[:success] = "Pregunta y/o nivel creados correctamente."  
+                    flash[:success] = "Pregunta y/o nivel creados correctamente."
                 else
-                    flash[:alert] = "Se ha producido un error al crear la pregunta y/o nivel. Intentalo de nuevo." 
+                    flash[:alert] = "Se ha producido un error al crear la pregunta y/o nivel. Intentalo de nuevo."
                 end
             else
                 if params[:levels] == "new"
