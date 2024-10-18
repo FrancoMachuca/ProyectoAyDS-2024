@@ -4,6 +4,7 @@ require_relative '../myapp.rb'
 require 'rspec'
 require 'rack/test'
 require './models/level'
+require './models/tutorial'
 
 RSpec.describe 'The Server' do
   include Rack::Test::Methods
@@ -81,9 +82,256 @@ RSpec.describe 'The Server' do
       expect(last_request.path).to eq('/login')
     end
 
+    it "redirects to login page when trying to access number of correct answer menu" do
+      get '/admin/preguntasCorrectas'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+    end
+
+    it "redirects to login page when trying to access number of incorrect answer menu" do
+      get '/admin/preguntasIncorrectas'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+    end
+
+    it "redirects to login page when trying to access upload level and questions menu" do
+      get '/admin/nivelesPreguntas'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+    end
+
+    it "redirects to login page when trying to create a level or question" do
+      post '/admin/nivelesPreguntas'
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/login')
+    end
+
     it "shows an error message if log in credentials are incorrect" do
       post '/login', name: 'Homero Simpson', password: 'callefalsa123'
       expect(last_response.body).to include("Nombre de usuario o contraseña son incorrectas")
+    end
+  end
+
+  context "when admin logged in" do
+    before(:each) do
+      get '/logout'
+      post 'login', name: 'Franco Machuca', password: 'bokita'
+    end
+
+    it "shows the admin menu" do
+      get '/admin'
+      expect(last_response).to be_ok
+      expect(last_request.path).to eq("/admin")
+    end
+
+    it "shows the ranking of correctly answered questions menu" do
+      get '/admin/preguntasCorrectas'
+      expect(last_response).to be_ok
+      expect(last_request.path).to eq('/admin/preguntasCorrectas')
+    end
+
+    it "shows the ranking of incorrectly answered questions menu" do
+      get '/admin/preguntasIncorrectas'
+      expect(last_response).to be_ok
+      expect(last_request.path).to eq('/admin/preguntasIncorrectas')
+    end
+
+    it "shows the upload level and questions menu" do
+      get '/admin/nivelesPreguntas'
+      expect(last_response).to be_ok
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "allows an admin to create a new lesson" do
+      post '/admin/nivelesPreguntas', {
+        levels: 'new',
+        level_type: 'Lesson',
+        level_name: 'Nuevo Nivel',
+        min_score: 1000,
+        correct_answer: []
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "allows an admin to create a new tutorial" do
+      post '/admin/nivelesPreguntas', {
+        levels: 'new',
+        level_type: 'Tutorial',
+        level_name: 'Nuevo Nivel',
+        min_score: 1000,
+        correct_answer: []
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "allows an admin to create a new exam" do
+      post '/admin/nivelesPreguntas', {
+        levels: 'new',
+        level_type: 'Exam',
+        level_name: 'Nuevo Nivel',
+        min_score: 1000,
+        correct_answer: []
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "creates a new question with multiple_choice type" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'Multiple_choice',
+        question_description: 'Pregunta de prueba',
+        correct_option_1: 'true',
+        correct_option_2: 'false',
+        correct_option_3: 'false',
+        correct_option_4: 'false',
+        op1: 'Opción 1',
+        op2: 'Opción 2',
+        op3: 'Opción 3',
+        op4: 'Opción 4',
+        correct_answer: []
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "creates a new question with translation type (morse_translation)" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'Translation',
+        translation_type: 'morse_translation',
+        question_description: '.- Pregunta Morse',
+        correct_answer: ['respuesta']
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "creates a new question with translation type (spanish_translation)" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'Translation',
+        translation_type: 'spanish_translation',
+        question_description: 'Test',
+        correct_answer: ['.-']
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "creates a new question with translation type (none)" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'Translation',
+        translation_type: 'Test',
+        question_description: 'Test',
+        correct_answer: ['.-']
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "creates a new question with to_complete type" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'To_complete',
+        question_description: '.- Pregunta Morse',
+        key_word: 'TEST',
+        key_word_morse: '---...',
+        correct_answer: ['---']
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "creates a new question with MouseTranslation type" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'MouseTranslation',
+        question_description: 'Test',
+        correct_answer: ['---']
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "creates a new question with FallingObject type" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'FallingObject',
+        question_description: 'Test',
+        correct_answer: ['---']
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "fails to create a question with invalid params" do
+      post '/admin/nivelesPreguntas', {
+        levels: '1',
+        question_type: 'Multiple_choice',
+        question_description: 'Pregunta de prueba',
+        correct_option_1: 'false',
+        correct_option_2: 'false',
+        correct_option_3: 'false',
+        correct_option_4: 'false',
+        op1: 'Opción 1',
+        op2: 'Opción 2',
+        op3: 'Opción 3',
+        op4: 'Opción 4',
+        correct_answer: []
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
+    end
+
+    it "fails to create a question when passing an invalid level as an argument" do
+      post '/admin/nivelesPreguntas', {
+        levels: '100',
+        question_type: 'Multiple_choice',
+        question_description: 'Pregunta de prueba',
+        correct_option_1: 'true',
+        correct_option_2: 'false',
+        correct_option_3: 'false',
+        correct_option_4: 'false',
+        op1: 'Opción 1',
+        op2: 'Opción 2',
+        op3: 'Opción 3',
+        op4: 'Opción 4',
+        correct_answer: []
+      }
+
+      expect(last_response).to be_redirect
+      follow_redirect!
+      expect(last_request.path).to eq('/admin/nivelesPreguntas')
     end
   end
 
@@ -140,11 +388,11 @@ RSpec.describe 'The Server' do
   context "when playing" do
     before(:each) do
       get '/logout'
-      u = Player.new(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
+      u = User.new(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com', userable: Player.create!())
       u.save
       i = 1
-      while i <= 6
-        PlayerLevel.create(player: u, level: Level.find(i), playerLevelScore: 500)
+      while i <= Level.all.size
+        PlayerLevel.create(player: u.player, level: Level.find(i), playerLevelScore: 500)
         i += 1
       end
       post '/login', name: 'Homero Simpson', password: 'callefalsa123'
@@ -152,7 +400,7 @@ RSpec.describe 'The Server' do
     end
 
     after(:each) do
-      Player.find_by(name: 'Homero Simpson').destroy
+      User.find_by(name: 'Homero Simpson').destroy
     end
 
     it "enters to a level correctly" do
@@ -161,22 +409,29 @@ RSpec.describe 'The Server' do
       expect(last_response).to be_ok
     end
 
-    it "unlocks exams correctly" do
-      u = Player.find_by(name: 'Homero Simpson')
-      PlayerLevel.destroy_by(player: u, level: Level.find(6), playerLevelScore: 500)
+    it "gets the amount of unlocked levels" do
+      u = User.find_by(name: 'Homero Simpson')
       gm = GameDataManager.new
-      gm.unlockNextLevelFor(player: u, possiblyCompleted: Level.find(5))
+      amount = gm.getAmountOfLevelsCompleted(player: u.player)
+      expect(amount).to eq(Level.all.size)
+    end
+
+    it "unlocks exams correctly" do
+      u = User.find_by(name: 'Homero Simpson')
+      PlayerLevel.destroy_by(player: u.player, level: Level.find(6), playerLevelScore: 500)
+      gm = GameDataManager.new
+      gm.unlockNextLevelFor(player: u.player, possiblyCompleted: Level.find(5))
       get '/level/6'
       follow_redirect!
       expect(last_request.path).to eq('/level/6/22')
     end
 
     it "unlocks levels correctly" do
-      u = Player.find_by(name: 'Homero Simpson')
-      PlayerLevel.destroy_by(player: u, level: Level.find(6))
-      PlayerLevel.destroy_by(player: u, level: Level.find(5))
+      u = User.find_by(name: 'Homero Simpson')
+      PlayerLevel.destroy_by(player: u.player, level: Level.find(6))
+      PlayerLevel.destroy_by(player: u.player, level: Level.find(5))
       gm = GameDataManager.new
-      gm.unlockNextLevelFor(player: u, possiblyCompleted: Level.find(4))
+      gm.unlockNextLevelFor(player: u.player, possiblyCompleted: Level.find(4))
       get '/level/5'
       follow_redirect!
       expect(last_request.path).to eq('/level/5/18')
@@ -189,11 +444,11 @@ RSpec.describe 'The Server' do
     end
 
     it "doesn't unlock a level without having beaten the previous one first" do
-      u = Player.find_by(name: 'Homero Simpson')
-      PlayerLevel.destroy_by(player: u, level: Level.find(6))
-      PlayerLevel.destroy_by(player: u, level: Level.find(5))
+      u = User.find_by(name: 'Homero Simpson')
+      PlayerLevel.destroy_by(player: u.player, level: Level.find(6))
+      PlayerLevel.destroy_by(player: u.player, level: Level.find(5))
       gm = GameDataManager.new
-      gm.unlockNextLevelFor(player: u, possiblyCompleted: Level.find(5))
+      gm.unlockNextLevelFor(player: u.player, possiblyCompleted: Level.find(5))
       get '/level/6'
       expect(last_response).to be_redirect
       follow_redirect!
@@ -273,7 +528,7 @@ RSpec.describe 'The Server' do
     end
 
     after(:each) do
-      Player.find_by(name: 'Homero Simpson').destroy
+      User.find_by(name: 'Homero Simpson').destroy
     end
 
     it "registers a new user correctly" do
@@ -284,7 +539,7 @@ RSpec.describe 'The Server' do
     end
 
     it "shows an error if the user already exists" do
-      Player.create(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com')
+      User.create(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com', userable: Player.create!())
       post '/registro', name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com'
       expect(last_response).to_not be_redirect
     end
@@ -408,9 +663,9 @@ RSpec.describe 'The Server' do
     end
 
     describe '#buildUserAnswer' do
-      it 'crea una nueva respuesta de usuario' do
-        user_answer = qm.buildUserAnswer(answer: "respuesta del usuario", question: question1)
-        expect(user_answer.answer).to eq("respuesta del usuario")
+      it 'creates a new user answer' do
+        user_answer = qm.buildPlayerAnswer(answer: "user answer", question: question1)
+        expect(user_answer.answer).to eq("user answer")
         expect(user_answer.correct).to be false
         expect(user_answer.question).to eq(question1)
         user_answer.destroy
