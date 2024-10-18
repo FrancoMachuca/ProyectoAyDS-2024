@@ -48,7 +48,7 @@ class QuestionsManager
   end
 
   def createNewQuestion(question_type: String, options: Array, translation_type: String, key_word: String, key_word_morse: String, correct_answer: String, question_description: String, level: Level)
-    if validateParams(question_type, options, translation_type, key_word, key_word_morse, correct_answer, question_description, level)
+    if validateParams(question_type: question_type, options: options, translation_type: translation_type, key_word: key_word, key_word_morse: key_word_morse, correct_answer: correct_answer, question_description: question_description, level: level)
       case question_type
       when "Multiple_choice"
         @question = Question.create!(description: question_description, level: level, questionable: Multiple_choice.create!())
@@ -78,7 +78,9 @@ class QuestionsManager
     if Level.exists?(level.id)
       case question_type
       when 'Multiple_choice'
-        return options.size <= 4
+        return (options.size <= 4 and 
+                options.all? {|elem| !elem[:text].empty? and !elem[:correct].empty?} and 
+                options.one? {|elem| elem[:correct]})
 
       when 'Translation'
         case translation_type
