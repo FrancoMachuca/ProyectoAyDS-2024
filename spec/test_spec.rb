@@ -122,31 +122,31 @@ RSpec.describe 'The Server' do
       post 'login', name: 'Franco Machuca', password: 'bokita'
     end
 
-    it "shows admin menu" do
+    it "shows the admin menu" do
       get '/admin'
       expect(last_response).to be_ok
       expect(last_request.path).to eq("/admin")
     end
 
-    it "shows number of correct answers menu" do
+    it "shows the ranking of correctly answered questions menu" do
       get '/admin/preguntasCorrectas'
       expect(last_response).to be_ok
       expect(last_request.path).to eq('/admin/preguntasCorrectas')
     end
 
-    it "shows number of incorrect answers menu" do
+    it "shows the ranking of incorrectly answered questions menu" do
       get '/admin/preguntasIncorrectas'
       expect(last_response).to be_ok
       expect(last_request.path).to eq('/admin/preguntasIncorrectas')
     end
 
-    it "shows upload level and questions menu" do
+    it "shows the upload level and questions menu" do
       get '/admin/nivelesPreguntas'
       expect(last_response).to be_ok
       expect(last_request.path).to eq('/admin/nivelesPreguntas')
     end
 
-    it "allows admin to create a new lesson" do
+    it "allows an admin to create a new lesson" do
       post '/admin/nivelesPreguntas', {
         levels: 'new',
         level_type: 'Lesson',
@@ -160,7 +160,7 @@ RSpec.describe 'The Server' do
       expect(last_request.path).to eq('/admin/nivelesPreguntas')
     end
 
-    it "allows admin to create a new tutorial" do
+    it "allows an admin to create a new tutorial" do
       post '/admin/nivelesPreguntas', {
         levels: 'new',
         level_type: 'Tutorial',
@@ -174,7 +174,7 @@ RSpec.describe 'The Server' do
       expect(last_request.path).to eq('/admin/nivelesPreguntas')
     end
 
-    it "allows admin to create a new exam" do
+    it "allows an admin to create a new exam" do
       post '/admin/nivelesPreguntas', {
         levels: 'new',
         level_type: 'Exam',
@@ -313,7 +313,7 @@ RSpec.describe 'The Server' do
       expect(last_request.path).to eq('/admin/nivelesPreguntas')
     end
 
-    it "fails to create a question with invalid level" do
+    it "fails to create a question when passing an invalid level as an argument" do
       post '/admin/nivelesPreguntas', {
         levels: '100',
         question_type: 'Multiple_choice',
@@ -391,7 +391,7 @@ RSpec.describe 'The Server' do
       u = User.new(name: 'Homero Simpson', password: 'callefalsa123', mail: 'hs@example.com', userable: Player.create!())
       u.save
       i = 1
-      while i <= 8
+      while i <= Level.all.size
         PlayerLevel.create(player: u.player, level: Level.find(i), playerLevelScore: 500)
         i += 1
       end
@@ -409,11 +409,11 @@ RSpec.describe 'The Server' do
       expect(last_response).to be_ok
     end
 
-    it "get amount of unlocked levels" do
+    it "gets the amount of unlocked levels" do
       u = User.find_by(name: 'Homero Simpson')
       gm = GameDataManager.new
       amount = gm.getAmountOfLevelsCompleted(player: u.player)
-      expect(amount).to eq(8)
+      expect(amount).to eq(Level.all.size)
     end
 
     it "unlocks exams correctly" do
@@ -663,9 +663,9 @@ RSpec.describe 'The Server' do
     end
 
     describe '#buildUserAnswer' do
-      it 'crea una nueva respuesta de usuario' do
-        user_answer = qm.buildPlayerAnswer(answer: "respuesta del usuario", question: question1)
-        expect(user_answer.answer).to eq("respuesta del usuario")
+      it 'creates a new user answer' do
+        user_answer = qm.buildPlayerAnswer(answer: "user answer", question: question1)
+        expect(user_answer.answer).to eq("user answer")
         expect(user_answer.correct).to be false
         expect(user_answer.question).to eq(question1)
         user_answer.destroy
