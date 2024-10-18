@@ -16,10 +16,15 @@
   <div class="flex flex-col justify-center px-10 py-10 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 max-h-screen">
     <button onclick="window.location.href = '/admin'"  class=" w-min bg-purple-500 text-white p-2 rounded hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-purple-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg></button>
       <% flash.keys.each do |type| %>
-        <div data-alert class="flash <%= type %> alert-box radius">
-        <%= flash[type] %>
-        <a href="#" class="close">&times;</a>
-        </div>
+        <% case type 
+            when :alert %>
+            <div class="flash <%= type %> bg-orange-100 border-l-4 m-1 border-orange-500 text-orange-700 p-4 flex flex-row justify-between">
+          <% when :success%>
+            <div class="flash <%= type %> bg-purple-100 border-l-4 m-1 border-purple-500 text-purple-700 p-4 flex flex-row justify-between">
+        <% end %>
+          <%= flash[type] %>
+          <a href="#" class="h-fit transition duration-200 hover:scale-110" onclick="this.parentElement.style.display='none';">&times;</a>
+          </div>
       <% end %>
       <h1 class="self-center mt-8 text-3xl font-extrabold">Crear un nivel y/o una pregunta</h1>
       <form class="flex flex-col px-4 overflow-auto" action="/admin/nivelesPreguntas" method="POST">
@@ -173,7 +178,7 @@
           placeholder="Descripcion" aria-label="Descripcion"
         />
 
-          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg">
+          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg transition duration-200 hover:bg-purple-700 hover:scale-105">
             Crear nivel y/o pregunta
           </button>
       </form>
