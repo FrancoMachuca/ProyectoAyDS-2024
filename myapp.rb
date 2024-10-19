@@ -3,8 +3,6 @@ require 'sinatra/activerecord'
 require 'sinatra/flash'
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
-require './models/admin'
-require './models/player'
 require './models/user'
 require './models/level'
 require './models/lesson'
@@ -14,7 +12,7 @@ require './models/multiple_choice'
 require './models/translation'
 require './models/mouse_translation'
 require './models/answer'
-require './models/player_level'
+require './models/user_level'
 require './models/to_complete'
 require './models/image'
 require './controllers/game_data_manager'
@@ -77,11 +75,9 @@ class MyApp < Sinatra::Application
             erb :login
         else
             image = Image.first
-            user = User.new(name: params[:name], mail: params[:mail], password: params[:password],
-            image: image, userable: Player.create!())
+            user = User.new(name: params[:name], mail: params[:mail], password: params[:password], image: image)
             if user.save
-                @gm.createGameDataFor(player: user.player)
-                session[:player_id] = user.player_id
+                @gm.createGameDataFor(user: user)
                 session[:user_id] = user.id
                 redirect '/login'
             end
@@ -96,10 +92,9 @@ class MyApp < Sinatra::Application
     get '/perfil' do
         if session[:user_id]
             @user = User.find(session[:user_id])
-            @player = Player.find(session[:player_id])
-            @total_score = @gm.getTotalScoreOf(player: @player)
-            @levels_completed = @gm.getAmountOfLevelsCompleted(player: @player)
-            @rank = @gm.getPlayerRank(player: @player)
+            @total_score = @gm.getTotalScoreOf(user: @user)
+            @levels_completed = @gm.getAmountOfLevelsCompleted(user: @user)
+            @rank = @gm.getUserRank(user: @user)
             erb :profile
         else
             redirect '/login'
@@ -132,7 +127,7 @@ class MyApp < Sinatra::Application
                     img.save!
                     user.save!
                     if !i.nil? && i.users.empty? && i != defaultPic
-                        i.remove_image!
+                        i.remove_image!  
                         Image.delete(i)
                     end
                 rescue => error # Si la imagen nueva no se guarda correctamente, o si la anterior no se borra de la base de datos, se restaura la anterior.
@@ -147,9 +142,9 @@ class MyApp < Sinatra::Application
 
     get '/jugar' do
         if session[:user_id]
-            @player = Player.find(session[:player_id])
+            @user = User.find(session[:user_id])
             @levels = Level.all.order(:id)
-            @levels_unlocked = @player.levels
+            @levels_unlocked = @user.levels
             erb :jugar
         else
             redirect '/login'
@@ -158,7 +153,7 @@ class MyApp < Sinatra::Application
 
     get '/ranking' do
         if session[:user_id]
-            @players = Player.all
+            @users = User.all
             erb :ranking
         else
             redirect '/login'
@@ -167,12 +162,12 @@ class MyApp < Sinatra::Application
 
     get '/level/:level_id' do
         if session[:user_id]
-            @player = Player.find(session[:player_id])
+            @user = User.find(session[:user_id])
             @level = Level.find(params[:level_id])
-            if @gm.unlockedLevel?(player: @player, level: @level)
+            if @gm.unlockedLevel?(user: @user, level: @level)
                 session[:user_level_score] = 0
-                if @gm.completedLevel?(player: @player, level: @level)
-                    @gm.resetPlayerLevelScore(player: @player, level: @level)
+                if @gm.completedLevel?(user: @user, level: @level)
+                    @gm.resetUserLevelScore(user: @user, level: @level)
                 end
                 @questions = Question.where(level_id: params[:level_id])
                 redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
@@ -209,16 +204,16 @@ class MyApp < Sinatra::Application
         if session[:user_id]
             @question = Question.find_by(id: params[:question_id])
             @level = Level.find_by(id: params[:level_id])
-            @player = Player.find_by(id: session[:player_id])
+            @user = User.find_by(id: session[:user_id])
             if @question && @level
                 @answers = Answer.where(question_id: @question.id)
                 if @question.questionable_type == "Translation" || @question.questionable_type == "To_complete" ||
                    @question.questionable_type == "MouseTranslation" || @question.questionable_type == "FallingObject"
-                    @player_answer = @qm.buildPlayerAnswer(answer: params[:user_guess], question: @question)
+                    @user_answer = @qm.buildUserAnswer(answer: params[:user_guess], question: @question)
                 else
-                    @player_answer = Answer.find_by(id: params[:answer_id])
+                    @user_answer = Answer.find_by(id: params[:answer_id])
                 end
-                if @qm.correctAnswer?(answer: @player_answer, question: @question)
+                if @qm.correctAnswer?(answer: @user_answer, question: @question)
                     session[:user_level_score] += 100
                     @question.update(times_answered_correctly: (@question.times_answered_correctly + 1))
                 else
@@ -233,12 +228,12 @@ class MyApp < Sinatra::Application
                     @gm.addPlayerLevelScore(player: @player, level: @level, value: session[:user_level_score])
                     @final_score = session[:user_level_score]
                     session[:user_level_score] = 0
-                    if @gm.completedLevel?(level: @level, player: @player)
+                    if @gm.completedLevel?(level: @level, user: @user)
                         @show_success_popup = true
                     else
                         @show_failure_popup = true
                     end
-                    @gm.unlockNextLevelFor(player: @player, possiblyCompleted: @level)
+                    @gm.unlockNextLevelFor(user: @user, possiblyCompleted: @level)
                     erb @qm.show(question: @question)
                 end
             else
