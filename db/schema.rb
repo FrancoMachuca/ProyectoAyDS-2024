@@ -66,6 +66,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_27_194829) do
     t.integer "level_id"
     t.integer "questionable_id"
     t.string "questionable_type"
+    t.integer "times_answered_correctly", default: 0
+    t.integer "times_answered_incorrectly", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["level_id"], name: "index_questions_on_level_id"

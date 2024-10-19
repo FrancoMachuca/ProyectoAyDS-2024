@@ -63,7 +63,7 @@ end
 # Creación de preguntas
 questions_data = [
   {
-    descripcion: 'Test',
+    description: 'Test',
     level_name: 'Tutorial',
     questionable: Multiple_choice.create!(),
     answers: [
@@ -74,7 +74,7 @@ questions_data = [
     ]
   },
   {
-    descripcion: 'Test',
+    description: 'Test',
     level_name: 'Tutorial',
     questionable: MouseTranslation.create!(),
     answers: [

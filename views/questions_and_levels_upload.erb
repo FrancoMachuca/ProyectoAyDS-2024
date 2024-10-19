@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashes & Dots</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="/css/output.css" rel="stylesheet">
+  <link href="icon.ico" rel="icon">
+</head>
+
+<body>
+<section class="flex h-screen justify-center items-center px-16 py-12 text-base font-medium leading-6 text-black max-md:px-5 bg-gradient-to-b from-purple-800 to-gray-300 overflow-hidden">
+  <div class="flex flex-col justify-center px-10 py-10 max-w-full bg-white rounded-3xl shadow-sm max-md:px-5 w-3/5 max-h-screen">
+    <button onclick="window.location.href = '/admin'"  class=" w-min bg-purple-500 text-white p-2 rounded hover:transition-all transition duration-200 hover:ease-in hover:scale-105 hover:bg-purple-700"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg></button>
+      <% flash.keys.each do |type| %>
+        <% case type 
+            when :alert %>
+            <div class="flash <%= type %> bg-orange-100 border-l-4 m-1 border-orange-500 text-orange-700 p-4 flex flex-row justify-between">
+          <% when :success%>
+            <div class="flash <%= type %> bg-purple-100 border-l-4 m-1 border-purple-500 text-purple-700 p-4 flex flex-row justify-between">
+        <% end %>
+          <%= flash[type] %>
+          <a href="#" class="h-fit transition duration-200 hover:scale-110" onclick="this.parentElement.style.display='none';">&times;</a>
+          </div>
+      <% end %>
+      <h1 class="self-center mt-8 text-3xl font-extrabold">Crear un nivel y/o una pregunta</h1>
+      <form class="flex flex-col px-4 overflow-auto" action="/admin/nivelesPreguntas" method="POST">
+        <label for="levels" class="block mt-3">Seleccione un nivel:</label>
+        <select
+            id="levels"
+            name="levels"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+        >
+        <%@levels.each_with_index do |level, index|%>
+            <option value="<%= level.id%>"> <%= index+1%>. <%= level.name%></option>
+        <%end%>
+            <option value="new">Crear nuevo nivel</option>
+        </select>
+
+        <div id="new-level-fields" style="display: none;">
+            <label for="level_type" class="block mt-3">Seleccione un tipo de nivel:</label>
+            <select
+            id="level_type"
+            name="level_type"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            >
+            <%@level_types.each_with_index do |level_type, index|%>
+            <option value="<%= level_type.second%>"> <%= level_type.first%></option>
+            <%end%>
+            </select>
+
+            <label for="level_name" class="block mt-3">Ingrese el nombre del nivel:</label>
+            <input
+              id="level_name"
+              name="level_name"
+              type="text"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Nombre" aria-label="Nombre"
+            />
+
+            <div id="exam-fields" style="display: none;">
+              <label for="min_score" class="block mt-3">Ingrese el puntaje mínimo para aprobar el Examen:</label>
+              <input
+                id="min_score"
+                name="min_score"
+                type="text"
+                class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+                placeholder="Puntaje" aria-label="Puntaje"
+              />
+            </div>
+        </div>
+
+        <label for="question_type" class="block mt-3">Ingrese el tipo de pregunta:</label>
+          <select
+              id="question_type"
+              name="question_type"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+          >
+        <%@question_types.each_with_index do |question_type, index|%>
+            <option value ="<%= question_type.second%>"> <%= question_type.first%> </option>
+        <%end%>
+          </select>
+
+        <div id="multiple-choice-fields" style="display: none;">
+          <% for i in (1..@mc_answers) do %>
+          <label for="op<%=i%>" class="block mt-3">Opción <%=i%>:</label>
+          <div class="flex items-center">
+            <input
+              id="op<%=i%>"
+              name="op<%=i%>"
+              type="text"
+              class="justify-center w-11/12 px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+              placeholder="Opcion <%=i%>"
+              aria-label="Opcion <%=i%>"
+            />
+            <div class="flex flex-col items-center ml-2">
+              <span class="text-sm font-bold mb-1">Correcta</span>
+              <input
+                type="checkbox"
+                class="correct-checkbox w-10 h-10 bg-white border-2 border-solid border-gray-300 rounded-md appearance-none cursor-pointer checked:border-purple-700 checked:bg-purple-900 checked:text-white checked:before:content-['✔'] checked:before:text-white checked:before:text-2xl checked:before:block checked:before:text-center"
+                name="correct_option_<%= i %>"
+                value="true"
+              />
+            </div>
+          </div>
+          <% end %>
+        </div>
+
+        <div id="translation-fields" style="display: none;">
+          <label for="translation_type" class="block mt-3">Ingrese el tipo de traducción:</label>
+          <select
+              id="translation_type"
+              name="translation_type"
+              class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+          >
+            <option value ="morse_translation"> Traducción de Morse a Español </option>
+            <option value ="spanish_translation"> Traducción de Español a Morse </option>
+          </select>
+          <label for="correct_answer_1" class="block mt-3">Introduce la respuesta correcta:</label>
+          <input
+            id = "correct_answer_1"
+            name = "correct_answer[]"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Respuesta correcta" aria-label="Respuesta correcta"
+          />
+        </div>
+
+        <div id="to-complete-fields" style="display: none;">
+          <label for="key_word" class="block mt-3">Introduce la palabra clave:</label>
+          <input
+            id = "key_word"
+            name = "key_word"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Palabra clave" aria-label="Palabra clave"
+          />
+
+          <label for="key_word_morse" class="block mt-3">Introduce la palabra clave en morse:</label>
+          <input
+            id = "key_word_morse"
+            name = "key_word_morse"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Palabra clave en morse" aria-label="Palabra clave en morse"
+          />
+
+          <label for="correct_answer_2" class="block mt-3">Introduce la respuesta correcta:</label>
+          <input
+            id = "correct_answer_2"
+            name = "correct_answer[]"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Respuesta correcta" aria-label="Respuesta correcta"
+          />
+        </div>
+
+        <div id="other-questions-fields" style="display: none;">
+          <label for="correct_answer_3" class="block mt-3">Introduce la respuesta correcta:</label>
+          <input
+            id = "correct_answer_3"
+            name = "correct_answer[]"
+            type="text"
+            class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+            placeholder="Respuesta correcta" aria-label="Respuesta correcta"
+          />
+        </div>
+
+        <label for="question_description" class="block mt-3">Ingrese la descripcion de la pregunta:</label>
+        <input
+          id="question_description"
+          name="question_description"
+          type="text"
+          class="justify-center w-full px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
+          placeholder="Descripcion" aria-label="Descripcion"
+        />
+
+          <button type="submit" class="justify-center self-center px-4 py-2 mt-3 mb-2.5 text-white bg-black rounded-lg transition duration-200 hover:bg-purple-700 hover:scale-105">
+            Crear nivel y/o pregunta
+          </button>
+      </form>
+  </div>
+</section>
+<script>
+    function toggleNewLevelFields() {
+      const levelSelect = document.getElementById('levels');
+      const newLevelFields = document.getElementById('new-level-fields');
+      
+      if (levelSelect.value === "new") {
+        newLevelFields.style.display = "block";
+      } else {
+        newLevelFields.style.display = "none";
+      }
+    }
+
+    function toggleExamFields() {
+      const levelType = document.getElementById('level_type');
+      const examFields = document.getElementById('exam-fields');
+      
+      if (levelType.value === "Exam") {
+        examFields.style.display = "block";
+      } else {
+        examFields.style.display = "none";
+      }
+    }
+
+    function toggleMultipleChoiceFields() {
+      const questionTypeSelect = document.getElementById('question_type');
+      const multipleChoiceFields = document.getElementById('multiple-choice-fields');
+      
+      if (questionTypeSelect.value === "Multiple_choice") {
+        multipleChoiceFields.style.display = "block";
+      } else {
+        multipleChoiceFields.style.display = "none";
+      }
+    }
+
+    function toggleTranslationQuestionsFields() {
+      const questionTypeSelect = document.getElementById('question_type');
+      const translationFields = document.getElementById('translation-fields');
+      
+      if (questionTypeSelect.value === "Translation") {
+        translationFields.style.display = "block";
+      } else {
+        translationFields.style.display = "none";
+      }
+    }
+
+    function toggleToCompleteQuestionsFields() {
+      const questionTypeSelect = document.getElementById('question_type');
+      const toCompleteFields = document.getElementById('to-complete-fields');
+      
+      if (questionTypeSelect.value === "To_complete") {
+        toCompleteFields.style.display = "block";
+      } else {
+        toCompleteFields.style.display = "none";
+      }
+    }
+
+    function toggleOtherQuestionsFields() {
+      const questionTypeSelect = document.getElementById('question_type');
+      const otherQuestionsFields = document.getElementById('other-questions-fields');
+      
+      if (questionTypeSelect.value !== "Multiple_choice" && questionTypeSelect.value !== "Translation" && questionTypeSelect.value !== "To_complete") {
+        otherQuestionsFields.style.display = "block";
+      } else {
+        otherQuestionsFields.style.display = "none";
+      }
+    }
+
+    window.onload = function() {
+      document.getElementById('levels').addEventListener('change', toggleNewLevelFields);
+      document.getElementById('level_type').addEventListener('change', toggleExamFields);
+      document.getElementById('question_type').addEventListener('change', toggleMultipleChoiceFields);
+      document.getElementById('question_type').addEventListener('change', toggleOtherQuestionsFields);
+      document.getElementById('question_type').addEventListener('change', toggleTranslationQuestionsFields);
+      document.getElementById('question_type').addEventListener('change', toggleToCompleteQuestionsFields);
+
+      toggleNewLevelFields();
+      toggleMultipleChoiceFields();
+    };
+
+    const checkboxes = document.querySelectorAll('.correct-checkbox');
+
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        if (this.checked) {
+          checkboxes.forEach(box => {
+            if (box !== this) box.checked = false;
+          });
+        }
+      });
+    });
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/activerecord'
+require 'sinatra/flash'
 require 'carrierwave'
 require 'carrierwave/orm/activerecord'
 require './models/user'
@@ -16,6 +17,7 @@ require './models/to_complete'
 require './models/image'
 require './controllers/game_data_manager'
 require './controllers/questions_manager'
+require './controllers/levels_manager'
 require './uploader/image_uploader'
 
 class MyApp < Sinatra::Application
@@ -28,6 +30,7 @@ class MyApp < Sinatra::Application
         super()
         @gm = GameDataManager.new
         @qm = QuestionsManager.new
+        @lm = LevelManager.new
     end
 
     set :public_folder, 'public'
@@ -46,7 +49,15 @@ class MyApp < Sinatra::Application
         user = User.find_by(name: params[:name], password: params[:password])
         if user
             session[:user_id] = user.id
-            redirect '/jugar'
+            if user.userable_type == 'Player'
+                session[:player_id] = user.player_id
+                redirect '/jugar'
+            else
+                session[:admin_id] = user.admin.id
+
+                redirect '/admin'
+            end
+
         else
             @error_message = "Nombre de usuario o contraseña son incorrectas"
             erb :login
@@ -204,14 +215,17 @@ class MyApp < Sinatra::Application
                 end
                 if @qm.correctAnswer?(answer: @user_answer, question: @question)
                     session[:user_level_score] += 100
+                    @question.update(times_answered_correctly: (@question.times_answered_correctly + 1))
+                else
+                    @question.update(times_answered_incorrectly: (@question.times_answered_incorrectly + 1))
                 end
 
                 @next_question = @qm.nextQuestion(question: @question)
                 if @next_question
                     redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
                 else
-                    @user = User.find_by(id: session[:user_id])
-                    @gm.addUserLevelScore(user: @user, level: @level, value: session[:user_level_score])
+                    @player = Player.find_by(id: session[:player_id])
+                    @gm.addPlayerLevelScore(player: @player, level: @level, value: session[:user_level_score])
                     @final_score = session[:user_level_score]
                     session[:user_level_score] = 0
                     if @gm.completedLevel?(level: @level, user: @user)
@@ -225,6 +239,91 @@ class MyApp < Sinatra::Application
             else
                 redirect "/jugar"
             end
+        else
+            redirect "/login"
+        end
+    end
+
+    get '/admin' do
+        erb :admin_menu
+    end
+
+    get '/admin/nivelesPreguntas' do
+        if session[:admin_id]
+            @levels = Level.where.not(playable_type: "Tutorial")
+            @level_type_values = Level.playable_types
+            @level_type_names = ["Lección", "Examen", "Tutorial"]
+            @level_types = @level_type_names.zip(@level_type_values)
+
+            @questions = Question.where(level: @levels)
+            @question_type_values = Question.questionable_types
+            @question_type_names =  ["Multiple Opción", "Completar la Palabra", "Traducción", "Pulsaciones", "Lluvia Simbólica"]
+            @question_types = @question_type_names.zip(@question_type_values)
+            @mc_answers = 4
+            erb :questions_and_levels_upload
+        else
+            redirect "/login"
+        end
+    end
+
+    post '/admin/nivelesPreguntas' do
+        if session[:admin_id]
+            @question_type = params[:question_type]
+            @question_description = params[:question_description]
+            @correct_answer = params[:correct_answer].compact.first
+            @key_word = params[:key_word]
+            @key_word_morse = params[:key_word_morse]
+            @translation_type = params[:translation_type]
+            @options = []
+            (1..4).each do |i|
+                text = params["op#{i}"]
+                correct = params["correct_option_#{i}"] == 'true'
+
+                @options << { text: text, correct: correct }
+            end
+            puts params.inspect
+            if params[:levels] == "new"
+                @level_type = params[:level_type]
+                @level_name = params[:level_name]
+                @min_score = params[:min_score]
+                @lm.createNewLevel(type: @level_type, name: @level_name, min_score: @min_score)
+                @level = Level.last
+            else
+                @level = Level.find_by(id: params[:levels])
+            end
+            if @qm.validateParams(question_type: @question_type, options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+                if @qm.createNewQuestion(question_type: @question_type, options: @options, translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+                    flash[:success] = "Pregunta y/o nivel creados correctamente."
+                else
+                    flash[:alert] = "Se ha producido un error al crear la pregunta y/o nivel. Intentalo de nuevo."
+                end
+            else
+                if params[:levels] == "new"
+                    @level.destroy
+                end
+                flash[:alert] = "Se ha producido un error de validación. Verifica la información de la pregunta introducida"
+            end
+            redirect '/admin/nivelesPreguntas'
+        else
+            redirect '/login'
+        end
+    end
+
+    get '/admin/preguntasCorrectas' do
+        if session[:admin_id]
+            @levels = Level.where.not(playable_type: "Tutorial")
+            @questions = Question.where(level: @levels)
+            erb :correctly_answered_questions
+        else
+            redirect "/login"
+        end
+    end
+
+    get '/admin/preguntasIncorrectas' do
+        if session[:admin_id]
+            @levels = Level.where.not(playable_type: "Tutorial")
+            @questions = Question.where(level: @levels)
+            erb :incorrectly_answered_questions
         else
             redirect "/login"
         end
