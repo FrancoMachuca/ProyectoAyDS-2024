@@ -44,7 +44,7 @@ class QuestionsManager
     return next_question
   end
 
-  def buildUserAnswer(answer: String, question: Question)
+  def buildPlayerAnswer(answer: String, question: Question)
     return Answer.new(answer: answer, correct: false, question: question)
   end
 
