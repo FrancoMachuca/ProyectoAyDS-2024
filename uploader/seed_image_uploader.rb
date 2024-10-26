@@ -6,6 +6,6 @@ class SeedImagesUploader < CarrierWave::Uploader::Base
   process resize_to_fill: [142, 150]
 
   def content_type_allowlist
-    /image\//
+    %r{image/}
   end
 end

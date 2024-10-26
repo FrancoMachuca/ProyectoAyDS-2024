@@ -1,3 +1,2 @@
-require './myapp.rb'
+require './myapp'
 run MyApp
-
