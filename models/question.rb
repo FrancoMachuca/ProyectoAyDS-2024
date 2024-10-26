@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_record'
 class Question < ActiveRecord::Base
   belongs_to :level

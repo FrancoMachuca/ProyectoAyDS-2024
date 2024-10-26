@@ -1,4 +1,4 @@
-inherit_from: .rubocop_todo.yml
+#inherit_from: .rubocop_todo.yml
 
 require:
   - rubocop-rspec
@@ -6,3 +6,23 @@ require:
 
 AllCops:
   NewCops: enable
+
+Metrics/ClassLength:
+  Exclude:
+    - "myapp.rb"
+
+Style/Documentation:
+  Exclude:
+    - "myapp.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "myapp.rb"
+
+Metrics/BlockNesting:
+  Exclude:
+    - "myapp.rb"
+
+Layout/LineLength:
+  Exclude:
+    - "myapp.rb"

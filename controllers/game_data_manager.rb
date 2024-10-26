@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require '.\models\player'
 require '.\models\level'
 require '.\models\player_level'
@@ -23,7 +25,7 @@ class GameDataManager
       if row.level.playable_type == 'Exam'
         exam = row.level.exam
         sum += 1 if exam.minScore <= row.playerLevelScore
-      elsif row.playerLevelScore > 0
+      elsif row.playerLevelScore.positive?
         sum += 1
       end
     end
@@ -37,7 +39,7 @@ class GameDataManager
     return row.playerLevelScore >= row.level.exam.minScore if row.level.playable_type == 'Exam'
 
 
-    row.playerLevelScore > 0
+    row.playerLevelScore.positive?
   end
 
   def unlockedLevel?(level: Level, player: Player)

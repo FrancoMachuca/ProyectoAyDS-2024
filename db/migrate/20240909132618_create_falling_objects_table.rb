@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFallingObjectsTable < ActiveRecord::Migration[7.1]
   def change
     create_table :falling_objects do |u|

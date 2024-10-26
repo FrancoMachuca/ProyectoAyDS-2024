@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
@@ -25,7 +27,7 @@ require './uploader/image_uploader'
 class MyApp < Sinatra::Application
   # Configuración de Carrierwave
   CarrierWave.configure do |config|
-    config.root = File.dirname(__FILE__) + '/public'
+    config.root = "#{File.dirname(__FILE__)}/public"
   end
 
   def initialize(_myapp = nil)
@@ -116,7 +118,7 @@ class MyApp < Sinatra::Application
 
   post '/actualizarFoto' do
     if session[:user_id]
-      defaultPic = Image.first
+      default_pic = Image.first
       img = Image.new
       user = User.find(session[:user_id])
       img.image = params[:file] # carrierwave sube el archivo automáticamente.
@@ -131,11 +133,12 @@ class MyApp < Sinatra::Application
           user.image = img
           img.save!
           user.save!
-          if !i.nil? && i.users.empty? && i != defaultPic
+          if !i.nil? && i.users.empty? && i != default_pic
             i.remove_image!
             Image.delete(i)
           end
-        rescue StandardError => e # Si la imagen nueva no se guarda correctamente, o si la anterior no se borra de la base de datos, se restaura la anterior.
+        rescue StandardError => e # Si la imagen nueva no se guarda correctamente,
+          # o si la anterior no se borra de la base de datos, se restaura la anterior.
           user.image = i
           user.save
           puts e.message
@@ -173,7 +176,7 @@ class MyApp < Sinatra::Application
         session[:user_level_score] = 0
         @gm.resetPlayerLevelScore(player: @player, level: @level) if @gm.completedLevel?(player: @player, level: @level)
         @questions = Question.where(level_id: params[:level_id])
-        redirect '/level/' + params[:level_id].to_s + '/' + @questions.first.id.to_s
+        redirect "/level/#{params[:level_id]}/#{@questions.first.id}"
       else
         redirect '/jugar'
       end

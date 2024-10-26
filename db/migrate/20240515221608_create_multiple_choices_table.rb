@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMultipleChoicesTable < ActiveRecord::Migration[7.1]
   def change
     create_table :multiple_choices do |u|

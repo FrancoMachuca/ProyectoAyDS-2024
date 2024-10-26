@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_record'
 class User < ActiveRecord::Base
   delegated_type :userable, types: %w[Player Admin]

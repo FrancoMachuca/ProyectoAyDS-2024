@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_record'
 class Level < ActiveRecord::Base
   delegated_type :playable, types: %w[Lesson Exam Tutorial]

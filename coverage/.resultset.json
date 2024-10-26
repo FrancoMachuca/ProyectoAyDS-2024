@@ -3,6 +3,8 @@
     "coverage": {
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/myapp.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -177,8 +179,6 @@
           11,
           9,
           9,
-          6,
-          null,
           9,
           9,
           null,
@@ -197,8 +197,6 @@
           17,
           17,
           17,
-          17,
-          null,
           null,
           1,
           null,
@@ -268,6 +266,7 @@
           13,
           13,
           13,
+          null,
           13,
           13,
           13,
@@ -302,16 +301,17 @@
           9,
           null,
           12,
+          null,
           6,
+          null,
           6,
           null,
           0,
           null,
           null,
           6,
-          3,
-          null,
           6,
+          null,
           null,
           12,
           null,
@@ -343,6 +343,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/admin.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -352,6 +354,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/user.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -368,6 +372,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/player.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -379,6 +385,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/level.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -397,6 +405,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/lesson.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -405,6 +415,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/exam.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -413,11 +425,14 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/question.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
           1,
           1,
+          null,
           1,
           null,
           null,
@@ -426,12 +441,13 @@
           1,
           5,
           null,
-          null,
           null
         ]
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/multiple_choice.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -440,6 +456,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/translation.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -448,6 +466,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/mouse_translation.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -456,6 +476,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/answer.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -464,6 +486,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/player_level.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -473,6 +497,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/to_complete.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -481,6 +507,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/image.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -492,6 +520,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/uploader/image_uploader.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -505,13 +535,14 @@
           null,
           1,
           0,
-          null,
           null,
           null
         ]
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/uploader/seed_image_uploader.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -527,13 +558,14 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/controllers/game_data_manager.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
           null,
           null,
           1,
-          null,
           1,
           1,
           null,
@@ -553,12 +585,8 @@
           9,
           1,
           1,
-          1,
-          null,
-          null,
           8,
           7,
-          null,
           null,
           null,
           2,
@@ -566,15 +594,12 @@
           null,
           1,
           168,
+          null,
           167,
           167,
-          19,
+          null,
           null,
           148,
-          null,
-          null,
-          1,
-          null,
           null,
           null,
           1,
@@ -596,8 +621,8 @@
           1,
           8,
           8,
-          8,
           null,
+          8,
           null,
           null,
           1,
@@ -614,12 +639,13 @@
           null,
           null,
           null,
-          null,
           null
         ]
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/controllers/questions_manager.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -628,7 +654,6 @@
           null,
           null,
           1,
-          null,
           null,
           1,
           24,
@@ -663,7 +688,6 @@
           11,
           11,
           11,
-          11,
           null,
           null,
           1,
@@ -671,24 +695,31 @@
           null,
           null,
           1,
+          null,
           6,
+          null,
           6,
           null,
           1,
+          null,
           1,
           4,
           null,
           null,
           2,
+          null,
           2,
           null,
           1,
+          null,
           1,
           null,
           1,
+          null,
           1,
           null,
           1,
+          null,
           1,
           null,
           6,
@@ -698,6 +729,7 @@
           null,
           null,
           1,
+          null,
           18,
           17,
           null,
@@ -733,6 +765,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/falling_object.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
@@ -742,6 +776,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/controllers/levels_manager.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
@@ -760,6 +796,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/spec/test_spec.rb": {
         "lines": [
+          null,
+          null,
           1,
           null,
           1,
@@ -1151,6 +1189,7 @@
           1,
           14,
           14,
+          null,
           14,
           14,
           14,
@@ -1231,6 +1270,7 @@
           1,
           1,
           1,
+          null,
           null,
           1,
           1,
@@ -1346,7 +1386,6 @@
           null,
           null,
           1,
-          null,
           1,
           1,
           1,
@@ -1439,6 +1478,8 @@
       },
       "C:/Users/Usuario/Documents/ProyectoAyDS-2024-1/models/tutorial.rb": {
         "lines": [
+          null,
+          null,
           1,
           1,
           1,
@@ -1446,6 +1487,6 @@
         ]
       }
     },
-    "timestamp": 1729277477
+    "timestamp": 1729953757
   }
 }

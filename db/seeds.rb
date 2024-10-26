@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../models/user'
 require_relative '../models/admin'
 require_relative '../models/player'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePlayerLevelsTable < ActiveRecord::Migration[7.2]
   def change
     create_table :player_levels do |t|

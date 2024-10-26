@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './models/question'
 require './models/answer'
 require './models/level'

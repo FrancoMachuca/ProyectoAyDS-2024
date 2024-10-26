@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'carrierwave/processing/vips'
 class SeedImagesUploader < CarrierWave::Uploader::Base
   include CarrierWave::Vips
