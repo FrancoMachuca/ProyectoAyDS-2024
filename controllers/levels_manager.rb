@@ -2,8 +2,9 @@
 
 require './models/level'
 
+# Modular manager of levels
 class LevelManager
-  def createNewLevel(type: String, name: String, min_score: Int)
+  def create_new_level(type: String, name: String, min_score: Int)
     case type
     when 'Lesson'
       Level.create!(name: name, playable: Lesson.create!)

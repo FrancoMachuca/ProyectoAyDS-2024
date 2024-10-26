@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'active_record'
-class To_complete < ActiveRecord::Base
+
+# ToComplete model
+class ToComplete < ActiveRecord::Base
   include Questionable
 end

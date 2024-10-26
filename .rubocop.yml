@@ -18,6 +18,7 @@ Style/Documentation:
 Metrics/BlockLength:
   Exclude:
     - "myapp.rb"
+    - "db/schema.rb"
 
 Metrics/BlockNesting:
   Exclude:
@@ -26,3 +27,9 @@ Metrics/BlockNesting:
 Layout/LineLength:
   Exclude:
     - "myapp.rb"
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false

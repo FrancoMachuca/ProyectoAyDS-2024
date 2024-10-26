@@ -32,7 +32,7 @@ RSpec.configure do |config|
 
   config.include Rack::Test::Methods
 
-  def myApp
+  def my_app
     MyApp.new
   end
 

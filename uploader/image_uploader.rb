@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'carrierwave/processing/vips'
+
+# Image uploader moodel
 class ImagesUploader < CarrierWave::Uploader::Base
   include CarrierWave::Vips
   storage :file

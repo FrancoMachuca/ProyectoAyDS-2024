@@ -82,7 +82,7 @@ class MyApp < Sinatra::Application
       user = User.new(name: params[:name], mail: params[:mail], password: params[:password],
                       image: image, userable: Player.create!)
       if user.save
-        @gm.createGameDataFor(player: user.player)
+        @gm.create_game_data_for(player: user.player)
         session[:player_id] = user.player_id
         session[:user_id] = user.id
         redirect '/login'
@@ -99,9 +99,9 @@ class MyApp < Sinatra::Application
     if session[:user_id]
       @user = User.find(session[:user_id])
       @player = Player.find(session[:player_id])
-      @total_score = @gm.getTotalScoreOf(player: @player)
-      @levels_completed = @gm.getAmountOfLevelsCompleted(player: @player)
-      @rank = @gm.getPlayerRank(player: @player)
+      @total_score = @gm.get_total_score_of(player: @player)
+      @levels_completed = @gm.get_amount_of_levels_completed(player: @player)
+      @rank = @gm.get_player_rank(player: @player)
       erb :profile
     else
       redirect '/login'
@@ -172,9 +172,11 @@ class MyApp < Sinatra::Application
     if session[:user_id]
       @player = Player.find(session[:player_id])
       @level = Level.find(params[:level_id])
-      if @gm.unlockedLevel?(player: @player, level: @level)
+      if @gm.unlocked_level?(player: @player, level: @level)
         session[:user_level_score] = 0
-        @gm.resetPlayerLevelScore(player: @player, level: @level) if @gm.completedLevel?(player: @player, level: @level)
+        if @gm.completed_level?(player: @player, level: @level)
+          @gm.reset_player_level_score(player: @player, level: @level)
+        end
         @questions = Question.where(level_id: params[:level_id])
         redirect "/level/#{params[:level_id]}/#{@questions.first.id}"
       else
@@ -211,33 +213,33 @@ class MyApp < Sinatra::Application
       @player = Player.find_by(id: session[:player_id])
       if @question && @level
         @answers = Answer.where(question_id: @question.id)
-        if @question.questionable_type == 'Translation' || @question.questionable_type == 'To_complete' ||
+        if @question.questionable_type == 'Translation' || @question.questionable_type == 'ToComplete' ||
            @question.questionable_type == 'MouseTranslation' || @question.questionable_type == 'FallingObject'
-          @player_answer = @qm.buildPlayerAnswer(answer: params[:user_guess], question: @question)
+          @player_answer = @qm.build_player_answer(answer: params[:user_guess], question: @question)
         else
           @player_answer = Answer.find_by(id: params[:answer_id])
         end
-        if @qm.correctAnswer?(answer: @player_answer, question: @question)
+        if @qm.correct_answer?(answer: @player_answer, question: @question)
           session[:user_level_score] += 100
           @question.update(times_answered_correctly: (@question.times_answered_correctly + 1))
         else
           @question.update(times_answered_incorrectly: (@question.times_answered_incorrectly + 1))
         end
 
-        @next_question = @qm.nextQuestion(question: @question)
+        @next_question = @qm.next_question(question: @question)
         if @next_question
           redirect "/level/#{params[:level_id]}/" + @next_question.id.to_s
         else
           @player = Player.find_by(id: session[:player_id])
-          @gm.addPlayerLevelScore(player: @player, level: @level, value: session[:user_level_score])
+          @gm.add_player_level_score(player: @player, level: @level, value: session[:user_level_score])
           @final_score = session[:user_level_score]
           session[:user_level_score] = 0
-          if @gm.completedLevel?(level: @level, player: @player)
+          if @gm.completed_level?(level: @level, player: @player)
             @show_success_popup = true
           else
             @show_failure_popup = true
           end
-          @gm.unlockNextLevelFor(player: @player, possiblyCompleted: @level)
+          @gm.unlock_next_level_for(player: @player, possibly_completed: @level)
           erb @qm.show(question: @question)
         end
       else
@@ -280,9 +282,9 @@ class MyApp < Sinatra::Application
       @key_word_morse = params[:key_word_morse]
       @translation_type = params[:translation_type]
       @options = []
-      (1..4).each do |i|
-        text = params["op#{i}"]
-        correct = params["correct_option_#{i}"] == 'true'
+      %w[first second third fourth].each_with_index do |position, index|
+        text = params["op#{index + 1}"]
+        correct = params["correct_answer_#{position}"] == 'true'
 
         @options << { text: text, correct: correct }
       end
@@ -291,15 +293,15 @@ class MyApp < Sinatra::Application
         @level_type = params[:level_type]
         @level_name = params[:level_name]
         @min_score = params[:min_score]
-        @lm.createNewLevel(type: @level_type, name: @level_name, min_score: @min_score)
+        @lm.create_new_level(type: @level_type, name: @level_name, min_score: @min_score)
         @level = Level.last
       else
         @level = Level.find_by(id: params[:levels])
       end
-      if @qm.validateParams(question_type: @question_type, options: @options,
-                            translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
-        if @qm.createNewQuestion(question_type: @question_type, options: @options,
-                                 translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+      if @qm.validate_params(question_type: @question_type, options: @options,
+                             translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
+        if @qm.create_new_question(question_type: @question_type, options: @options,
+                                   translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
           flash[:success] = 'Pregunta y/o nivel creados correctamente.'
         else
           flash[:alert] = 'Se ha producido un error al crear la pregunta y/o nivel. Intentalo de nuevo.'

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'active_record'
+
+# Level model
 class Level < ActiveRecord::Base
   delegated_type :playable, types: %w[Lesson Exam Tutorial]
   has_many :questions, dependent: :destroy
@@ -8,6 +10,7 @@ class Level < ActiveRecord::Base
   has_many :players, through: :player_levels
 end
 
+# Playable type def
 module Playable
   extend ActiveSupport::Concern
   included do
