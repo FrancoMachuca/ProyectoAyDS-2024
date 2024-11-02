@@ -24,13 +24,17 @@ require './controllers/questions_manager'
 require './controllers/levels_manager'
 require './controllers/play_controller'
 require './uploader/image_uploader'
-require './controllers/login_controller'
-require './controllers/signup_controller'
+require_relative 'controllers/login_controller'
+require_relative 'controllers/signup_controller'
 require_relative 'controllers/question_level_upload_controller'
-require './controllers/image_controller'
-require './controllers/profile_controller'
-require './controllers/ranking_controller'
-require './controllers/level_controller'
+require_relative 'controllers/image_controller'
+require_relative 'controllers/profile_controller'
+require_relative 'controllers/ranking_controller'
+require_relative 'controllers/level_controller'
+require_relative 'controllers/admin_menu_controller'
+require_relative 'controllers/correctly_answered_questions_controller'
+require_relative 'controllers/incorrectly_answered_questions_controller'
+
 # Server
 class MyApp < Sinatra::Application
   # Configuración de Carrierwave
@@ -56,34 +60,13 @@ class MyApp < Sinatra::Application
   use QuestionLevelUploadController
   use ProfileController
   use RankingController
+  use AdminMenuController
+  use IncorrectlyAnsweredQuestionsController
+  use CorrectlyAnsweredQuestionsController
 
   get '/' do
     redirect '/jugar' if session[:player_id]
     redirect '/admin' if session[:admin_id]
     redirect '/login'
-  end
-
-  get '/admin' do
-    erb :admin_menu
-  end
-
-  get '/admin/preguntasCorrectas' do
-    if session[:admin_id]
-      @levels = Level.where.not(playable_type: 'Tutorial')
-      @questions = Question.where(level: @levels)
-      erb :correctly_answered_questions
-    else
-      redirect '/login'
-    end
-  end
-
-  get '/admin/preguntasIncorrectas' do
-    if session[:admin_id]
-      @levels = Level.where.not(playable_type: 'Tutorial')
-      @questions = Question.where(level: @levels)
-      erb :incorrectly_answered_questions
-    else
-      redirect '/login'
-    end
   end
 end
