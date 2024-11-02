@@ -24,6 +24,9 @@ require './controllers/questions_manager'
 require './controllers/levels_manager'
 require './controllers/play_controller'
 require './uploader/image_uploader'
+require_relative 'controllers/image_controller'
+require_relative 'controllers/login_controller'
+require_relative 'controllers/signup_controller'
 require './controllers/image_controller'
 require './controllers/profile_controller'
 require './controllers/ranking_controller'
@@ -45,7 +48,8 @@ class MyApp < Sinatra::Application
   set :public_folder, 'public'
   set :database_file, './config/database.yml'
   enable :sessions
-
+  use LoginController
+  use SignupController
   use PlayController
   use LevelController
   use ImageController
@@ -53,56 +57,8 @@ class MyApp < Sinatra::Application
   use RankingController
 
   get '/' do
-    redirect '/login'
-  end
-
-  get '/login' do
-    erb :login
-  end
-
-  post '/login' do
-    user = User.find_by(name: params[:name], password: params[:password])
-    if user
-      session[:user_id] = user.id
-      if user.userable_type == 'Player'
-        session[:player_id] = user.player_id
-        redirect '/jugar'
-      else
-        session[:admin_id] = user.admin.id
-
-        redirect '/admin'
-      end
-
-    else
-      @error_message = 'Nombre de usuario o contraseña son incorrectas'
-      erb :login
-    end
-  end
-
-  get '/registro' do
-    erb :registro
-  end
-
-  post '/registro' do
-    user = User.find_by(mail: params[:mail]) || User.find_by(name: params[:name])
-    if user
-      @error_message = 'Usted ya tenía una cuenta previa'
-      erb :login
-    else
-      image = Image.first
-      user = User.new(name: params[:name], mail: params[:mail], password: params[:password],
-                      image: image, userable: Player.create!)
-      if user.save
-        @gm.create_game_data_for(player: user.player)
-        session[:player_id] = user.player_id
-        session[:user_id] = user.id
-        redirect '/login'
-      end
-    end
-  end
-
-  get '/logout' do
-    session.clear
+    redirect '/jugar' if session[:player_id]
+    redirect '/admin' if session[:admin_id]
     redirect '/login'
   end
 
