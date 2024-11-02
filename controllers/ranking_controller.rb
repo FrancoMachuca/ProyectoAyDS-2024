@@ -14,8 +14,10 @@ require './models/player_level'
 require './models/to_complete'
 require './controllers/game_data_manager'
 require './controllers/questions_manager'
-# Clase que se encarga de manejar los eventos relacionados al juego.
-class PlayController < Sinatra::Base
+
+# Esta clase es el controlador del ranking,
+# por lo que se encarga de manejar todas las variables utilizadas en la vista
+class RankingController < Sinatra::Base
   set :views, File.expand_path('../views', __dir__)
 
   def initialize(app = nil)
@@ -25,12 +27,10 @@ class PlayController < Sinatra::Base
     @lm = LevelManager.new
   end
 
-  get '/jugar' do
+  get '/ranking' do
     if session[:user_id]
-      @player = Player.find(session[:player_id])
-      @levels = Level.all.order(:id)
-      @levels_unlocked = @player.levels
-      erb :jugar
+      @players = Player.all
+      erb :ranking
     else
       redirect '/login'
     end

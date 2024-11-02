@@ -24,10 +24,13 @@ require './controllers/questions_manager'
 require './controllers/levels_manager'
 require './controllers/play_controller'
 require './uploader/image_uploader'
-require_relative 'controllers/image_controller'
-require_relative 'controllers/login_controller'
-require_relative 'controllers/signup_controller'
+require './controllers/login_controller'
+require './controllers/signup_controller'
 require_relative 'controllers/question_level_upload_controller'
+require './controllers/image_controller'
+require './controllers/profile_controller'
+require './controllers/ranking_controller'
+require './controllers/level_controller'
 # Server
 class MyApp < Sinatra::Application
   # Configuración de Carrierwave
@@ -48,34 +51,16 @@ class MyApp < Sinatra::Application
   use LoginController
   use SignupController
   use PlayController
+  use LevelController
   use ImageController
   use QuestionLevelUploadController
+  use ProfileController
+  use RankingController
+
   get '/' do
     redirect '/jugar' if session[:player_id]
     redirect '/admin' if session[:admin_id]
     redirect '/login'
-  end
-
-  get '/perfil' do
-    if session[:user_id]
-      @user = User.find(session[:user_id])
-      @player = Player.find(session[:player_id])
-      @total_score = @gm.get_total_score_of(player: @player)
-      @levels_completed = @gm.get_amount_of_levels_completed(player: @player)
-      @rank = @gm.get_player_rank(player: @player)
-      erb :profile
-    else
-      redirect '/login'
-    end
-  end
-
-  get '/ranking' do
-    if session[:user_id]
-      @players = Player.all
-      erb :ranking
-    else
-      redirect '/login'
-    end
   end
 
   get '/admin' do
