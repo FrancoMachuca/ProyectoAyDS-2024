@@ -125,7 +125,7 @@ class QuestionsManager
       options.one? { |elem| elem[:correct] }
   end
 
-  def validate_translation(_, translation_type, _1, _2, correct_answer, question_description)
+  def validate_translation(_, translation_type, param1, param2, correct_answer, question_description)
     case translation_type
     when 'morse_translation'
       question_description.match?(/.*[.\-]+.*$/) &&
@@ -138,7 +138,7 @@ class QuestionsManager
     end
   end
 
-  def validate_to_complete(_, _1, key_word, key_word_morse, *_)
+  def validate_to_complete(_, param1, key_word, key_word_morse, *_)
     key_word.match?(/[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9]+/) &&
       key_word_morse.match?(/^[.-]+$/)
   end
