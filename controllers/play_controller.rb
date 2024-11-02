@@ -14,12 +14,12 @@ require './models/player_level'
 require './models/to_complete'
 require './controllers/game_data_manager'
 require './controllers/questions_manager'
-
+# Clase que se encarga de manejar los eventos relacionados al juego.
 class PlayController < Sinatra::Base
   set :views, File.expand_path('../views', __dir__)
 
   def initialize(app = nil)
-    super(app)  # Asegúrate de pasar el argumento a super
+    super
     @gm = GameDataManager.new
     @qm = QuestionsManager.new
     @lm = LevelManager.new

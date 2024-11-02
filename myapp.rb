@@ -24,7 +24,8 @@ require './controllers/questions_manager'
 require './controllers/levels_manager'
 require './controllers/play_controller'
 require './uploader/image_uploader'
-
+require_relative 'controllers/image_controller'
+# Server
 class MyApp < Sinatra::Application
   # Configuración de Carrierwave
   CarrierWave.configure do |config|
@@ -41,9 +42,8 @@ class MyApp < Sinatra::Application
   set :public_folder, 'public'
   set :database_file, './config/database.yml'
   enable :sessions
-
   use PlayController
-
+  use ImageController
   get '/' do
     redirect '/login'
   end
@@ -109,46 +109,6 @@ class MyApp < Sinatra::Application
     else
       redirect '/login'
     end
-  end
-
-  get '/actualizarFoto' do
-    if session[:user_id]
-      erb :upload_image
-    else
-      redirect '/login'
-    end
-  end
-
-  post '/actualizarFoto' do
-    if session[:user_id]
-      default_pic = Image.first
-      img = Image.new
-      user = User.find(session[:user_id])
-      img.image = params[:file] # carrierwave sube el archivo automáticamente.
-      img.caption = 'Profile Pic' # Se puede recibir otro con params.
-      if !img.nil? && !img.image.nil? && img.valid? # Se pueden agregar más restricciones
-        begin
-          unless user.image.nil?
-            i = user.image
-            user.image = nil
-            user.save!
-          end
-          user.image = img
-          img.save!
-          user.save!
-          if !i.nil? && i.users.empty? && i != default_pic
-            i.remove_image!
-            Image.delete(i)
-          end
-        rescue StandardError => e # Si la imagen nueva no se guarda correctamente,
-          # o si la anterior no se borra de la base de datos, se restaura la anterior.
-          user.image = i
-          user.save
-          puts e.message
-        end
-      end
-    end
-    redirect '/perfil'
   end
 
   get '/ranking' do

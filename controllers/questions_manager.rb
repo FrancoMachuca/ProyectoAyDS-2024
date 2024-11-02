@@ -8,7 +8,6 @@ require './models/falling_object'
 # rubocop:disable Metrics/ClassLength
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
-# rubocop:disable Naming/MethodParameterName
 
 # Esta clase se encarga de administrar las preguntas del juego y sus respuestas.
 class QuestionsManager
@@ -68,15 +67,17 @@ class QuestionsManager
     question_class = question_class_mapping[question_type]
     return false unless question_class
 
-    @question = create_question_record(question_class, question_type, question_description, level, key_word,
-                                       key_word_morse)
+    @question = create_question_record(question_class,
+                                       question_type: question_type, question_description: question_description,
+                                       level: level, key_word: key_word, key_word_morse: key_word_morse)
     create_answers(@question, question_type, options, correct_answer)
     true
   end
 
   private
 
-  def create_question_record(question_class, question_type, description, level, key_word, key_word_morse)
+  def create_question_record(question_class, question_type: String, description: String, level: Level,
+                             key_word: String, key_word_morse: String)
     questionable_instance = if question_type == 'ToComplete'
                               question_class.create!(keyword: key_word, toCompleteMorse: key_word_morse)
                             else
@@ -86,7 +87,7 @@ class QuestionsManager
     Question.create!(description: description, level: level, questionable: questionable_instance)
   end
 
-  def create_answers(question, question_type, options, correct_answer)
+  def create_answers(options:, question: Question, question_type: String, correct_answer: String)
     case question_type
     when 'MultipleChoice'
       options.each do |op|
@@ -97,8 +98,8 @@ class QuestionsManager
     end
   end
 
-  def validate_params(question_type:, options:, translation_type:, key_word:, key_word_morse:, correct_answer:,
-                      question_description:, level:)
+  def validate_params(options:, correct_answer: String, question_description: String, level: Level,
+                      question_type: String, translation_type: String, key_word: String, key_word_morse: String)
     return false unless valid_level?(level)
 
     validators = {
@@ -112,7 +113,9 @@ class QuestionsManager
     validator = validators[question_type]
     return false unless validator
 
-    validator.call(options, translation_type, key_word, key_word_morse, correct_answer, question_description)
+    validator.call(options: options, translation_type: translation_type, key_word: key_word,
+                   key_word_morse: key_word_morse, correct_answer: correct_answer,
+                   question_description: question_description)
   end
 
   def valid_level?(level)
@@ -125,7 +128,7 @@ class QuestionsManager
       options.one? { |elem| elem[:correct] }
   end
 
-  def validate_translation(_, translation_type, param1, param2, correct_answer, question_description)
+  def validate_translation(_:, _:, _:, translation_type: String, correct_answer: String, question_description: String)
     case translation_type
     when 'morse_translation'
       question_description.match?(/.*[.\-]+.*$/) &&
@@ -138,12 +141,12 @@ class QuestionsManager
     end
   end
 
-  def validate_to_complete(_, param1, key_word, key_word_morse, *_)
+  def validate_to_complete(_:, _:, _:, _:, key_word: String, key_word_morse: String)
     key_word.match?(/[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9]+/) &&
       key_word_morse.match?(/^[.-]+$/)
   end
 
-  def validate_morse_answer(_, *_args, correct_answer)
+  def validate_morse_answer(_:, _:, _:, _:, _:, _:, correct_answer: String)
     correct_answer.match?(/^[.-]+$/)
   end
 end
@@ -151,4 +154,3 @@ end
 # rubocop:enable Metrics/ClassLength
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ParameterLists
-# rubocop:enable Naming/MethodParameterName
