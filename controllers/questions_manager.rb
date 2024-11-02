@@ -5,7 +5,6 @@ require './models/answer'
 require './models/level'
 require './models/falling_object'
 
-# rubocop:disable Metrics/ClassLength
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/ParameterLists
 
@@ -20,7 +19,6 @@ class QuestionsManager
       'MouseTranslation' => :mouse_translation,
       'FallingObject' => :falling_object
     }
-
     view_lookup[question.questionable_type]
   end
 
@@ -48,8 +46,8 @@ class QuestionsManager
     Answer.new(answer: answer, correct: false, question: question)
   end
 
-  def create_new_question(question_type:, options:, translation_type:, key_word:, key_word_morse:, correct_answer:,
-                          question_description:, level:)
+  def create_new_question(options:, question_type: String, translation_type: String, key_word: String, key_word_morse: String, correct_answer: String,
+                          question_description: String, level: Level)
     return false unless validate_params(
       question_type: question_type, options: options, translation_type: translation_type,
       key_word: key_word, key_word_morse: key_word_morse, correct_answer: correct_answer,
@@ -70,13 +68,42 @@ class QuestionsManager
     @question = create_question_record(question_class,
                                        question_type: question_type, question_description: question_description,
                                        level: level, key_word: key_word, key_word_morse: key_word_morse)
-    create_answers(@question, question_type, options, correct_answer)
+    create_answers(options: options, question: @question, question_type: question_type, correct_answer: correct_answer )
     true
+  end
+
+  def validate_params(options:, correct_answer: String, question_description: String, level: Level,
+                      question_type: String, translation_type: String, key_word: String, key_word_morse: String)
+    return true unless valid_level?(level)
+
+    # Asocio un método validator a un tipo de pregunta.
+    validators = {
+      'MultipleChoice' => method(:validate_multiple_choice),
+      'Translation' => method(:validate_translation),
+      'ToComplete' => method(:validate_to_complete),
+      'MouseTranslation' => method(:validate_morse_answer),
+      'FallingObject' => method(:validate_morse_answer)
+    }
+    # Asocio parámetros específicos para cada validator según el tipo de pregunta.
+    required_params = {
+      'MultipleChoice' => { options: options },
+      'Translation' => { translation_type: translation_type, correct_answer: correct_answer,
+                         question_description: question_description },
+      'ToComplete' => { key_word: key_word, key_word_morse: key_word_morse },
+      'MouseTranslation' => { correct_answer: correct_answer },
+      'FallingObject' => { correct_answer: correct_answer }
+    }
+    # Elijo un validator según el tipo de pregunta recibido.
+    validator = validators[question_type]
+    return false unless validator
+
+    # Invoco al validator seleccionado con su respectiva lista de parámetros.
+    validator.call(**required_params[question_type])
   end
 
   private
 
-  def create_question_record(question_class, question_type: String, description: String, level: Level,
+  def create_question_record(question_class, question_type: String, question_description: String, level: Level,
                              key_word: String, key_word_morse: String)
     questionable_instance = if question_type == 'ToComplete'
                               question_class.create!(keyword: key_word, toCompleteMorse: key_word_morse)
@@ -84,7 +111,7 @@ class QuestionsManager
                               question_class.create!
                             end
 
-    Question.create!(description: description, level: level, questionable: questionable_instance)
+    Question.create!(description: question_description, level: level, questionable: questionable_instance)
   end
 
   def create_answers(options:, question: Question, question_type: String, correct_answer: String)
@@ -98,37 +125,17 @@ class QuestionsManager
     end
   end
 
-  def validate_params(options:, correct_answer: String, question_description: String, level: Level,
-                      question_type: String, translation_type: String, key_word: String, key_word_morse: String)
-    return false unless valid_level?(level)
-
-    validators = {
-      'MultipleChoice' => method(:validate_multiple_choice),
-      'Translation' => method(:validate_translation),
-      'ToComplete' => method(:validate_to_complete),
-      'MouseTranslation' => method(:validate_morse_answer),
-      'FallingObject' => method(:validate_morse_answer)
-    }
-
-    validator = validators[question_type]
-    return false unless validator
-
-    validator.call(options: options, translation_type: translation_type, key_word: key_word,
-                   key_word_morse: key_word_morse, correct_answer: correct_answer,
-                   question_description: question_description)
-  end
-
   def valid_level?(level)
     !level.nil? && Level.exists?(level.id)
   end
 
-  def validate_multiple_choice(options, *_)
+  def validate_multiple_choice(options:)
     options.size <= 4 &&
-      options.all? { |elem| !elem[:text].to_s.empty? } &&
+      options.all? { |elem| !elem[:text].empty? } &&
       options.one? { |elem| elem[:correct] }
   end
 
-  def validate_translation(_:, _:, _:, translation_type: String, correct_answer: String, question_description: String)
+  def validate_translation(translation_type: String, correct_answer: String, question_description: String)
     case translation_type
     when 'morse_translation'
       question_description.match?(/.*[.\-]+.*$/) &&
@@ -141,16 +148,15 @@ class QuestionsManager
     end
   end
 
-  def validate_to_complete(_:, _:, _:, _:, key_word: String, key_word_morse: String)
+  def validate_to_complete(key_word: String, key_word_morse: String)
     key_word.match?(/[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9]+/) &&
       key_word_morse.match?(/^[.-]+$/)
   end
 
-  def validate_morse_answer(_:, _:, _:, _:, _:, _:, correct_answer: String)
+  def validate_morse_answer(correct_answer: String)
     correct_answer.match?(/^[.-]+$/)
   end
 end
 
-# rubocop:enable Metrics/ClassLength
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/ParameterLists

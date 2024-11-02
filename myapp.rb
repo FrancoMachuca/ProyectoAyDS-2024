@@ -27,6 +27,7 @@ require './uploader/image_uploader'
 require_relative 'controllers/image_controller'
 require_relative 'controllers/login_controller'
 require_relative 'controllers/signup_controller'
+require_relative 'controllers/question_level_upload_controller'
 # Server
 class MyApp < Sinatra::Application
   # Configuración de Carrierwave
@@ -48,6 +49,7 @@ class MyApp < Sinatra::Application
   use SignupController
   use PlayController
   use ImageController
+  use QuestionLevelUploadController
   get '/' do
     redirect '/jugar' if session[:player_id]
     redirect '/admin' if session[:admin_id]
@@ -78,69 +80,6 @@ class MyApp < Sinatra::Application
 
   get '/admin' do
     erb :admin_menu
-  end
-
-  get '/admin/nivelesPreguntas' do
-    if session[:admin_id]
-      @levels = Level.where.not(playable_type: 'Tutorial')
-      @level_type_values = Level.playable_types
-      @level_type_names = %w[Lección Examen Tutorial]
-      @level_types = @level_type_names.zip(@level_type_values)
-
-      @questions = Question.where(level: @levels)
-      @question_type_values = Question.questionable_types
-      @question_type_names =  ['Multiple Opción', 'Completar la Palabra', 'Traducción', 'Pulsaciones',
-                               'Lluvia Simbólica']
-      @question_types = @question_type_names.zip(@question_type_values)
-      @mc_answers = 4
-      erb :questions_and_levels_upload
-    else
-      redirect '/login'
-    end
-  end
-
-  post '/admin/nivelesPreguntas' do
-    if session[:admin_id]
-      @question_type = params[:question_type]
-      @question_description = params[:question_description]
-      @correct_answer = params[:correct_answer].compact.first
-      @key_word = params[:key_word]
-      @key_word_morse = params[:key_word_morse]
-      @translation_type = params[:translation_type]
-      @options = []
-      %w[first second third fourth].each_with_index do |position, index|
-        text = params["op#{index + 1}"]
-        correct = params["correct_answer_#{position}"] == 'true'
-
-        @options << { text: text, correct: correct }
-      end
-      puts params.inspect
-      if params[:levels] == 'new'
-        @level_type = params[:level_type]
-        @level_name = params[:level_name]
-        @min_score = params[:min_score]
-        @lm.create_new_level(type: @level_type, name: @level_name, min_score: @min_score)
-        @level = Level.last
-      else
-        @level = Level.find_by(id: params[:levels])
-      end
-      if @qm.validate_params(question_type: @question_type, options: @options,
-                             translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
-        if @qm.create_new_question(question_type: @question_type, options: @options,
-                                   translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse, correct_answer: @correct_answer, question_description: @question_description, level: @level)
-          flash[:success] = 'Pregunta y/o nivel creados correctamente.'
-        else
-          flash[:alert] = 'Se ha producido un error al crear la pregunta y/o nivel. Intentalo de nuevo.'
-        end
-      else
-        @level.destroy if params[:levels] == 'new'
-        flash[:alert] =
-          'Se ha producido un error de validación. Verifica la información de la pregunta introducida'
-      end
-      redirect '/admin/nivelesPreguntas'
-    else
-      redirect '/login'
-    end
   end
 
   get '/admin/preguntasCorrectas' do

@@ -15,6 +15,6 @@ end
 module Questionable
   extend ActiveSupport::Concern
   included do
-    has_one :question, as: :questionable, touch: true
+    has_one :question, as: :questionable, touch: true, dependent: :destroy
   end
 end
