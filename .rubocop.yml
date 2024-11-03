@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 #inherit_from: .rubocop_todo.yml
 
 require:
@@ -6,27 +8,11 @@ require:
 
 AllCops:
   NewCops: enable
-
-Metrics/ClassLength:
-  Exclude:
-    - "myapp.rb"
-
-Style/Documentation:
-  Exclude:
-    - "myapp.rb"
-
+  
 Metrics/BlockLength:
   Exclude:
-    - "myapp.rb"
     - "db/schema.rb"
 
-Metrics/BlockNesting:
-  Exclude:
-    - "myapp.rb"
-
-Layout/LineLength:
-  Exclude:
-    - "myapp.rb"
 
 RSpec/SpecFilePathFormat:
   Enabled: false

@@ -6,10 +6,10 @@ class SignupController < Sinatra::Base
   set :views, File.expand_path('../views', __dir__)
 
   def initialize(app = nil)
-      super
-      @gm = GameDataManager.new
-      @qm = QuestionsManager.new
-      @lm = LevelManager.new
+    super
+    @gm = GameDataManager.new
+    @qm = QuestionsManager.new
+    @lm = LevelManager.new
   end
 
   get '/registro' do

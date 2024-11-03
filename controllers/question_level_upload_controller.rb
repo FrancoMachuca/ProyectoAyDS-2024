@@ -4,6 +4,7 @@ require 'sinatra/flash'
 require './models/level'
 require './controllers/levels_manager'
 require './controllers/questions_manager'
+require './controllers/questions_validator'
 # Controlador que maneja los eventos relacionados al formulario de creación de nuevas preguntas y niveles.
 class QuestionLevelUploadController < Sinatra::Base
   set :views, File.expand_path('../views', __dir__)
@@ -13,6 +14,7 @@ class QuestionLevelUploadController < Sinatra::Base
     super
     @lm = LevelManager.new
     @qm = QuestionsManager.new
+    @qv = QuestionsValidator.new
   end
   get '/admin/nivelesPreguntas' do
     if session[:admin_id]
@@ -59,7 +61,7 @@ class QuestionLevelUploadController < Sinatra::Base
       else
         @level = Level.find_by(id: params[:levels])
       end
-      if @qm.validate_params(options: @options, correct_answer: @correct_answer,
+      if @qv.validate_params(options: @options, correct_answer: @correct_answer,
                              question_description: @question_description, level: @level, question_type: @question_type,
                              translation_type: @translation_type, key_word: @key_word, key_word_morse: @key_word_morse)
         if @qm.create_new_question(question_type: @question_type, options: @options,

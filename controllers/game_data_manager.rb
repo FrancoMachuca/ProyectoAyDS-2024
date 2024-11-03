@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/MethodLength
-
 require '.\models\player'
 require '.\models\level'
 require '.\models\player_level'
@@ -39,7 +37,6 @@ class GameDataManager
 
     row = PlayerLevel.find_by(player: player, level: level)
     return row.playerLevelScore >= row.level.exam.minScore if row.level.playable_type == 'Exam'
-
 
     row.playerLevelScore.positive?
   end
@@ -82,5 +79,3 @@ class GameDataManager
     nil # En caso de que el usuario no se encuentre
   end
 end
-
-# rubocop:enable Metrics/MethodLength
