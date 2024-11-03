@@ -42,13 +42,6 @@ class MyApp < Sinatra::Application
     config.root = "#{File.dirname(__FILE__)}/public"
   end
 
-  def initialize(_myapp = nil)
-    super()
-    @gm = GameDataManager.new
-    @qm = QuestionsManager.new
-    @lm = LevelManager.new
-  end
-
   set :public_folder, 'public'
   set :database_file, './config/database.yml'
   enable :sessions
