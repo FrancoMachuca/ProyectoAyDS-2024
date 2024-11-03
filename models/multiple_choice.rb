@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
 require 'active_record'
-class Multiple_choice < ActiveRecord::Base
-    include Questionable
+
+# Mutiple_Choice model
+class MultipleChoice < ActiveRecord::Base
+  include Questionable
 end

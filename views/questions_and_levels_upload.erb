@@ -85,23 +85,23 @@
           </select>
 
         <div id="multiple-choice-fields" style="display: none;">
-          <% for i in (1..@mc_answers) do %>
-          <label for="op<%=i%>" class="block mt-3">Opción <%=i%>:</label>
+          <% %w[first second third fourth].each_with_index do |position, i| %>
+          <label for="op<%=i + 1%>" class="block mt-3">Opción <%=i + 1%>:</label>
           <div class="flex items-center">
             <input
-              id="op<%=i%>"
-              name="op<%=i%>"
+              id="op<%=i + 1%>"
+              name="op<%=i + 1%>"
               type="text"
               class="justify-center w-11/12 px-4 py-1.5 mt-2 text-xl whitespace-nowrap bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"
-              placeholder="Opcion <%=i%>"
-              aria-label="Opcion <%=i%>"
+              placeholder="Opcion <%=i + 1%>"
+              aria-label="Opcion <%=i + 1%>"
             />
             <div class="flex flex-col items-center ml-2">
               <span class="text-sm font-bold mb-1">Correcta</span>
               <input
                 type="checkbox"
                 class="correct-checkbox w-10 h-10 bg-white border-2 border-solid border-gray-300 rounded-md appearance-none cursor-pointer checked:border-purple-700 checked:bg-purple-900 checked:text-white checked:before:content-['✔'] checked:before:text-white checked:before:text-2xl checked:before:block checked:before:text-center"
-                name="correct_option_<%= i %>"
+                name="correct_option_<%=position%>"
                 value="true"
               />
             </div>
@@ -211,7 +211,7 @@
       const questionTypeSelect = document.getElementById('question_type');
       const multipleChoiceFields = document.getElementById('multiple-choice-fields');
       
-      if (questionTypeSelect.value === "Multiple_choice") {
+      if (questionTypeSelect.value === "MultipleChoice") {
         multipleChoiceFields.style.display = "block";
       } else {
         multipleChoiceFields.style.display = "none";
@@ -233,7 +233,7 @@
       const questionTypeSelect = document.getElementById('question_type');
       const toCompleteFields = document.getElementById('to-complete-fields');
       
-      if (questionTypeSelect.value === "To_complete") {
+      if (questionTypeSelect.value === "ToComplete") {
         toCompleteFields.style.display = "block";
       } else {
         toCompleteFields.style.display = "none";
@@ -244,7 +244,7 @@
       const questionTypeSelect = document.getElementById('question_type');
       const otherQuestionsFields = document.getElementById('other-questions-fields');
       
-      if (questionTypeSelect.value !== "Multiple_choice" && questionTypeSelect.value !== "Translation" && questionTypeSelect.value !== "To_complete") {
+      if (questionTypeSelect.value !== "MultipleChoice" && questionTypeSelect.value !== "Translation" && questionTypeSelect.value !== "ToComplete") {
         otherQuestionsFields.style.display = "block";
       } else {
         otherQuestionsFields.style.display = "none";
