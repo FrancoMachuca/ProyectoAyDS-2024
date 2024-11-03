@@ -3,8 +3,15 @@
 require './controllers/game_data_manager'
 # Controlador encargado de manejar los eventos relacionados al registro de nuevos usuarios.
 class SignupController < Sinatra::Base
-  @gm = GameDataManager.new
   set :views, File.expand_path('../views', __dir__)
+
+  def initialize(app = nil)
+      super
+      @gm = GameDataManager.new
+      @qm = QuestionsManager.new
+      @lm = LevelManager.new
+  end
+
   get '/registro' do
     erb :registro
   end

@@ -59,11 +59,16 @@ class LevelController < Sinatra::Base
     redirect '/login' unless session[:user_id]
 
     @level = Level.find_by(id: params[:level_id])
-    @question = @level.questions.find_by(id: params[:question_id])
 
-    if @level && @question
-      @answers = Answer.where(question_id: @question.id)
-      erb @qm.show(question: @question)
+    if @level
+      @question = @level.questions.find_by(id: params[:question_id])
+
+      if @question
+        @answers = Answer.where(question_id: @question.id)
+        erb @qm.show(question: @question)
+      else
+        redirect '/jugar'
+      end
     else
       redirect '/jugar'
     end
