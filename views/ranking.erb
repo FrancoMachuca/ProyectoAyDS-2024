@@ -19,13 +19,13 @@
             <span class="text-ellipsis max-md:max-w-full w-[80%]">Nombre</span>
             <span class="text-ellipsis">Puntuación</span>
         </header>
-        <% sorted_players = @players.sort_by { |player| -@gm.getTotalScoreOf(player: player) } %>
+        <% sorted_players = @players.sort_by { |player| -@gm.get_total_score_of(player: player) } %>
         <% sorted_players.each do |player| %>
             <div class="flex gap-5 text-left justify-between py-4 px-5 border-t border-solid border-neutral-200 max-md:flex-wrap max-md:pr-5">
-                <span class="text-zinc-500"><%= @gm.getPlayerRank(player: player) %></span>
+                <span class="text-zinc-500"><%= @gm.get_player_rank(player: player) %></span>
                 <span class="text-ellipsis max-md:max-w-full w-[80%]"><%= player.user.name %></span>
                 <div class="flex flex-col justify-center self-stretch text-xs font-semibold leading-4">
-                    <span class="justify-center px-2 py-1.5 bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"><%= @gm.getTotalScoreOf(player: player) %></span>
+                    <span class="justify-center px-2 py-1.5 bg-white rounded-lg border border-solid border-neutral-200 text-ellipsis"><%= @gm.get_total_score_of(player: player) %></span>
                 </div>
             </div>
         <% end %>

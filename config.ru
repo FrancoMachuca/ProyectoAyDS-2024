@@ -1,3 +1,4 @@
-require './myapp.rb'
-run MyApp
+# frozen_string_literal: true
 
+require './myapp'
+run MyApp

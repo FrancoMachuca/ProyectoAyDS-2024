@@ -1,0 +1,21 @@
+inherit_from: .rubocop_todo.yml
+
+#inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rspec
+  - rubocop-rake
+
+AllCops:
+  NewCops: enable
+  
+Metrics/BlockLength:
+  Exclude:
+    - "db/schema.rb"
+
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
